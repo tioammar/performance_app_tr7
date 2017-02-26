@@ -65,9 +65,14 @@ require_once("modules/HitungKM2.php");
             <td class='center-align'>$km->satuan</td>";
     }
     for($t = 1; $t <= 4; $t++){
-      echo "
+      if($ach_all['tw'.$t]['bobot'] < 1){
+        echo "
+            <td class='hides center-align $t'> - </td>"; // clean UI
+      }
+      else {
+        echo "
             <td class='hides center-align $t'>".$ach_all['tw'.$t]['bobot']."</td>";
-
+      }
             // <td class='hides center-align $t'>".$km->target['tw'.$t]."</td>
             // <td class='hides center-align $t'>".$km->realisasi['tw'.$t]."</td>";
             // } else {
@@ -78,8 +83,8 @@ require_once("modules/HitungKM2.php");
       } else {
         // if($session == ADMIN_UNIT){
         //  echo "
-        //    <td class='hides center-align $t'>".$km->target['tw'.$t]."</td>
-        //    <td class='hides center-align $t'>".$km->realisasi['tw'.$t]."</td>";
+        //    <td class='hides center-align $t'>".$km->target['tw'.$t]."</td> // editable
+        //    <td class='hides center-align $t' data-id='$km2->id' data-period='tw$t'>".$km->realisasi['tw'.$t]."</td>"; // editable
         // } else {
           echo "
             <td class='hides center-align $t'>".$km->target['tw'.$t]."</td>
