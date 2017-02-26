@@ -14,7 +14,7 @@ class KM {
   public $target;
   public $ach = array();
   public $status;
-  // public $level;
+  public $level;
   // public $sub;
   public $type;
   public $len;
