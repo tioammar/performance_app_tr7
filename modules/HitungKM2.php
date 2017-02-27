@@ -7,10 +7,10 @@ class HitungKM {
     $this->mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME); 
   }
 
-  public function hitung($km, $level){ // passing level so we can check wether it has a sub level or not
+  public function hitung($km, $level, $unit){ // passing level so we can check wether it has a sub level or not
     $ach_all = array();
     if($level < $km->len){
-      $ach_all = $this->hitungSubLevel($km, $level);
+      $ach_all = $this->hitungSubLevel($km, $level, $unit);
     } else {
       for($i = 1; $i <= 4; $i++){
         $tw = "tw".$i;
@@ -36,10 +36,11 @@ class HitungKM {
     return $ach_all;
   }
 
-  public function hitungSubLevel($km, $lvl){
+  public function hitungSubLevel($km, $lvl, $unit){
     $ach_all = array();
     $level = $lvl + 1; // get the sub level
     $Q = "SELECT DISTINCT l_$level FROM km WHERE `l_$lvl` = '".$km->indikator['l_'.$lvl]."'";
+    if ($unit != null) $Q .= " AND `unit` = '$unit'";
     $row = $this->mysqli->query($Q);
     // if ($level == 4){
     //   echo $row->num_rows;
@@ -48,7 +49,7 @@ class HitungKM {
     $i = 1;
     while($r = $row->fetch_array()){
       $km_sub = new KM($r['l_'.$level], $level);
-      $ach_sub_all['km_'.$i] = $this->hitung($km_sub, $level);
+      $ach_sub_all['km_'.$i] = $this->hitung($km_sub, $level, $unit);
       $i++;
     }
     // if($km->level == 3){
@@ -78,7 +79,8 @@ class HitungKM {
     return $ach_all;
   }
 
-  public function writeRow($parent, $plevel){ // passing parent level to get sub indikator
+  public function writeRow($parent, $plevel, $unit){
+    $session = null;
     $level = $plevel+1;
     switch($level){
       case 1:
@@ -97,10 +99,11 @@ class HitungKM {
         // do nothing
     }
     $Q = "SELECT DISTINCT l_$level FROM km WHERE `l_$plevel` = '$parent'";
+    if ($unit != null) $Q .= " AND `unit` = '$unit'";
     $rows = $this->mysqli->query($Q);
     while($row = $rows->fetch_array()){
       $km2 = new KM($row['l_'.$level], $level);
-      $ach_all = $this->hitung($km2, $level);
+      $ach_all = $this->hitung($km2, $level, $unit);
       echo "
           <tr class='$class'>
             <td class='indent-$level'>".$km2->indikator['l_'.$level]."</td>
@@ -121,31 +124,28 @@ class HitungKM {
         echo "
             <td class='hides center-align $t'>".$ach_all['tw'.$t]['bobot']."</td>";
       }
-            // <td class='hides center-align $t'>".$km->target['tw'.$t]."</td>
-            // <td class='hides center-align $t'>".$km->realisasi['tw'.$t]."</td>";
-            // } else {
       if($level < $km2->len){
         echo "
             <td class='hides center-align $t'>-</td>
             <td class='hides center-align $t'>-</td>";
       } else {
-        // if($session == ADMIN_UNIT){
-        //  echo "
-        //    <td class='hides center-align $t'>".$km2->target['tw'.$t]."</td> // editable
-        //    <td class='hides center-align $t' data-id='$km2->id' data-period='tw$t'>".$km2->realisasi['tw'.$t]."</td>"; // editable
-        // } else {
+        echo "
+            <td class='hides center-align $t'>".$km2->target['tw'.$t]."</td>";
+        if($session == ADMIN_UNIT){
           echo "
-            <td class='hides center-align $t'>".$km2->target['tw'.$t]."</td>
+            <td class='hides center-align $t' data-id='$km2->id' data-period='tw$t'>".$km2->realisasi['tw'.$t]."</td>"; // editable
+        } else {
+          echo "
             <td class='hides center-align $t'>".$km2->realisasi['tw'.$t]."</td>";
-          }
-      // }
+        }
+      }
         echo "
             <td class='hides center-align $t'>".rounds($ach_all['tw'.$t]['ach_show']*100)." %</td>";
     }
       echo "       
           </tr>";
       if($level < $km2->len){
-        $this->writeRow($km2->indikator['l_'.$level], $level);
+        $this->writeRow($km2->indikator['l_'.$level], $level, $unit);
       }
     }
   }

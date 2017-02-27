@@ -13,7 +13,7 @@
 <?php 
 require_once("modules/model/KM2.php");
 require_once("modules/HitungKM2.php");
-$unit = null;
+$unit = "";
 // for($w = 0; $w < count($cat); $w++){
   // $div = getWitelId($cat_name);
   echo "
@@ -46,7 +46,7 @@ $unit = null;
           </thead>
           <tbody>";
   // $Q = "SELECT id FROM km_level1 WHERE `witel` = '$cat_name'";
-  $Q = "SELECT DISTINCT l_1 FROM km";
+  $Q = "SELECT DISTINCT l_1 FROM km WHERE `unit` = '$unit'";
   $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
   $rows = $mysqli->query($Q);
   $hitung = new HitungKM();
@@ -80,8 +80,14 @@ $unit = null;
             <td class='hides center-align $t'>-</td>";
       } else {
         echo "
-            <td class='hides center-align $t'>".$km->target['tw'.$t]."</td>
+            <td class='hides center-align $t'>".$km->target['tw'.$t]."</td>";
+        if($session == ADMIN_UNIT){
+          echo "
+            <td class='hides center-align $t' data-id='$km->id' data-period='tw$t'>".$km->realisasi['tw'.$t]."</td>"; // editable
+        } else {
+          echo "
             <td class='hides center-align $t'>".$km->realisasi['tw'.$t]."</td>";
+        }
       }
         echo "
             <td class='hides center-align $t'>".rounds($ach_all['tw'.$t]['ach_show']*100)." %</td>";
