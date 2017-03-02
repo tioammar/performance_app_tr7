@@ -12,6 +12,11 @@
 
   require_once("helper.php");
   require_once("modules/config.php");
+  require_once("modules/View.php");
+
+  $session['user_level'] = ADMIN_SM;
+  $session['unit'] = "CCM";
+  $view = new View($session['user_level']);
 ?>
 <html>
 <head>
@@ -31,7 +36,7 @@
 </head>
 <header>
   <?php
-  if($page != "main2"){
+  if($page != "main2" && $page != "admin"){
     echo "<nav class='nav-extended'>";
   } else {
     echo "<nav>";
@@ -40,14 +45,14 @@
     <div class="nav-wrapper red">
       <ul class="left">
         <li><a href="#" data-activates="slide-out" class="side-nav-trig black-text"><i class="material-icons left">menu</i></a></li>
-        <li><a class="logo" href="?page=main">KM Online TREG 7</a></li>
+        <li><a class="logo" href="?page=main2">KM Online TREG 7</a></li>
       </ul>
       <ul class="right">
         <li><img src="img/woow.png" alt="" class="profile"></li>
         <!--li><img src="img/logo.png" alt="" class="profile"></li-->
       </ul>
       <?php
-      if($page != "main2"){
+      if($page != "main2" && $page != "admin"){
         include "include/tabs/".$page.".php";
       }
       ?>
@@ -66,9 +71,29 @@
         <a href="#!email"><span class="white-text email">920153</span></a>
       </div>
     </li>
-    <li><a href="?page=main">Beranda</a></li>
+    <li><a href="?page=main2">Beranda</a></li>
+    <?php 
+    if($session['user_level'] != USER){
+      switch($session['user_level']){
+        case ADMIN_SM:
+          $link = "?page=admin";
+          break;
+        case ADMIN_UNIT:
+          $link = "?page=admin";
+          break;          
+        case ADMIN_BPP:
+          $link = "?page=adminall";
+          break;
+        default:
+          $link = "#";
+      }
+      echo "
+    <li><a href='$link'>Admin</a></li>
+    <li><a href='?page=notifikasi'>Notifikasi</a></li>";
+    }
+    ?>
     <li><div class="divider"></div></li>
-    <li><a href="?page=signout">Keluar</a></li>
+    <li><a href="signout.php">Keluar</a></li>
   </ul>
   <!-- main start here -->
   <div class="main">

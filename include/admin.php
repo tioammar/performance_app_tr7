@@ -10,10 +10,11 @@
       </select>
     </div>
   </div>
-<?php 
+<?php
 require_once("modules/model/KM2.php");
 require_once("modules/HitungKM2.php");
-$unit = "";
+$unit = $session['unit'];
+$user = $session['user_level'];
 // for($w = 0; $w < count($cat); $w++){
   // $div = getWitelId($cat_name);
   echo "
@@ -45,7 +46,6 @@ $unit = "";
             </tr>
           </thead>
           <tbody>";
-  // $Q = "SELECT id FROM km_level1 WHERE `witel` = '$cat_name'";
   $Q = "SELECT DISTINCT l_1 FROM km WHERE `unit` = '$unit'";
   $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
   $rows = $mysqli->query($Q);
@@ -54,57 +54,16 @@ $unit = "";
     $km = new KM($row['l_1'], 1);
     $level = 1;
     $ach_all = $hitung->hitung($km, 1, $unit);
-    echo "
-          <tr class='red accent-4 white-text'>
-            <td class='indent-1'>".$km->indikator['l_1']."</td>
-            <td class='center-align'>$km->tahun</td>";
+    $view->row($km, $ach_all, $level);
     if($level < $km->len){
-      echo "
-            <td class='center-align'>-</td>";
-    } else {
-      echo "
-            <td class='center-align'>$km->satuan</td>";
-    }
-    for($t = 1; $t <= 4; $t++){
-      if($ach_all['tw'.$t]['bobot'] < 1){
-        echo "
-            <td class='hides center-align $t'> - </td>"; // clean UI
-      }
-      else {
-        echo "
-            <td class='hides center-align $t'>".$ach_all['tw'.$t]['bobot']."</td>";
-      }
-      if($level < $km->len){
-        echo "
-            <td class='hides center-align $t'>-</td>
-            <td class='hides center-align $t'>-</td>";
-      } else {
-        echo "
-            <td class='hides center-align $t'>".$km->target['tw'.$t]."</td>";
-        if($session == ADMIN_UNIT){
-          echo "
-            <td class='hides center-align $t' data-id='$km->id' data-period='tw$t'>".$km->realisasi['tw'.$t]."</td>"; // editable
-        } else {
-          echo "
-            <td class='hides center-align $t'>".$km->realisasi['tw'.$t]."</td>";
-        }
-      }
-        echo "
-            <td class='hides center-align $t'>".rounds($ach_all['tw'.$t]['ach_show']*100)." %</td>";
-    }
-    echo "       
-          </tr>";
-    if($level < $km->len){
-      $hitung->writeRow($km->indikator['l_1'], $level, $unit);
+      $view->sub($km->indikator['l_1'], $level, $unit);
     }
   }
-    echo "
+?>
         </tbody>
       </table>
     </div>
   </div>";
-// }
-?>
 <script>
 $('#tw').on("change", function() {
     hideAll();

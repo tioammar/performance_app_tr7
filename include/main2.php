@@ -50,55 +50,21 @@ $unit = null;
   $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
   $rows = $mysqli->query($Q);
   $hitung = new HitungKM();
+  $view->setUser(USER); // setting up user to all since we have set user == session in the very beginning
   while($row = $rows->fetch_array()){
     $km = new KM($row['l_1'], 1);
     $level = 1;
     $ach_all = $hitung->hitung($km, 1, $unit);
-    echo "
-          <tr class='red accent-4 white-text'>
-            <td class='indent-1'>".$km->indikator['l_1']."</td>
-            <td class='center-align'>$km->tahun</td>";
+    $view->row($km, $ach_all, $level);
     if($level < $km->len){
-      echo "
-            <td class='center-align'>-</td>";
-    } else {
-      echo "
-            <td class='center-align'>$km->satuan</td>";
-    }
-    for($t = 1; $t <= 4; $t++){
-      if($ach_all['tw'.$t]['bobot'] < 1){
-        echo "
-            <td class='hides center-align $t'> - </td>"; // clean UI
-      }
-      else {
-        echo "
-            <td class='hides center-align $t'>".$ach_all['tw'.$t]['bobot']."</td>";
-      }
-      if($level < $km->len){
-        echo "
-            <td class='hides center-align $t'>-</td>
-            <td class='hides center-align $t'>-</td>";
-      } else {
-        echo "
-            <td class='hides center-align $t'>".$km->target['tw'.$t]."</td>
-            <td class='hides center-align $t'>".$km->realisasi['tw'.$t]."</td>";
-      }
-        echo "
-            <td class='hides center-align $t'>".rounds($ach_all['tw'.$t]['ach_show']*100)." %</td>";
-    }
-    echo "       
-          </tr>";
-    if($level < $km->len){
-      $hitung->writeRow($km->indikator['l_1'], $level, $unit);
+      $view->sub($km->indikator['l_1'], $level, $unit);
     }
   }
-    echo "
+?>
         </tbody>
       </table>
     </div>
-  </div>";
-// }
-?>
+  </div>
 <script>
 $('#tw').on("change", function() {
     hideAll();
