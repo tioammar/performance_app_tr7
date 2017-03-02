@@ -16,7 +16,7 @@
 
   $session['user_level'] = ADMIN_SM;
   $session['unit'] = "CCM";
-  $view = new View($session['user_level']);
+  $view = new View($session['user_level'], $session['unit']);
 ?>
 <html>
 <head>

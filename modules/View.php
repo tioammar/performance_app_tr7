@@ -2,15 +2,21 @@
 class View {
 
   private $user;
+  private $unit;
   private $mysqli;
 
-  function __construct($user){
+  function __construct($user, $unit){
     $this->user = $user;
+    $this->unit = $unit;
     $this->mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME); 
   }
 
   function setUser($user){
     $this->user = $user;
+  }
+
+  function setUnit($unit){
+    $this->unit = $unit;
   }
 
   public function showEditor(){
@@ -82,18 +88,18 @@ class View {
           </tr>";
   }
 
-  public function sub($parent, $plevel, $unit){
+  public function sub($parent, $plevel){
     $level = $plevel+1;
     $Q = "SELECT DISTINCT l_$level FROM km WHERE `l_$plevel` = '$parent'";
-    if ($unit != null) $Q .= " AND `unit` = '$unit'";
+    if ($this->unit != null) $Q .= " AND `unit` = '$this->unit'";
     $rows = $this->mysqli->query($Q);
     $hitung = new HitungKM();
     while($row = $rows->fetch_array()){
       $km2 = new KM($row['l_'.$level], $level);
-      $ach_all = $hitung->hitung($km2, $level, $unit);
+      $ach_all = $hitung->hitung($km2, $level, $this->unit);
       $this->row($km2, $ach_all, $level);
       if($level < $km2->len){
-        $this->sub($km2->indikator['l_'.$level], $level, $unit);
+        $this->sub($km2->indikator['l_'.$level], $level);
       }
     }
   }

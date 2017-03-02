@@ -14,7 +14,6 @@
 require_once("modules/model/KM2.php");
 require_once("modules/HitungKM2.php");
 $unit = $session['unit'];
-$user = $session['user_level'];
 // for($w = 0; $w < count($cat); $w++){
   // $div = getWitelId($cat_name);
   echo "
@@ -56,7 +55,7 @@ $user = $session['user_level'];
     $ach_all = $hitung->hitung($km, 1, $unit);
     $view->row($km, $ach_all, $level);
     if($level < $km->len){
-      $view->sub($km->indikator['l_1'], $level, $unit);
+      $view->sub($km->indikator['l_1'], $level);
     }
   }
 ?>

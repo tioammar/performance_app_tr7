@@ -50,14 +50,18 @@ $unit = null;
   $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
   $rows = $mysqli->query($Q);
   $hitung = new HitungKM();
-  $view->setUser(USER); // setting up user to all since we have set user == session in the very beginning
+
+  // setting up user to all since we have set user/unit == session in the very beginning
+  $view->setUser(USER); 
+  $view->setUnit(null);
+
   while($row = $rows->fetch_array()){
     $km = new KM($row['l_1'], 1);
     $level = 1;
-    $ach_all = $hitung->hitung($km, 1, $unit);
+    $ach_all = $hitung->hitung($km, 1, null);
     $view->row($km, $ach_all, $level);
     if($level < $km->len){
-      $view->sub($km->indikator['l_1'], $level, $unit);
+      $view->sub($km->indikator['l_1'], $level);
     }
   }
 ?>
