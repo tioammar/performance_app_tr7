@@ -23,7 +23,7 @@ define("ALL_UNIT", "all");
 define("STATUS_EDITED", "edited");
 define("STATUS_APPROVED", "approved");
 define("STATUS_RELEASED", "released");
-define("STATUA_REJECTED", "rejected");
+define("STATUS_REJECTED", "rejected");
 
 // define("LEVEL_1", "1");
 // define("NO_LEVEL_1", "0");

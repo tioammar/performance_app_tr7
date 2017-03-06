@@ -53,27 +53,5 @@ class KM {
       $this->len = $r['len'];
     }
   }
-
-  public static function updateReal($id, $tw, $value){
-    return self::update($id, $tw, $value, "real");
-  }
-
-  public static function updateStatus($id, $tw, $value){
-    return self::update($id, $tw, $value, "stt");
-  }
-
-  public static function update($id, $tw, $value, $type){
-    $Q = "UPDATE km SET `".$type."_".$tw."` = '$value' WHERE `id` = $id";
-    $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-    if(!$mysqli->query($Q)){
-      return QUERY_SUCCESS;
-    } else {
-      return QUERY_FAILED;
-    }
-  }
-
-  public static function uploadEvidence($file, $id){
-    //TODO 
-  }
 }
 ?>

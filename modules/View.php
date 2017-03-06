@@ -19,14 +19,32 @@ class View {
     $this->unit = $unit;
   }
 
-  public function showEditor(){
+  public function showEditor($id, $t, $stt){
+    $approved_stt = "";
+    $rejected_stt = "";
+
+    if($stt == STATUS_APPROVED || $stt == STATUS_RELEASED){
+      $approved_stt = "disabled";
+    }
+
+    if($stt == STATUS_REJECTED || $stt == STATUS_RELEASED){
+      $rejected_stt = "disabled";
+    }
+
     $editor = "";
     switch($this->user){
       case ADMIN_UNIT:
-        $editor = "<a class='green-text small' href='#editor'><i class='material-icons'>edit</i></a>";
+        $editor = "<a class='$approved_stt modal-trigger btn-floating btn-small blue darken-3' data-id='$id' data-period='$t'>
+                    <i class='small material-icons'>edit</i>
+                  </a>";
         break;
       case ADMIN_SM:
-        $editor = "<a class='small green-text' href='?page=accept'><i class='material-icons'>done</i></a> <a class='red-text small text-darken-3' href='?page=reject'><i class='material-icons'>close</i></a>";
+        $editor = "<a class='$approved_stt btn-floating btn-small green ' href='process.php?type=status&stt=accept&id=$id&period=$t'>
+                    <i class='small material-icons'>done</i>
+                  </a> 
+                  <a class='$rejected_stt btn-floating btn-small red darken-3' href='process.php?type=status&stt=reject&id=$id&period=$t'>
+                    <i class='small material-icons'>close</i>
+                  </a>";
         break;
     }
     echo $editor;
@@ -76,13 +94,19 @@ class View {
         } else {
           echo "
             <td class='hides center-align $t'>".$km->target['tw'.$t]."</td>
-            <td class='hides center-align $t'>".$km->realisasi['tw'.$t]." <span>";
-          echo ($this->user != USER) ? $this->showEditor($this->user) : "";
+            <td class='hides center-align $t'>".$km->realisasi['tw'.$t]." <br><span>";
+          echo ($this->user != USER) ? $this->showEditor($km->id, $t, $km->status['tw'.$t]) : "";
           echo "  
             </span></td>";
+            $this->editor($km->id, $t);
         }
         echo "
-            <td class='hides center-align $t'>".rounds($ach_all['tw'.$t]['ach_show']*100)." %</td>";
+            <td class='hides center-align $t'>".rounds($ach_all['tw'.$t]['ach_show']*100)." %</td>
+            <td class='hides center-align $t'>
+              <a class='btn-floating btn-small blue' href='process.php?type=evid&id=$km->id&period=$t'>
+                <i class='small material-icons'>library_books</i>
+              </a>
+            </td>";
       }
       echo "       
           </tr>";
@@ -102,6 +126,16 @@ class View {
         $this->sub($km2->indikator['l_'.$level], $level);
       }
     }
+  }
+
+  public function editor($id, $period){
+    echo "
+    <div class='modal-editor-$id-$period modal' id='modal-$id-$period'>
+      <div class='modal-content'>
+        <form action='process.php?type=update&id=$id&period=$period' method='post'> 
+        </form>
+      </div>
+    </div>";
   }
 }
 ?>
