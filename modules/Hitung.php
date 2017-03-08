@@ -14,7 +14,7 @@ class Hitung {
     if($level < $model->len){
       $ach_all = $this->hitungSubLevel($model, $level, $unit);
     } else {
-      for($i = 1; $i <= 4; $i++){
+      for($i = 1; $i <= $this->count; $i++){
         $tw = "tw".$i;
         $bobot = $model->bobot[$tw];
         $real = $model->realisasi[$tw];
@@ -56,6 +56,22 @@ class Hitung {
       $ach_all[$tw] = $ach;
     }
     return $ach_all;
+  }
+
+  public function hitungSubLevel($model, $lvl, $unit){
+    $ach_all = array();
+    $level = $lvl + 1; // get the sub level
+    $Q = "SELECT DISTINCT l_$level FROM $model->table WHERE `l_$lvl` = '".$model->indikator['l_'.$lvl]."'";
+    if ($unit != null) $Q .= " AND `unit` = '$unit'";
+    $row = $this->mysqli->query($Q);
+    $ach_sub_all = array();
+    $i = 1;
+    while($r = $row->fetch_array()){
+      $model_sub = $model->make($r['l_'.$level], $level);
+      $ach_sub_all['model_'.$i] = $this->hitung($model_sub, $level, $unit);
+      $i++;
+    }
+    return $this->subAch($ach_sub_all);
   }
 }
 ?>

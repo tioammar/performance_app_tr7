@@ -18,8 +18,7 @@ class Base {
   public $count;
 
   
-  function __construct($indikator, $level, $count){
-    $this->count = $count;
+  function __construct($indikator, $level){
     $this->make($indikator, $level);
   }
 
@@ -43,6 +42,7 @@ class Base {
       $this->type = $r['type'];
       $this->len = $r['len'];
     }
+    return $this;
   }
 }
 ?>

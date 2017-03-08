@@ -1,7 +1,7 @@
 <?php
 require_once("modules/model/KM.php");
-require_once("modules/HitungKM.php");
-require_once("modules/ViewKM.php");
+require_once("modules/Hitung.php");
+require_once("modules/view/ViewKM.php");
 ?>
 <div class='km'>
   <div class='row'>
@@ -18,11 +18,7 @@ require_once("modules/ViewKM.php");
     </div>
   </div>
 <?php 
-require_once("modules/model/KM.php");
-require_once("modules/HitungKM.php");
 $unit = null;
-// for($w = 0; $w < count($cat); $w++){
-  // $div = getWitelId($cat_name);
   echo "
   <div id='tr7' class='card white z-depth-2 contain'>
       <div class='card-content black-text'>
@@ -56,23 +52,21 @@ $unit = null;
             </tr>
           </thead>
           <tbody>";
-  // $Q = "SELECT id FROM km_level1 WHERE `witel` = '$cat_name'";
   $Q = "SELECT DISTINCT l_1 FROM km";
   $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
   $rows = $mysqli->query($Q);
-  $hitung = new HitungKM($count);
+  $hitung = new Hitung($count);
 
-  // setting up user to all since we have set user/unit == session in the very beginning
   $view->setUser(USER); 
   $view->setUnit(null);
 
   while($row = $rows->fetch_array()){
-    $km = new KM($row['l_1'], 1, $count);
+    $km = new KM($row['l_1'], 1);
     $level = 1;
     $ach_all = $hitung->hitung($km, 1, null);
     $view->row($km, $ach_all, $level);
     if($level < $km->len){
-      $view->sub($km->indikator['l_1'], $level);
+      $view->sub($km, $level);
     }
   }
 ?>

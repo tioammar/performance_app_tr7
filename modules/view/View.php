@@ -1,4 +1,5 @@
 <?php
+// to use this class , extends and add editor method 
 class View {
 
   private $user;
@@ -140,6 +141,22 @@ class View {
       }
       echo "       
           </tr>";
+  }
+
+  public function sub($model, $plevel){
+    $level = $plevel+1;
+    $Q = "SELECT DISTINCT l_$level FROM $model->table WHERE `l_$plevel` = '".$model->indikator['l_'.$plevel]."'";
+    if ($this->unit != null) $Q .= " AND `unit` = '$this->unit'";
+    $rows = $this->mysqli->query($Q);
+    $hitung = new Hitung($this->count);
+    while($row = $rows->fetch_array()){
+      $model_sub = $model->make($row['l_'.$level], $level);
+      $ach_all = $hitung->hitung($model_sub, $level, $this->unit);
+      $this->row($model_sub, $ach_all, $level);
+      if($level < $model_sub->len){
+        $this->sub($model_sub, $level);
+      }
+    }
   }
 }
 ?>
