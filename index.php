@@ -3,7 +3,7 @@
   if(isset($_GET['page'])){
     $page = $_GET['page'];
   } else {
-    $page = "main2";
+    $page = "main";
   }
   // $units = array("CCM", "RWS", "EGBIS", "EnD", "RNO", "ROC", "MSO", "BPP", "PCF", "GA", "HC");
   // $revenue = array("Consumer", "Wholesale", "EGBIS");
@@ -14,7 +14,7 @@
   require_once("modules/config.php");
   require_once("modules/View.php");
 
-  $session['user_level'] = ADMIN_SM;
+  $session['user_level'] = ADMIN_UNIT;
   $session['unit'] = "CCM";
   $view = new View($session['user_level'], $session['unit']);
 ?>
@@ -36,7 +36,7 @@
 </head>
 <header>
   <?php
-  if($page != "main2" && $page != "admin"){
+  if($page != "main" && $page != "admin"){
     echo "<nav class='nav-extended'>";
   } else {
     echo "<nav>";
@@ -45,14 +45,14 @@
     <div class="nav-wrapper red">
       <ul class="left">
         <li><a href="#" data-activates="slide-out" class="side-nav-trig black-text"><i class="material-icons left">menu</i></a></li>
-        <li><a class="logo" href="?page=main2">KM Online TREG 7</a></li>
+        <li><a class="logo" href="?page=main">KM Online TREG 7</a></li>
       </ul>
       <ul class="right">
         <li><img src="img/woow.png" alt="" class="profile"></li>
         <!--li><img src="img/logo.png" alt="" class="profile"></li-->
       </ul>
       <?php
-      if($page != "main2" && $page != "admin"){
+      if($page != "main" && $page != "admin"){
         include "include/tabs/".$page.".php";
       }
       ?>
@@ -71,7 +71,7 @@
         <a href="#!email"><span class="white-text email">920153</span></a>
       </div>
     </li>
-    <li><a href="?page=main2">Beranda</a></li>
+    <li><a href="?page=main">Beranda</a></li>
     <?php 
     if($session['user_level'] != USER){
       switch($session['user_level']){

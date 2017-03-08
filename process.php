@@ -1,22 +1,30 @@
 <?php
-require_once "modules/model/Process.php";
+require_once("modules/model/Process.php");
+require_once("modules/config.php");
 
 $id = $_GET['id'];
-$tw = $_GET['period'];
-$process = new Process($id, $tw);
-
+$t = $_GET['t'];
 $type = $_GET['type'];
 
-if($type == "status"){
+if($type == "statuskm"){
+  $process = new Process($id, $t, "km");
   $status = $_GET['stt'];
   $result = $process->updateStatus($status);
-  $message = "success";
-  header("Location: ./?page=admin&stt=$message");
-} else if($type == "update"){
+  header("Location: ./?page=admin");
+} 
 
-} else if($type == "evid"){
+else if($type == "updatekm"){
+  $process = new Process($id, $t, "km");
+  $real = $_POST['real'];
+  $result = $process->updateReal($real);
+  header("Location: ./?page=admin");
+} 
 
-} else {
-  // show not found
+else if($type == "evidkm"){
+
+} 
+
+else {
+  echo "not found";
 }
 ?>

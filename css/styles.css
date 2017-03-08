@@ -84,6 +84,10 @@ p.revenue-main {
   height: 32px;
 }
 
+.small-modal {
+  width: 450px;
+}
+
 .indent-1 {
   text-indent: 10px;
 }

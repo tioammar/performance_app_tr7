@@ -3,17 +3,22 @@
     <div class='input-field col s3 offset-s9'>
       <select id='tw'>
         <option value='' disabled>Pilih TW</option>
-        <option value='1' selected>Triwulan 1</option>
-        <option value='2'>Triwulan 2</option>
-        <option value='3'>Triwulan 3</option>
-        <option value='4'>Triwulan 4</option>
+        <?php
+        $count = 4;
+        $view->setFilter($count, "Triwulan");
+        ?>
       </select>
     </div>
   </div>
 <?php
-require_once("modules/model/KM2.php");
-require_once("modules/HitungKM2.php");
+require_once("modules/model/KM.php");
+require_once("modules/HitungKM.php");
+require_once("modules/View.php");
+
 $unit = $session['unit'];
+$view->setCount($count);
+$view->setURI($_SERVER['QUERY_STRING']);
+
 // for($w = 0; $w < count($cat); $w++){
   // $div = getWitelId($cat_name);
   echo "
@@ -52,9 +57,9 @@ $unit = $session['unit'];
   $Q = "SELECT DISTINCT l_1 FROM km WHERE `unit` = '$unit'";
   $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
   $rows = $mysqli->query($Q);
-  $hitung = new HitungKM();
+  $hitung = new HitungKM($count);
   while($row = $rows->fetch_array()){
-    $km = new KM($row['l_1'], 1);
+    $km = new KM($row['l_1'], 1, $count);
     $level = 1;
     $ach_all = $hitung->hitung($km, 1, $unit);
     $view->row($km, $ach_all, $level);
@@ -81,7 +86,7 @@ function hideAll() {
 
 $('.modal-trigger').on('click', function() {
   var id = $(this).attr('data-id');
-  var tw = $(this).attr('data-period');
+  var tw = $(this).attr('data-count');
   $('#modal-'+id+'-'+tw).modal('open');
 });
 

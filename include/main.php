@@ -3,16 +3,16 @@
     <div class='input-field col s3 offset-s9'>
       <select id='tw'>
         <option value='' disabled>Pilih TW</option>
-        <option value='1' selected>Triwulan 1</option>
-        <option value='2'>Triwulan 2</option>
-        <option value='3'>Triwulan 3</option>
-        <option value='4'>Triwulan 4</option>
+        <?php
+        $view->setFilter(4, "Triwulan");
+        ?>
       </select>
     </div>
   </div>
 <?php 
 require_once("modules/model/KM.php");
 require_once("modules/HitungKM.php");
+$unit = null;
 // for($w = 0; $w < count($cat); $w++){
   // $div = getWitelId($cat_name);
   echo "
@@ -29,62 +29,49 @@ require_once("modules/HitungKM.php");
               <td class='hides center-align 1'>Target TW 1</td>
               <td class='hides center-align 1'>Realisai TW 1</td>
               <td class='hides center-align 1'>Ach. TW 1</td>
+              <td class='hides center-align 1'>Data TW 1</td>
               <td class='hides center-align 2'>Bobot TW 2</td>
               <td class='hides center-align 2'>Target TW 2</td>
               <td class='hides center-align 2'>Realisai TW 2</td>
               <td class='hides center-align 2'>Ach. TW 2</td>
+              <td class='hides center-align 2'>Data TW 2</td>
               <td class='hides center-align 3'>Bobot TW 3</td>
               <td class='hides center-align 3'>Target TW 3</td>
               <td class='hides center-align 3'>Realisai TW 3</td>
               <td class='hides center-align 3'>Ach. TW 3</td>
+              <td class='hides center-align 3'>Data TW 3</td>
               <td class='hides center-align 4'>Bobot TW 4</td>
               <td class='hides center-align 4'>Target TW 4</td>
               <td class='hides center-align 4'>Realisai TW 4</td>
               <td class='hides center-align 4'>Ach. TW 4</td>
+              <td class='hides center-align 4'>Data TW 4</td>
             </tr>
           </thead>
           <tbody>";
   // $Q = "SELECT id FROM km_level1 WHERE `witel` = '$cat_name'";
-  $Q = "SELECT id FROM km_level1";
+  $Q = "SELECT DISTINCT l_1 FROM km";
   $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
   $rows = $mysqli->query($Q);
   $hitung = new HitungKM();
+
+  // setting up user to all since we have set user/unit == session in the very beginning
+  $view->setUser(USER); 
+  $view->setUnit(null);
+
   while($row = $rows->fetch_array()){
-    $km = new KM($row['id'], 1);
-    $ach_all = $hitung->hitung($km);
-    echo "
-          <tr class='red accent-4 white-text'>
-            <td class='indent-1'>$km->indikator</td>
-            <td class='center-align'>$km->tahun</td>
-            <td class='center-align'>$km->satuan</td>";
-    for($t = 1; $t <= 4; $t++){
-        echo "
-            <td class='hides center-align $t'>".$ach_all['tw'.$t]['bobot']."</td>";
-            if($km->sub != HAS_SUB_LEVEL && $session = "admin"){
-            echo "
-            <td class='hides center-align $t'>".$km->target['tw'.$t]."</td>
-            <td class='hides center-align $t'>".$km->realisasi['tw'.$t]."</td>";
-            } else {
-            echo "
-            <td class='hides center-align $t'>".$km->target['tw'.$t]."</td>
-            <td class='hides center-align $t'>".$km->realisasi['tw'.$t]."</td>";
-            }
-        echo "
-            <td class='hides center-align $t'>".rounds($ach_all['tw'.$t]['ach_show']*100)." %</td>";
-    }
-    echo "       
-          </tr>";
-    if($km->sub == HAS_SUB_LEVEL){
-      $hitung->writeRow($km, $km->level+1);
+    $km = new KM($row['l_1'], 1);
+    $level = 1;
+    $ach_all = $hitung->hitung($km, 1, null);
+    $view->row($km, $ach_all, $level);
+    if($level < $km->len){
+      $view->sub($km->indikator['l_1'], $level);
     }
   }
-    echo "
+?>
         </tbody>
       </table>
     </div>
-  </div>";
-// }
-?>
+  </div>
 <script>
 $('#tw').on("change", function() {
     hideAll();
