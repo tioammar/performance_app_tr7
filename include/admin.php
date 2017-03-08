@@ -1,3 +1,8 @@
+<?php
+require_once("modules/model/KM.php");
+require_once("modules/HitungKM.php");
+require_once("modules/ViewKM.php");
+?>
 <div class='km'>
   <div class='row'>
     <div class='input-field col s3 offset-s9'>
@@ -5,18 +10,15 @@
         <option value='' disabled>Pilih TW</option>
         <?php
         $count = 4;
-        $view->setFilter($count, "Triwulan");
+        $view = new ViewKM($session['user_level'], $session['unit'], $count);
+        $view->setCount($count);
+        $view->setFilter("Triwulan");
         ?>
       </select>
     </div>
   </div>
 <?php
-require_once("modules/model/KM.php");
-require_once("modules/HitungKM.php");
-require_once("modules/View.php");
-
 $unit = $session['unit'];
-$view->setCount($count);
 $view->setURI($_SERVER['QUERY_STRING']);
 
 // for($w = 0; $w < count($cat); $w++){

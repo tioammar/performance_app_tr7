@@ -15,11 +15,11 @@ class Base {
   public $type;
   public $len;
   public $table;
-  public $period;
+  public $count;
 
   
-  function __construct($indikator, $level, $period){
-    $this->period = $period;
+  function __construct($indikator, $level, $count){
+    $this->count = $count;
     $this->make($indikator, $level);
   }
 
@@ -30,7 +30,7 @@ class Base {
     if($r = $row->fetch_array()){
       $this->id = $r['id'];
       $i = 1;
-      while($i <= $this->period){
+      while($i <= $this->count){
         $this->indikator['l_'.$i] = $r['l_'.$i];
         $this->bobot['tw'.$i] = $r['bobot_tw'.$i];
         $this->target['tw'.$i] = $r['tar_tw'.$i];

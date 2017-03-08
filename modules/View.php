@@ -2,14 +2,15 @@
 class View {
 
   private $user;
-  private $unit;
-  private $mysqli;
-  private $uri;
-  private $count;
+  protected $unit;
+  protected $mysqli;
+  protected $uri;
+  protected $count;
 
-  function __construct($user, $unit){
+  function __construct($user, $unit, $count){
     $this->user = $user;
     $this->unit = $unit;
+    $this->count = $count;
     $this->mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME); 
   }
 
@@ -25,12 +26,12 @@ class View {
     $this->count = $count;
   }
 
-  function setFilter($count, $name){
+  function setFilter($name){
     $month = date('m', time());
     $quarter = ceil($month/3) - 1;
     $tw = $quarter == 0 ? 1 : $quarter;
     $i = 1;
-    while($i <= 4){
+    while($i <= $this->count){
       $cls = $i == $tw ? "selected" : "";
       echo "<option value='$i' $cls>$name $i</option>";
       $i++;
@@ -73,7 +74,7 @@ class View {
     echo $editor;
   }
 
-  public function row($km, $ach_all, $level){
+  public function row($model, $ach_all, $level){
     switch($level){
       case 1:
         $class = "red accent-4 white-text";
@@ -92,14 +93,14 @@ class View {
     }
     echo "
           <tr class='$class'>
-            <td class='indent-$level'>".$km->indikator['l_'.$level]."</td>
-            <td class='center-align'>$km->tahun</td>";
-      if($level < $km->len){
+            <td class='indent-$level'>".$model->indikator['l_'.$level]."</td>
+            <td class='center-align'>$model->tahun</td>";
+      if($level < $model->len){
         echo "
             <td class='center-align'>-</td>";
       } else {
         echo "
-            <td class='center-align'>$km->satuan</td>";
+            <td class='center-align'>$model->satuan</td>";
       }
       for($t = 1; $t <= $this->count; $t++){
         if($ach_all['tw'.$t]['bobot'] < 1){
@@ -110,25 +111,25 @@ class View {
           echo "
             <td class='hides center-align $t'>".$ach_all['tw'.$t]['bobot']."</td>";
         }
-        if($level < $km->len){
+        if($level < $model->len){
           echo "
             <td class='hides center-align $t'>-</td>
             <td class='hides center-align $t'>-</td>";
         } else {
           echo "
-            <td class='hides center-align $t'>".$km->target['tw'.$t]."</td>
-            <td class='hides center-align $t'>".$km->realisasi['tw'.$t]." <br><span>";
-          echo ($this->user != USER) ? $this->showEditor($km->id, $t, $km->status['tw'.$t]) : "";
+            <td class='hides center-align $t'>".$model->target['tw'.$t]."</td>
+            <td class='hides center-align $t'>".$model->realisasi['tw'.$t]." <br><span>";
+          echo ($this->user != USER) ? $this->showEditor($model->id, $t, $model->status['tw'.$t]) : "";
           echo "  
             </span></td>";
-            $this->editor($km->id, $t);
+            $this->editor($model->id, $t);
         }
         echo "
             <td class='hides center-align $t'>".rounds($ach_all['tw'.$t]['ach_show']*100)." %</td>";
-        if($level == $km->len && $km->evid['tw'.$t] != ""){
+        if($level == $model->len && $model->evid['tw'.$t] != ""){
           echo "
             <td class='hides center-align $t'>
-              <a class='btn-floating btn-small blue' href='process.php?type=evid&id=$km->id&count=$t'>
+              <a class='btn-floating btn-small blue' href='process.php?type=evid&id=$model->id&count=$t'>
                 <i class='small material-icons'>library_books</i>
               </a>
             </td>";
@@ -139,37 +140,6 @@ class View {
       }
       echo "       
           </tr>";
-  }
-
-  public function sub($parent, $plevel){
-    $level = $plevel+1;
-    $Q = "SELECT DISTINCT l_$level FROM km WHERE `l_$plevel` = '$parent'";
-    if ($this->unit != null) $Q .= " AND `unit` = '$this->unit'";
-    $rows = $this->mysqli->query($Q);
-    $hitung = new HitungKM($this->count);
-    while($row = $rows->fetch_array()){
-      $km2 = new KM($row['l_'.$level], $level, $this->count);
-      $ach_all = $hitung->hitung($km2, $level, $this->unit);
-      $this->row($km2, $ach_all, $level);
-      if($level < $km2->len){
-        $this->sub($km2->indikator['l_'.$level], $level);
-      }
-    }
-  }
-
-  public function editor($id, $t){
-    echo "
-    <div class='modal-editor-$id-$t modal small-modal' id='modal-$id-$t'>
-      <div class='modal-content'>
-        <form action='process.php?&type=updatekm&id=$id&t=$t' method='post'>
-        <input type='text' Placeholder='Realisasi TW $t' name='real'/>
-        <input type='file' Placeholder='Evidence TW $t' name='evid'/>
-      </div>
-      <div class='modal-footer'>
-        <input type='submit' class='btn blue'>
-        </form>
-      </div>
-    </div>";
   }
 }
 ?>

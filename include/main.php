@@ -1,10 +1,18 @@
+<?php
+require_once("modules/model/KM.php");
+require_once("modules/HitungKM.php");
+require_once("modules/ViewKM.php");
+?>
 <div class='km'>
   <div class='row'>
     <div class='input-field col s3 offset-s9'>
       <select id='tw'>
         <option value='' disabled>Pilih TW</option>
         <?php
-        $view->setFilter(4, "Triwulan");
+        $count = 4;
+        $view = new ViewKM($session['user_level'], $session['unit'], $count);
+        $view->setCount($count);
+        $view->setFilter("Triwulan");
         ?>
       </select>
     </div>
@@ -52,14 +60,14 @@ $unit = null;
   $Q = "SELECT DISTINCT l_1 FROM km";
   $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
   $rows = $mysqli->query($Q);
-  $hitung = new HitungKM();
+  $hitung = new HitungKM($count);
 
   // setting up user to all since we have set user/unit == session in the very beginning
   $view->setUser(USER); 
   $view->setUnit(null);
 
   while($row = $rows->fetch_array()){
-    $km = new KM($row['l_1'], 1);
+    $km = new KM($row['l_1'], 1, $count);
     $level = 1;
     $ach_all = $hitung->hitung($km, 1, null);
     $view->row($km, $ach_all, $level);
