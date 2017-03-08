@@ -1,5 +1,5 @@
 <?php
-require_once("modules/model/Process.php");
+require_once("modules/Process.php");
 require_once("modules/config.php");
 
 $id = $_GET['id'];
