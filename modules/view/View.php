@@ -7,6 +7,7 @@ class View {
   protected $mysqli;
   protected $uri;
   protected $count;
+  protected $statusType;
 
   function __construct($user, $unit, $count){
     $this->user = $user;
@@ -36,14 +37,14 @@ class View {
       $cls = $i == $tw ? "selected" : "";
       echo "<option value='$i' $cls>$name $i</option>";
       $i++;
-      }
+    }
   }
 
   function setUnit($unit){
     $this->unit = $unit;
   }
 
-  public function showEditor($id, $t, $stt){
+  public function showEditor($model, $t, $stt){
     $approved_stt = "disabled";
     $rejected_stt = "disabled";
 
@@ -59,18 +60,23 @@ class View {
     $editor = "";
     switch($this->user){
       case ADMIN_UNIT:
-        $editor = "<a class='$approved_stt modal-trigger btn-floating btn-small blue darken-3' data-id='$id' data-count='$t'>
+        $editor = "<a class='$approved_stt modal-trigger btn-floating btn-small blue darken-3' data-id='$model->id' data-count='$t'>
                     <i class='small material-icons'>edit</i>
                   </a>";
         break;
       case ADMIN_SM:
-        $editor = "<a class='$approved_stt btn-floating btn-small green ' href='process.php?type=status&stt=".STATUS_APPROVED."&id=$id&count=$t'>
+        $editor = "<a class='$approved_stt btn-floating btn-small green ' href='process.php?type=$this->statusType&stt=".STATUS_APPROVED."&id=$model->id&t=$t'>
                     <i class='small material-icons'>done</i>
                   </a> 
-                  <a class='$rejected_stt btn-floating btn-small red darken-3' href='process.php?type=status&stt=".STATUS_REJECTED."&id=$id&count=$t'>
+                  <a class='$rejected_stt btn-floating btn-small red darken-3' href='process.php?type=$this->statusType&stt=".STATUS_REJECTED."&id=$model->id&t=$t'>
                     <i class='small material-icons'>close</i>
                   </a>";
         break;
+    }
+    if($model->evid[$t] != ""){
+      $editor .= " <a class='btn-floating btn-small blue' href='process.php?type=evid&id=$model->id&count=$t'>
+                    <i class='small material-icons'>library_books</i>
+                  </a>";
     }
     echo $editor;
   }
@@ -104,13 +110,13 @@ class View {
             <td class='center-align'>$model->satuan</td>";
       }
       for($t = 1; $t <= $this->count; $t++){
-        if($ach_all['tw'.$t]['bobot'] < 1){
+        if($ach_all[$t]['bobot'] < 1){
           echo "
             <td class='hides center-align $t'> - </td>"; // clean UI
         }
         else {
           echo "
-            <td class='hides center-align $t'>".$ach_all['tw'.$t]['bobot']."</td>";
+            <td class='hides center-align $t'>".$ach_all[$t]['bobot']."</td>";
         }
         if($level < $model->len){
           echo "
@@ -118,22 +124,19 @@ class View {
             <td class='hides center-align $t'>-</td>";
         } else {
           echo "
-            <td class='hides center-align $t'>".$model->target['tw'.$t]."</td>
-            <td class='hides center-align $t'>".$model->realisasi['tw'.$t]." <br><span>";
-          echo ($this->user != USER) ? $this->showEditor($model->id, $t, $model->status['tw'.$t]) : "";
-          echo "  
-            </span></td>";
+            <td class='hides center-align $t'>".$model->target[$t]."</td>
+            <td class='hides center-align $t'>".$model->realisasi[$t]."</td>";
             $this->editor($model->id, $t);
         }
         echo "
-            <td class='hides center-align $t'>".rounds($ach_all['tw'.$t]['ach_show']*100)." %</td>";
-        if($level == $model->len && $model->evid['tw'.$t] != ""){
+            <td class='hides center-align $t'>".rounds($ach_all[$t]['ach_show']*100)." %</td>";
+        if($level == $model->len){
           echo "
-            <td class='hides center-align $t'>
-              <a class='btn-floating btn-small blue' href='process.php?type=evid&id=$model->id&count=$t'>
-                <i class='small material-icons'>library_books</i>
-              </a>
+            <td class='hides center-align $t'>";
+          echo ($this->user != USER) ? $this->showEditor($model, $t, $model->status[$t]) : "";
+          echo "
             </td>";
+            $this->editor($model->id, $t);
         } else {
            echo "
             <td class='hides center-align $t'> - </td>";

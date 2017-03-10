@@ -13,7 +13,7 @@
   require_once("helper.php");
   require_once("modules/config.php");
 
-  $session['user_level'] = ADMIN_UNIT;
+  $session['user_level'] = ADMIN_SM;
   $session['unit'] = "CCM";
 ?>
 <html>

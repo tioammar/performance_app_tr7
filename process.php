@@ -1,6 +1,7 @@
 <?php
 require_once("modules/Process.php");
 require_once("modules/config.php");
+require_once("modules/Upload.php");
 
 $id = $_GET['id'];
 $t = $_GET['t'];
@@ -16,8 +17,13 @@ if($type == "statuskm"){
 else if($type == "updatekm"){
   $process = new Process($id, $t, "km");
   $real = $_POST['real'];
-  $result = $process->updateReal($real);
-  header("Location: ./?page=admin");
+  $upload = new Upload("evidence/km", "km", $id, $t);
+  $file = $_FILES['evid'];
+  $status = $upload->upload($file);
+  if($status == UPLOAD_OK){
+    $result = $process->updateReal($real);
+    header("Location: ./?page=admin");
+  }
 } 
 
 else if($type == "evidkm"){

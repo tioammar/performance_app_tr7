@@ -1,4 +1,6 @@
 <?php
+require_once("config.php");
+
 class Process {
 
   private $id;
@@ -36,8 +38,16 @@ class Process {
     }
   }
 
+  public function updateEvidence($value){
+    if($this->update($this->id, $this->tw, $value, "evid")){
+      return UPLOAD_OK;
+    } else {
+      return UPLOAD_NOK;
+    }
+  }
+
   public function update($id, $tw, $value, $type){
-    $Q = "UPDATE $this->table SET `".$type."_tw".$tw."` = '$value' WHERE `id` = $id";
+    $Q = "UPDATE $this->table SET `".$type."_".$tw."` = '$value' WHERE `id` = $id";
     $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
     if(!$mysqli->query($Q)){
       return QUERY_FAILED;
@@ -47,7 +57,7 @@ class Process {
   }
 
   private function setNotification($dest, $type){
-
+    
   }
 }
 ?>

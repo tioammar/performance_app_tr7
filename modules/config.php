@@ -15,9 +15,6 @@ define("ADMIN_SM", "adminsm");
 define("ADMIN_BPP", "adminbpp");
 define("USER", "user");
 
-// define("HAS_SUB_LEVEL", "1");
-// define("NO_SUB_LEVEL", "0");
-
 define("ALL_UNIT", "all");
 
 define("STATUS_EDITED", "edited");
@@ -25,10 +22,7 @@ define("STATUS_APPROVED", "approved");
 define("STATUS_RELEASED", "released");
 define("STATUS_REJECTED", "rejected");
 
-// define("LEVEL_1", "1");
-// define("NO_LEVEL_1", "0");
+define("UPLOAD_OK", 1);
+define("UPLOAD_NOK", 0);
 
-function showEditor($km){
-  
-}
 ?>

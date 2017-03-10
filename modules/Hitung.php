@@ -15,10 +15,9 @@ class Hitung {
       $ach_all = $this->hitungSubLevel($model, $level, $unit);
     } else {
       for($i = 1; $i <= $this->count; $i++){
-        $tw = "tw".$i;
-        $bobot = $model->bobot[$tw];
-        $real = $model->realisasi[$tw];
-        $target = $model->target[$tw];
+        $bobot = $model->bobot[$i];
+        $real = $model->realisasi[$i];
+        $target = $model->target[$i];
         if($target == 0){
           $ach_1 = 0;
         } else {
@@ -30,7 +29,7 @@ class Hitung {
         }
         $ach_2 = $ach_1 * $bobot;
         $ach = array('ach_show' => $ach_1, 'ach_sum' => $ach_2, 'bobot' => $bobot);
-        $ach_all[$tw] = $ach;
+        $ach_all[$i] = $ach;
       }
     }
     return $ach_all;
@@ -39,12 +38,11 @@ class Hitung {
   public function subAch($ach_sub_all){
     $ach_all = array();
     for($t = 1; $t <= $this->count; $t++){
-      $tw = "tw".$t;
       $total_bobot = 0;
       $total_ach_sub = 0;
       for($s = 1; $s <= count($ach_sub_all); $s++){
-        $total_bobot = $ach_sub_all['model_'.$s][$tw]['bobot'] + $total_bobot;
-        $total_ach_sub = $ach_sub_all['model_'.$s][$tw]['ach_sum'] + $total_ach_sub;
+        $total_bobot = $ach_sub_all['model_'.$s][$t]['bobot'] + $total_bobot;
+        $total_ach_sub = $ach_sub_all['model_'.$s][$t]['ach_sum'] + $total_ach_sub;
       }
       if($total_ach_sub == 0 && $total_bobot == 0){
         $ach_1 = 0;
@@ -53,7 +51,7 @@ class Hitung {
       }
       $ach_2 = $ach_1 * $total_bobot;
       $ach = array('ach_show' => $ach_1, 'ach_sum' => $ach_2, 'bobot' => $total_bobot);
-      $ach_all[$tw] = $ach;
+      $ach_all[$t] = $ach;
     }
     return $ach_all;
   }

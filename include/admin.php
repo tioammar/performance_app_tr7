@@ -34,22 +34,22 @@ $view->setURI($_SERVER['QUERY_STRING']);
               <td class='hides center-align 1'>Target TW 1</td>
               <td class='hides center-align 1'>Realisai TW 1</td>
               <td class='hides center-align 1'>Ach. TW 1</td>
-              <td class='hides center-align 1'>Data TW 1</td>
+              <td class='hides center-align 1'></td>
               <td class='hides center-align 2'>Bobot TW 2</td>
               <td class='hides center-align 2'>Target TW 2</td>
               <td class='hides center-align 2'>Realisai TW 2</td>
               <td class='hides center-align 2'>Ach. TW 2</td>
-              <td class='hides center-align 2'>Data TW 2</td>
+              <td class='hides center-align 2'></td>
               <td class='hides center-align 3'>Bobot TW 3</td>
               <td class='hides center-align 3'>Target TW 3</td>
               <td class='hides center-align 3'>Realisai TW 3</td>
               <td class='hides center-align 3'>Ach. TW 3</td>
-              <td class='hides center-align 3'>Data TW 3</td>
+              <td class='hides center-align 3'></td>
               <td class='hides center-align 4'>Bobot TW 4</td>
               <td class='hides center-align 4'>Target TW 4</td>
               <td class='hides center-align 4'>Realisai TW 4</td>
               <td class='hides center-align 4'>Ach. TW 4</td>
-              <td class='hides center-align 4'>Data TW 4</td>
+              <td class='hides center-align 4'></td>
             </tr>
           </thead>
           <tbody>";

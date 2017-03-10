@@ -31,18 +31,30 @@ class Base {
       $i = 1;
       while($i <= $this->count){
         $this->indikator['l_'.$i] = $r['l_'.$i];
-        $this->bobot['tw'.$i] = $r['bobot_tw'.$i];
-        $this->target['tw'.$i] = $r['tar_tw'.$i];
-        $this->realisasi['tw'.$i] = $r['real_tw'.$i];
-        $this->status['tw'.$i] = $r['stt_tw'.$i];
-        $this->evid['tw'.$i] = $r['evid_tw'.$i];
+        $this->bobot[$i] = $r['bobot_'.$i];
+        $this->target[$i] = $r['tar_'.$i];
+        $this->realisasi[$i] = $r['real_'.$i];
+        $this->status[$i] = $r['stt_'.$i];
+        $this->evid[$i] = $r['evid_'.$i];
         $i++;
       }
       $this->level = $level;
       $this->type = $r['type'];
-      $this->len = $r['len'];
+      $this->len = $this->len();
     }
     return $this;
+  }
+
+  function len(){
+    $i = 1;
+    $l = 0;
+    while($i <= 4){
+      if($this->indikator['l_'.$i] != ""){
+        $l++;
+      }
+      $i++;
+    }
+    return $l;
   }
 }
 ?>
