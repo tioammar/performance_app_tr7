@@ -4,19 +4,15 @@ require_once("Process.php");
 
 class Upload {
 
-  protected $id;
-  protected $t;
   protected $uploadDir;
   protected $status = 1;
   protected $file;
   protected $uploadFile;
-  protected $table;
+  protected $process;
 
-  function __construct($dir, $table, $id, $t){
+  function __construct($dir, $process){
     $this->uploadDir = $dir;
-    $this->table = $table;
-    $this->id = $id;
-    $this->t = $t;
+    $this->process = $process;
   }
 
   public function upload($file){
@@ -27,8 +23,7 @@ class Upload {
     if($status == UPLOAD_OK){
       $uploadstt = move_uploaded_file($this->file['tmp_name'], $this->uploadFile);
       if($uploadstt){
-        $update = new Process($this->id, $this->t, $this->table);
-        if($update->updateEvidence($this->uploadFile) == UPLOAD_OK){
+        if($this->process->updateEvidence($this->uploadFile) == UPLOAD_OK){
           return UPLOAD_OK;
         }
       } else {

@@ -25,4 +25,8 @@ define("STATUS_REJECTED", "rejected");
 define("UPLOAD_OK", 1);
 define("UPLOAD_NOK", 0);
 
+define("NOT_REGISTERED", 0);
+define("WRONG_PASSWORD", 1);
+define("NOT_CONNECTED", 2);
+
 ?>

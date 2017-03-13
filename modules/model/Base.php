@@ -14,8 +14,8 @@ class Base {
   public $level;
   public $type;
   public $len;
-  public $table;
-  public $count;
+  protected $table;
+  protected $count;
 
   
   function __construct($indikator, $level){
@@ -29,6 +29,8 @@ class Base {
     if($r = $row->fetch_array()){
       $this->id = $r['id'];
       $i = 1;
+      $this->tahun = $r['tahun'];
+      $this->satuan = $r['satuan'];
       while($i <= $this->count){
         $this->indikator['l_'.$i] = $r['l_'.$i];
         $this->bobot[$i] = $r['bobot_'.$i];

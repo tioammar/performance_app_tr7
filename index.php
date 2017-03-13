@@ -1,10 +1,19 @@
 <!doctype html>
 <?php
-  if(isset($_GET['page'])){
-    $page = $_GET['page'];
+  session_start();
+  $session = $_SESSION;
+
+  if(isset($session['nik'])){
+    if(isset($_GET['page'])){
+      $page = $_GET['page'];
+    } else {
+      $page = "main";
+    }
   } else {
-    $page = "main";
+    $page = 'login';
   }
+  // $json = json_encode($_SESSION);
+  // echo $json;
   // $units = array("CCM", "RWS", "EGBIS", "EnD", "RNO", "ROC", "MSO", "BPP", "PCF", "GA", "HC");
   // $revenue = array("Consumer", "Wholesale", "EGBIS");
   // $assurance = array("SLG", "GAUL", "Q GGN");
@@ -12,9 +21,6 @@
 
   require_once("helper.php");
   require_once("modules/config.php");
-
-  $session['user_level'] = ADMIN_SM;
-  $session['unit'] = "CCM";
 ?>
 <html>
 <head>
@@ -30,7 +36,7 @@
 </head>
 <header>
   <?php
-  if($page != "main" && $page != "admin"){
+  if($page != "main" && $page != "admin" && $page != "login"){
     echo "<nav class='nav-extended'>";
   } else {
     echo "<nav>";
@@ -38,7 +44,12 @@
   ?>
     <div class="nav-wrapper red">
       <ul class="left">
-        <li><a href="#" data-activates="slide-out" class="side-nav-trig black-text"><i class="material-icons left">menu</i></a></li>
+      <?php
+        if(isset($session['nik'])){
+          echo "
+        <li><a href='#' data-activates='slide-out' class='side-nav-trig black-text'><i class='material-icons left'>menu</i></a></li>";
+        }
+      ?>
         <li><a class="logo" href="?page=main">KM Online TREG 7</a></li>
       </ul>
       <ul class="right">
@@ -46,7 +57,7 @@
         <!--li><img src="img/logo.png" alt="" class="profile"></li-->
       </ul>
       <?php
-      if($page != "main" && $page != "admin"){
+      if($page != "main" && $page != "admin" && $page != "login"){
         include "include/tabs/".$page.".php";
       }
       ?>
@@ -54,21 +65,23 @@
   </nav>
 </header>
 <body>
-  <ul id="slide-out" class="side-nav">
+  <?php
+  if(isset($session['nik'])){
+  echo "
+  <ul id='slide-out' class='side-nav'>
     <li>
-      <div class="userView">
-        <div class="background">
-          <img src="img/office.jpg">
+      <div class='userView'>
+        <div class='background'>
+          <img src='img/office.jpg'>
         </div>
-        <a href="#!user"><img class="circle" src="img/profile.jpg"></a>
-        <a href="#!name"><span class="white-text name">Aditya Amirullah</span></a>
-        <a href="#!email"><span class="white-text email">920153</span></a>
+        <a href='#!user'><img class='circle' src='http://pwb-esshr.aon.telkom.co.id/index.php?r=pwbPhoto/profilePhoto&nik=920153&t=1457059388'></a>
+        <a href='#!name'><span class='white-text name'>Aditya Amirullah</span></a>
+        <a href='#!email'><span class='white-text email'>920153</span></a>
       </div>
     </li>
-    <li><a href="?page=main">Beranda</a></li>
-    <?php 
-    if($session['user_level'] != USER){
-      switch($session['user_level']){
+    <li><a href='?page=main'>Beranda</a></li>";
+    if($session['level'] != USER){
+      switch($session['level']){
         case ADMIN_SM:
           $link = "?page=admin";
           break;
@@ -83,12 +96,14 @@
       }
       echo "
     <li><a href='$link'>Admin</a></li>
-    <li><a href='?page=notifikasi'>Notifikasi</a></li>";
+    <li><a href='?page=notifikasi'>Notifikasi</a></li>
+    <li><div class='divider'></div></li>";
     }
-    ?>
-    <li><div class="divider"></div></li>
-    <li><a href="signout.php">Keluar</a></li>
-  </ul>
+    echo "
+    <li><a href='process.php?type=logout'>Keluar</a></li>
+  </ul>";
+  }
+  ?>
   <!-- main start here -->
   <div class="main">
     <!-- container start here -->

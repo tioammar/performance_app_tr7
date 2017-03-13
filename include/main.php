@@ -23,34 +23,9 @@ $unit = null;
   <div id='tr7' class='card white z-depth-2 contain'>
       <div class='card-content black-text'>
       <span class='card-title'>KM Telkom Regional VII</span>
-        <table class='bordered'>
-          <thead>
-            <tr class='black white-text center-align'>
-              <td class='center-align'>Parameter/Indikator</td>
-              <td class='center-align'>Tahun</td>
-              <td class='center-align'>Satuan</td>
-              <td class='hides center-align 1'>Bobot TW 1</td>
-              <td class='hides center-align 1'>Target TW 1</td>
-              <td class='hides center-align 1'>Realisai TW 1</td>
-              <td class='hides center-align 1'>Ach. TW 1</td>
-              <td class='hides center-align 1'></td>
-              <td class='hides center-align 2'>Bobot TW 2</td>
-              <td class='hides center-align 2'>Target TW 2</td>
-              <td class='hides center-align 2'>Realisai TW 2</td>
-              <td class='hides center-align 2'>Ach. TW 2</td>
-              <td class='hides center-align 2'></td>
-              <td class='hides center-align 3'>Bobot TW 3</td>
-              <td class='hides center-align 3'>Target TW 3</td>
-              <td class='hides center-align 3'>Realisai TW 3</td>
-              <td class='hides center-align 3'>Ach. TW 3</td>
-              <td class='hides center-align 3'></td>
-              <td class='hides center-align 4'>Bobot TW 4</td>
-              <td class='hides center-align 4'>Target TW 4</td>
-              <td class='hides center-align 4'>Realisai TW 4</td>
-              <td class='hides center-align 4'>Ach. TW 4</td>
-              <td class='hides center-align 4'></td>
-            </tr>
-          </thead>
+        <table class='bordered'>";
+  $view->setHeader();      
+  echo "
           <tbody>";
   $Q = "SELECT DISTINCT l_1 FROM km";
   $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);

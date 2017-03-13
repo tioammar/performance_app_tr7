@@ -8,6 +8,8 @@ class View {
   protected $uri;
   protected $count;
   protected $statusType;
+  protected $useBobot;
+  protected $admin;
 
   function __construct($user, $unit, $count){
     $this->user = $user;
@@ -58,20 +60,22 @@ class View {
     }
 
     $editor = "";
-    switch($this->user){
-      case ADMIN_UNIT:
-        $editor = "<a class='$approved_stt modal-trigger btn-floating btn-small blue darken-3' data-id='$model->id' data-count='$t'>
-                    <i class='small material-icons'>edit</i>
-                  </a>";
-        break;
-      case ADMIN_SM:
-        $editor = "<a class='$approved_stt btn-floating btn-small green ' href='process.php?type=$this->statusType&stt=".STATUS_APPROVED."&id=$model->id&t=$t'>
-                    <i class='small material-icons'>done</i>
-                  </a> 
-                  <a class='$rejected_stt btn-floating btn-small red darken-3' href='process.php?type=$this->statusType&stt=".STATUS_REJECTED."&id=$model->id&t=$t'>
-                    <i class='small material-icons'>close</i>
-                  </a>";
-        break;
+    if($this->user != USER){
+      switch($this->user){
+        case ADMIN_UNIT:
+          $editor = "<a class='$approved_stt modal-trigger btn-floating btn-small blue darken-3' data-id='$model->id' data-count='$t'>
+                      <i class='small material-icons'>edit</i>
+                    </a>";
+          break;
+        case ADMIN_SM:
+          $editor = "<a class='$approved_stt btn-floating btn-small green ' href='process.php?type=$this->statusType&stt=".STATUS_APPROVED."&id=$model->id&t=$t'>
+                      <i class='small material-icons'>done</i>
+                    </a> 
+                    <a class='$rejected_stt btn-floating btn-small red darken-3' href='process.php?type=$this->statusType&stt=".STATUS_REJECTED."&id=$model->id&t=$t'>
+                      <i class='small material-icons'>close</i>
+                    </a>";
+          break;
+      }
     }
     if($model->evid[$t] != ""){
       $editor .= " <a class='btn-floating btn-small blue' href='process.php?type=evid&id=$model->id&count=$t'>
@@ -110,13 +114,15 @@ class View {
             <td class='center-align'>$model->satuan</td>";
       }
       for($t = 1; $t <= $this->count; $t++){
-        if($ach_all[$t]['bobot'] < 1){
-          echo "
-            <td class='hides center-align $t'> - </td>"; // clean UI
-        }
-        else {
-          echo "
-            <td class='hides center-align $t'>".$ach_all[$t]['bobot']."</td>";
+        if($this->useBobot){
+          if($ach_all[$t]['bobot'] < 1){
+            echo "
+              <td class='hides center-align $t'> - </td>"; // clean UI
+          }
+          else {
+            echo "
+              <td class='hides center-align $t'>".$ach_all[$t]['bobot']."</td>";
+          }
         }
         if($level < $model->len){
           echo "
@@ -133,7 +139,7 @@ class View {
         if($level == $model->len){
           echo "
             <td class='hides center-align $t'>";
-          echo ($this->user != USER) ? $this->showEditor($model, $t, $model->status[$t]) : "";
+          $this->showEditor($model, $t, $model->status[$t]);
           echo "
             </td>";
             $this->editor($model->id, $t);
@@ -160,6 +166,29 @@ class View {
         $this->sub($model_sub, $level);
       }
     }
+  }
+
+  public function setHeader(){
+    echo "
+          <thead>
+            <tr class='black white-text center-align'>
+              <td class='center-align'>Parameter/Indikator</td>
+              <td class='center-align'>Tahun</td>
+              <td class='center-align'>Satuan</td>";
+    $i = 1;
+    while($i <= 4){
+      if($this->useBobot){
+        echo "<td class='hides center-align $i'>Bobot TW $i</td>";
+      }
+      echo "
+              <td class='hides center-align $i'>Target TW $i</td>
+              <td class='hides center-align $i'>Realisasi TW $i</td>
+              <td class='hides center-align $i'>Ach. TW $i</td>
+              <td class='hides center-align $i'> </td>";
+      $i++;
+    }
+    echo " </tr>
+          </thead>";
   }
 }
 ?>

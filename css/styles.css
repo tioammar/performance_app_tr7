@@ -110,8 +110,8 @@ p.revenue-main {
 }
 
 .login {
-  padding: 20px;
-  width: 50%;
+  padding: 30px 30px 50px 30px;
+  width: 40%;
   margin: 35px auto;
 }
 
@@ -125,6 +125,10 @@ p.revenue-main {
 
 .km {
   font-size: 14px;
+}
+
+.login-logo {
+  height: 70px;
 }
 
 .profile {
