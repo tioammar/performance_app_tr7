@@ -1,12 +1,14 @@
 <?php
-session_start();
 require_once("modules/Process.php");
 require_once("modules/config.php");
 require_once("modules/Upload.php");
+require_once("modules/Login.php");
 
-$id = $_GET['id'];
-$t = $_GET['t'];
 $type = $_GET['type'];
+if(isset($_GET['id']) && isset($_GET['t'])){
+  $id = $_GET['id'];
+  $t = $_GET['t'];
+}
 
 if($type == "statuskm"){
   $process = new Process($id, $t, "km");
@@ -28,9 +30,11 @@ else if($type == "updatekm"){
 } 
 
 else if($type == "login"){
+  session_start();
   $nik = $_POST['nik'];
   $pass = $_POST['password'];
-  $portal_auth = LDAP_auth($nik, $pass);
+  $login = new Login($nik, $pass);
+  $portal_auth = $login->auth();
   if($portal_auth === 0){
     header("Location:./?page=login&status=".NOT_REGISTERED);
   } else if ($portal_auth === 0.5) {
@@ -38,18 +42,11 @@ else if($type == "login"){
   } else if ($portal_auth === 1){
     header("Location:./?page=login&status=".NOT_CONNECTED);
   } else {
-    $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-    $Q = "SELECT * FROM user WHERE `nik` = '$nik'";
-    $row = $mysqli->query($Q);
-    if($r = $row->fetch_array()){
-      $_SESSION['nik'] = $r['nik'];
-      $_SESSION['name'] = $r['full_name'];
-      $_SESSION['level'] = $r['level'];
-    } else {
-      $_SESSION['nik'] = $nik;
-      $_SESSION['name'] = 'Guest';
-      $_SESSION['level'] = USER;
-    }
+    // create session
+    $user = $login->getUser();
+    $_SESSION['nik'] = $user->nik;
+    $_SESSION['name'] = $user->name;
+    $_SESSION['level'] = $user->level;
     header("Location:./?page=main");
   }
 } 

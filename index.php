@@ -75,8 +75,8 @@
           <img src='img/office.jpg'>
         </div>
         <a href='#!user'><img class='circle' src='http://pwb-esshr.aon.telkom.co.id/index.php?r=pwbPhoto/profilePhoto&nik=920153&t=1457059388'></a>
-        <a href='#!name'><span class='white-text name'>Aditya Amirullah</span></a>
-        <a href='#!email'><span class='white-text email'>920153</span></a>
+        <a href='#!name'><span class='white-text name'>".$session['name']."</span></a>
+        <a href='#!email'><span class='white-text email'>".$session['nik']."</span></a>
       </div>
     </li>
     <li><a href='?page=main'>Beranda</a></li>";

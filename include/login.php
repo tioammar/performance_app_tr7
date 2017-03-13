@@ -1,3 +1,8 @@
+<?php
+  if(isset($session['nik'])){
+    header("Location:./?page=main");
+  }
+?>
 <div class='card login'>
   <div class='center-align'><img src='img/woow-2.png' class='login-logo center-align'></div>
   <form action='process.php?type=login' method='post'>
@@ -5,9 +10,20 @@
     <input id='password' type='password' name='password'  placeholder='Password' autocomplete='new-password'>
   <?php
   if(isset($_GET['status'])){
-  echo "
+    switch($_GET['status']){
+      case NOT_REGISTERED:
+        $message = "NIK Anda Tidak Terdaftar";
+        break;
+      case WRONG_PASSWORD:
+        $message = "Password Yang Anda Masukkan Salah";
+        break;
+      case NOT_CONNECTED:
+        $message = "Tidak Dapat Terkoneksi Ke Server Telkom";
+        break;
+    }
+    echo "
     <div class='chip'>
-      Username atau password salah!
+      $message;
     </div>";
   }
   ?>
