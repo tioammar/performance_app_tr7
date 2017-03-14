@@ -12,7 +12,7 @@ define("QUERY_FAILED", 0);
 
 define("ADMIN_UNIT", "adminunit");
 define("ADMIN_SM", "adminsm");
-define("ADMIN_BPP", "adminbpp");
+define("ADMIN_ALL", "adminall");
 define("USER", "user");
 
 define("ALL_UNIT", "all");
@@ -21,6 +21,7 @@ define("STATUS_EDITED", "edited");
 define("STATUS_APPROVED", "approved");
 define("STATUS_RELEASED", "released");
 define("STATUS_REJECTED", "rejected");
+define("STATUS_NOT_RELEASED", "notreleased");
 
 define("UPLOAD_OK", 1);
 define("UPLOAD_NOK", 0);

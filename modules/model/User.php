@@ -6,6 +6,7 @@ class User {
   public $nik;
   public $name;
   public $level;
+  public $unit;
 
   function __construct($nik){
     $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
@@ -15,10 +16,12 @@ class User {
       $this->nik = $r['nik'];
       $this->name = $r['full_name'];
       $this->level = $r['level'];
+      $this->unit = $r['unit'];
     } else {
       $this->nik = $nik;
       $this->name = 'Guest';
       $this->level = USER;
+      $this->unit = null;
     }
   }
 }

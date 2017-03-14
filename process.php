@@ -11,10 +11,12 @@ if(isset($_GET['id']) && isset($_GET['t'])){
 }
 
 if($type == "statuskm"){
+  session_start();
+  $page = $_SESSION['level'] == ADMIN_ALL ? "adminall" : "admin";
   $process = new Process($id, $t, "km");
   $status = $_GET['stt'];
   $result = $process->updateStatus($status);
-  header("Location: ./?page=admin");
+  header("Location: ./?page=$page");
 } 
 
 else if($type == "updatekm"){
@@ -35,11 +37,11 @@ else if($type == "login"){
   $pass = $_POST['password'];
   $login = new Login($nik, $pass);
   $portal_auth = $login->auth();
-  if($portal_auth === 0){
+  if($portal_auth === NOT_REGISTERED){
     header("Location:./?page=login&status=".NOT_REGISTERED);
-  } else if ($portal_auth === 0.5) {
+  } else if ($portal_auth === WRONG_PASSWORD) {
     header("Location:./?page=login&status=".WRONG_PASSWORD);
-  } else if ($portal_auth === 1){
+  } else if ($portal_auth === NOT_CONNECTED){
     header("Location:./?page=login&status=".NOT_CONNECTED);
   } else {
     // create session
@@ -47,9 +49,21 @@ else if($type == "login"){
     $_SESSION['nik'] = $user->nik;
     $_SESSION['name'] = $user->name;
     $_SESSION['level'] = $user->level;
+    if($user->unit != null){
+      $_SESSION['unit'] = $user->unit;
+    }
     header("Location:./?page=main");
   }
 } 
+
+else if ($type == "logout"){
+  session_start();
+  unset($_SESSION['nik']);
+  unset($_SESSION['name']);
+  unset($_SESSION['level']);
+  session_destroy();
+  header("Location: ./");
+}
 
 else {
   echo "not found";

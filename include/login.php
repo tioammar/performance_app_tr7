@@ -23,7 +23,7 @@
     }
     echo "
     <div class='chip'>
-      $message;
+      $message
     </div>";
   }
   ?>

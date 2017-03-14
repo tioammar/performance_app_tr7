@@ -14,7 +14,7 @@
   }
   // $json = json_encode($_SESSION);
   // echo $json;
-  // $units = array("CCM", "RWS", "EGBIS", "EnD", "RNO", "ROC", "MSO", "BPP", "PCF", "GA", "HC");
+  $units = array("CCM", "RWS", "EGBIS", "EnD", "RNO", "ROC", "MSO", "BPP", "PCF", "GA", "HC");
   // $revenue = array("Consumer", "Wholesale", "EGBIS");
   // $assurance = array("SLG", "GAUL", "Q GGN");
   // $cat = array("Makasar", "Sulselbar", "Sulteng", "Gorontalo", "Sulut & Malut", "Sultra", "Maluku", "Papua Barat", "Papua");
@@ -88,7 +88,7 @@
         case ADMIN_UNIT:
           $link = "?page=admin";
           break;          
-        case ADMIN_BPP:
+        case ADMIN_ALL:
           $link = "?page=adminall";
           break;
         default:

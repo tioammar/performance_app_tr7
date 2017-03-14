@@ -1,4 +1,8 @@
-<?php
+<?php  
+if($session['level'] != ADMIN_ALL){
+  header("Location:./?page=main");
+}
+
 require_once("modules/model/KM.php");
 require_once("modules/Hitung.php");
 require_once("modules/view/ViewKM.php");
@@ -10,7 +14,7 @@ require_once("modules/view/ViewKM.php");
         <option value='' disabled>Pilih TW</option>
         <?php
         $count = 4;
-        $view = new ViewKM($session['level'], $session['unit'], $count);
+        $view = new ViewKM(ADMIN_ALL, null, $count);
         $view->setCount($count);
         $view->setFilter("Triwulan");
         ?>
@@ -18,34 +22,38 @@ require_once("modules/view/ViewKM.php");
     </div>
   </div>
 <?php
-$unit = $session['unit'];
+foreach($units as $unit_name){
 $view->setURI($_SERVER['QUERY_STRING']);
   echo "
-  <div id='tr7' class='card white z-depth-2 contain'>
+  <div id='$unit_name' class='card white z-depth-2 contain'>
       <div class='card-content black-text'>
-      <span class='card-title'>KM $unit 2017</span>
-        <table class='bordered'>";
+      <span class='card-title'>KM $unit_name 2017</span>
+        <table class='bordered'>"; 
+  $view->setUnit($unit_name);
   $view->setHeader();
   echo "
           <tbody>";
-  $Q = "SELECT DISTINCT l_1 FROM km WHERE `unit` = '$unit'";
+  $Q = "SELECT DISTINCT l_1 FROM km WHERE `unit` = '$unit_name'";
   $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
   $rows = $mysqli->query($Q);
   $hitung = new Hitung($count);
   while($row = $rows->fetch_array()){
     $km = new KM($row['l_1'], 1);
     $level = 1;
-    $ach_all = $hitung->hitung($km, 1, $unit);
+    $ach_all = $hitung->hitung($km, 1, $unit_name);
     $view->row($km, $ach_all, $level);
     if($level < $km->len){
       $view->sub($km, $level);
     }
   }
-?>
+  echo "
         </tbody>
       </table>
     </div>
-  </div>
+  </div>";
+}
+?>
+
 <script>
 $('#tw').on("change", function() {
     hideAll();

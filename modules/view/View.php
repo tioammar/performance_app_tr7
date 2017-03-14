@@ -49,14 +49,22 @@ class View {
   public function showEditor($model, $t, $stt){
     $approved_stt = "disabled";
     $rejected_stt = "disabled";
+    $released_stt = "disabled";
+    $notreleased_stt = "disabled";
 
     if($stt == STATUS_EDITED){
       $approved_stt = ""; // enable all button
       $rejected_stt = "";
     } else if($stt == STATUS_APPROVED){
       $rejected_stt = ""; // disable approved button
+      $released_stt = "";
+      $notreleased_stt = "";
     } else if($stt == STATUS_REJECTED){
       $approved_stt = ""; // disable rejected button
+    } else if($stt == STATUS_RELEASED){
+      $notreleased_stt = "";
+    } else if($stt == STATUS_NOT_RELEASED){
+      $released_stt = "";
     }
 
     $editor = "";
@@ -72,6 +80,14 @@ class View {
                       <i class='small material-icons'>done</i>
                     </a> 
                     <a class='$rejected_stt btn-floating btn-small red darken-3' href='process.php?type=$this->statusType&stt=".STATUS_REJECTED."&id=$model->id&t=$t'>
+                      <i class='small material-icons'>close</i>
+                    </a>";    
+          break;    
+        case ADMIN_ALL:
+          $editor = "<a class='$released_stt btn-floating btn-small green ' href='process.php?type=$this->statusType&stt=".STATUS_RELEASED."&id=$model->id&t=$t'>
+                      <i class='small material-icons'>done</i>
+                    </a> 
+                    <a class='$notreleased_stt btn-floating btn-small red darken-3' href='process.php?type=$this->statusType&stt=".STATUS_NOT_RELEASED."&id=$model->id&t=$t'>
                       <i class='small material-icons'>close</i>
                     </a>";
           break;
