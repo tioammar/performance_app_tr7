@@ -10,8 +10,7 @@ require_once("modules/view/ViewKM.php");
         <option value='' disabled>Pilih TW</option>
         <?php
         $count = 4;
-        $view = new ViewKM($session['user_level'], $session['unit'], $count);
-        $view->setCount($count);
+        $view = new ViewKM($session['level'], $session['unit'], $count);
         $view->setFilter("Triwulan");
         ?>
       </select>
@@ -36,7 +35,7 @@ $unit = null;
   $view->setUnit(null);
 
   while($row = $rows->fetch_array()){
-    $km = new KM($row['l_1'], 1);
+    $km = KM::load($row['l_1'], 1);
     $level = 1;
     $ach_all = $hitung->hitung($km, 1, null);
     $view->row($km, $ach_all, $level);

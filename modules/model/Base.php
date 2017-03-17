@@ -14,18 +14,26 @@ class Base {
   public $level;
   public $type;
   public $len;
-  protected $table;
+  public $table;
   protected $count;
 
-  
-  function __construct($indikator, $level){
-    $this->make($indikator, $level);
-  }
-
-  function make($indikator, $level){
+  public function make($indikator, $level){
     $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
     $Q = "SELECT * FROM $this->table WHERE `l_$level` = '$indikator'";
     $row = $mysqli->query($Q);
+    $this->fill($row, $level);
+    return $this;
+  }
+
+  public function makeById($id){
+    $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+    $Q = "SELECT * FROM $this->table WHERE `id` = '$id'";
+    $row = $mysqli->query($Q);
+    $this->fill($row, 0);
+    return $this;
+  }
+
+  private function fill($row, $level){
     if($r = $row->fetch_array()){
       $this->id = $r['id'];
       $i = 1;
@@ -44,7 +52,6 @@ class Base {
       $this->type = $r['type'];
       $this->len = $this->len();
     }
-    return $this;
   }
 
   function len(){

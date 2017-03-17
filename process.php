@@ -13,14 +13,15 @@ if(isset($_GET['id']) && isset($_GET['t'])){
 if($type == "statuskm"){
   session_start();
   $page = $_SESSION['level'] == ADMIN_ALL ? "adminall" : "admin";
-  $process = new Process($id, $t, "km");
+  $process = new Process($id, $t, "km", $_SESSION['unit']);
   $status = $_GET['stt'];
   $result = $process->updateStatus($status);
   header("Location: ./?page=$page");
 } 
 
 else if($type == "updatekm"){
-  $process = new Process($id, $t, "km");
+  session_start();
+  $process = new Process($id, $t, "km", $_SESSION['unit']);
   $real = $_POST['real'];
   $upload = new Upload("evidence/km/", $process);
   $file = $_FILES['evid'];

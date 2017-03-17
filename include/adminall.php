@@ -15,7 +15,6 @@ require_once("modules/view/ViewKM.php");
         <?php
         $count = 4;
         $view = new ViewKM(ADMIN_ALL, null, $count);
-        $view->setCount($count);
         $view->setFilter("Triwulan");
         ?>
       </select>
@@ -23,7 +22,6 @@ require_once("modules/view/ViewKM.php");
   </div>
 <?php
 foreach($units as $unit_name){
-$view->setURI($_SERVER['QUERY_STRING']);
   echo "
   <div id='$unit_name' class='card white z-depth-2 contain'>
       <div class='card-content black-text'>
@@ -38,7 +36,7 @@ $view->setURI($_SERVER['QUERY_STRING']);
   $rows = $mysqli->query($Q);
   $hitung = new Hitung($count);
   while($row = $rows->fetch_array()){
-    $km = new KM($row['l_1'], 1);
+    $km = KM::load($row['l_1'], 1);
     $level = 1;
     $ach_all = $hitung->hitung($km, 1, $unit_name);
     $view->row($km, $ach_all, $level);

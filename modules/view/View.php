@@ -21,22 +21,18 @@ class View {
   function setUser($user){
     $this->user = $user;
   }
-  
-  function setURI($uri){
-    $this->uri = $uri;
-  }
-
-  function setCount($count){
-    $this->count = $count;
-  }
 
   function setFilter($name){
     $month = date('m', time());
     $quarter = ceil($month/3) - 1;
-    $tw = $quarter == 0 ? 1 : $quarter;
+    if($this->count < 12){
+      $t = $quarter == 0 ? 1 : $quarter;
+    } else {
+      $t = $month;
+    }
     $i = 1;
     while($i <= $this->count){
-      $cls = $i == $tw ? "selected" : "";
+      $cls = $i == $t ? "selected" : "";
       echo "<option value='$i' $cls>$name $i</option>";
       $i++;
     }

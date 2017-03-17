@@ -1,5 +1,6 @@
 <?php
 require_once("config.php");
+require_once("model/Notification.php");
 
 class Process {
 
@@ -7,10 +8,11 @@ class Process {
   public $t;
   public $table;
 
-  function __construct($id, $t, $table){
+  function __construct($id, $t, $table, $unit){
      $this->id = $id;
      $this->t = $t;
      $this->table = $table;
+     $this->unit = $unit;
   }
 
   function updateReal($value){
@@ -21,19 +23,10 @@ class Process {
 
   public function updateStatus($value){
     if($this->update($this->id, $this->t, $value, "stt") == QUERY_SUCCESS){
-      switch($value){
-        case STATUS_APPROVED:
-          $dest = ADMIN_BPP;
-          break;
-        case STATUS_REJECTED:
-          $dest = ADMIN_UNIT;
-          break;
-        case STATUS_EDITED:
-          $dest = ADMIN_SM;
-          break;
-      }
       if($value != STATUS_RELEASED){
-        $this->setNotification($dest, "Status");
+        $notif = new Notification($this->unit, "km");
+        $notif->setMessage($value, $this->id, $tw);
+        $notif->send();
       }
     }
   }
@@ -56,7 +49,7 @@ class Process {
     }
   }
 
-  private function setNotification($dest, $type){
+  private function setNotification($subj, $dest){
     
   }
 }
