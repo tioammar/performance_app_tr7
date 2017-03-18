@@ -6,15 +6,15 @@ class View {
   protected $unit;
   protected $mysqli;
   protected $uri;
-  protected $count;
+  public $count;
   protected $statusType;
+  protected $updateType;
   protected $useBobot;
   protected $admin;
 
-  function __construct($user, $unit, $count){
+  function __construct($user, $unit){
     $this->user = $user;
     $this->unit = $unit;
-    $this->count = $count;
     $this->mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME); 
   }
 
@@ -178,6 +178,21 @@ class View {
         $this->sub($model_sub, $level);
       }
     }
+  }
+
+  public function editor($id, $t){
+    echo "
+    <div class='modal-editor-$id-$t modal small-modal' id='modal-$id-$t'>
+      <div class='modal-content'>
+        <form action='process.php?&type=$this->updateType&id=$id&t=$t' method='post' enctype='multipart/form-data'>
+          <input type='text' Placeholder='Realisasi TW $t' name='real'/>
+          <input type='file' Placeholder='Evidence TW $t' name='evid'/>
+      </div>
+      <div class='modal-footer'>
+          <button type='submit' class='btn blue'>Kirim</button>
+        </form>
+      </div>
+    </div>";
   }
 
   public function setHeader(){

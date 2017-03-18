@@ -13,8 +13,7 @@ require_once("modules/view/ViewKM.php");
       <select id='tw'>
         <option value='' disabled>Pilih TW</option>
         <?php
-        $count = 4;
-        $view = new ViewKM(ADMIN_ALL, null, $count);
+        $view = new ViewKM(ADMIN_ALL, null);
         $view->setFilter("Triwulan");
         ?>
       </select>
@@ -34,7 +33,7 @@ foreach($units as $unit_name){
   $Q = "SELECT DISTINCT l_1 FROM km WHERE `unit` = '$unit_name'";
   $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
   $rows = $mysqli->query($Q);
-  $hitung = new Hitung($count);
+  $hitung = new Hitung($view->count);
   while($row = $rows->fetch_array()){
     $km = KM::load($row['l_1'], 1);
     $level = 1;
