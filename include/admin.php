@@ -1,4 +1,7 @@
 <?php
+if($session['level'] == ADMIN_ALL || $session['level'] == USER){
+  header("Location:./?page=main");
+}
 require_once("modules/model/KM.php");
 require_once("modules/Hitung.php");
 require_once("modules/view/ViewKM.php");

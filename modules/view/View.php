@@ -1,4 +1,5 @@
 <?php
+require_once(__DIR__."/../config.php");
 // to use this class , extends and add editor method 
 class View {
 
@@ -16,10 +17,6 @@ class View {
     $this->user = $user;
     $this->unit = $unit;
     $this->mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME); 
-  }
-
-  function setUser($user){
-    $this->user = $user;
   }
 
   function setFilter($name){
@@ -42,7 +39,12 @@ class View {
     $this->unit = $unit;
   }
 
+  function setUser($user){
+    $this->user = $user;
+  }
+
   public function showEditor($model, $t, $stt){
+    $editor_stt = "";
     $approved_stt = "disabled";
     $rejected_stt = "disabled";
     $released_stt = "disabled";
@@ -55,10 +57,13 @@ class View {
       $rejected_stt = ""; // disable approved button
       $released_stt = "";
       $notreleased_stt = "";
+      $editor_stt = "disabled";
     } else if($stt == STATUS_REJECTED){
       $approved_stt = ""; // disable rejected button
+      $editor_stt = "";
     } else if($stt == STATUS_RELEASED){
       $notreleased_stt = "";
+      $editor_stt = "disabled";
     } else if($stt == STATUS_NOT_RELEASED){
       $released_stt = "";
     }
@@ -67,7 +72,7 @@ class View {
     if($this->user != USER){
       switch($this->user){
         case ADMIN_UNIT:
-          $editor = "<a class='$approved_stt modal-trigger btn-floating btn-small blue darken-3' data-id='$model->id' data-count='$t'>
+          $editor = "<a class='$editor_stt modal-trigger btn-floating btn-small blue darken-3' data-id='$model->id' data-count='$t'>
                       <i class='small material-icons'>edit</i>
                     </a>";
           break;
@@ -144,7 +149,10 @@ class View {
           echo "
             <td class='hides center-align $t'>".$model->target[$t]."</td>
             <td class='hides center-align $t'>".$model->realisasi[$t]."</td>";
-            $this->editor($model->id, $t);
+            if($this->user == ADMIN_UNIT){
+              $this->editor($model->id, $t);
+              // TODO test with ADMIN_UNIT level
+            }
         }
         echo "
             <td class='hides center-align $t'>".rounds($ach_all[$t]['ach_show']*100)." %</td>";
@@ -154,7 +162,6 @@ class View {
           $this->showEditor($model, $t, $model->status[$t]);
           echo "
             </td>";
-            $this->editor($model->id, $t);
         } else {
            echo "
             <td class='hides center-align $t'> - </td>";
