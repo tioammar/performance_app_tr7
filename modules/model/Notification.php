@@ -2,8 +2,9 @@
 require_once(__DIR__."/../config.php");
 require_once("Event.php");
 require_once("KM.php");
+require_once("Log.php");
 
-class Notifiation extends Event {
+class Notification extends Event {
 
   protected $table = "notification";
   
@@ -30,13 +31,21 @@ class Notifiation extends Event {
   }
 
   public function send(){
-    $Q = "INSERT INTO $this->table (notiication, subj, dest) VALUE ('$this->message', '$this->subj', '$this->dest')";
+    $log = new Log($this->unit, $this->type);
+    if($log->send($this) == QUERY_SUCCESS){
+      $Q = "INSERT INTO $this->table (notification, subj, dest, type) VALUE ('$this->message', '$this->subj', '$this->dest', '$this->type')";
+      if($this->mysql->query($Q)){
+        return QUERY_SUCCESS;
+      } else return QUERY_FAILED;
+    }
   }
 
   private function build($value, $id, $tw){
     $message = "";
-    $km = KM::loadById($id);
-    $indikator = $km->indikator['l_'.$km->len];
+    if($this->type == "km"){
+      $km = KM::loadById($id);
+      $indikator = $km->indikator['l_'.$km->len];
+    }
     switch($value){
       case STATUS_APPROVED:
         $message = "Realisasi $indikator TW $tw Telah Disetujui";

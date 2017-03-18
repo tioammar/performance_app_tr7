@@ -15,6 +15,7 @@
   // $json = json_encode($_SESSION);
   // echo $json;
   $units = array("CCM", "RWS", "EGBIS", "EnD", "RNO", "ROC", "MSO", "BPP", "PCF", "GA", "HC");
+  $unitsQuad = array("EnD", "RNO", "ROC", "MSO");
   // $revenue = array("Consumer", "Wholesale", "EGBIS");
   // $assurance = array("SLG", "GAUL", "Q GGN");
   // $cat = array("Makasar", "Sulselbar", "Sulteng", "Gorontalo", "Sulut & Malut", "Sultra", "Maluku", "Papua Barat", "Papua");

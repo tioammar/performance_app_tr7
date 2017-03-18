@@ -10,7 +10,7 @@ class Event {
   public $level; // current user level
   protected $mysqli;
   protected $table;
-  protected $type; // KM / QUadrics / Flagging
+  protected $type; // KM / Quad / Flag
 
   function __construct($unit, $type){
     $this->mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
@@ -31,7 +31,7 @@ class Event {
 
   public function getAll($level){
     $ids = array();
-    $Q = "SELECT id FROM $this->table WHERE `unit` = '$this->unit' AND `dest` = '$level' AND 'type' = '$this->type'"; 
+    $Q = "SELECT id FROM $this->table WHERE `unit` = '$this->unit' AND `dest` = '$level' AND `type` = '$this->type'"; 
     $row = $this->mysqli->query($Q);
     while($r = $row->fetch_array()){
       $ids[] = $r['id'];

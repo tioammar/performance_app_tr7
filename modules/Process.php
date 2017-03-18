@@ -17,16 +17,16 @@ class Process {
 
   function updateReal($value){
     if($this->update($this->id, $this->t, $value, "real") == QUERY_SUCCESS){
-      $this->updateStatus(STATUS_EDITED);
+      return $this->updateStatus(STATUS_EDITED);
     }
   }
 
   public function updateStatus($value){
     if($this->update($this->id, $this->t, $value, "stt") == QUERY_SUCCESS){
       if($value != STATUS_RELEASED){
-        $notif = new Notification($this->unit, "km");
-        $notif->setMessage($value, $this->id, $tw);
-        $notif->send();
+        $notif = new Notification($this->unit, $this->table);
+        $notif->setMessage($value, $this->id, $this->t);
+         return $notif->send();
       }
     }
   }
@@ -47,10 +47,6 @@ class Process {
     } else {
       return QUERY_SUCCESS;
     }
-  }
-
-  private function setNotification($subj, $dest){
-    
   }
 }
 ?>

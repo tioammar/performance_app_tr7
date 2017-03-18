@@ -15,8 +15,9 @@ if($type == "statuskm"){
   $page = $_SESSION['level'] == ADMIN_ALL ? "adminall" : "admin";
   $process = new Process($id, $t, "km", $_SESSION['unit']);
   $status = $_GET['stt'];
-  $result = $process->updateStatus($status);
-  header("Location: ./?page=$page");
+  if($process->updateStatus($status) == QUERY_SUCCESS){
+    header("Location: ./?page=$page");
+  } else echo "Update Status Failed";
 } 
 
 else if($type == "updatekm"){
@@ -27,8 +28,9 @@ else if($type == "updatekm"){
   $file = $_FILES['evid'];
   $status = $upload->upload($file);
   if($status == UPLOAD_OK){
-    $result = $process->updateReal($real);
-    header("Location: ./?page=admin");
+    if($result = $process->updateReal($real) == QUERY_SUCCESS){
+      header("Location: ./?page=admin");
+    } else echo "Update Failed";
   }
 } 
 
