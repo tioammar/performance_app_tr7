@@ -29,6 +29,7 @@ class Process {
          return $notif->send();
       }
     }
+    return $this->update($this->id, $this->t, $value, "stt");
   }
 
   public function updateEvidence($value){

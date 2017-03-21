@@ -2,7 +2,7 @@
 require_once(__DIR__."/../config.php");
 require_once("Event.php");
 require_once("KM.php");
-require_once("Log.php");
+require_once("LogInterface.php");
 
 class Notification extends Event {
 
@@ -31,10 +31,10 @@ class Notification extends Event {
   }
 
   public function send(){
-    $log = new Log($this->unit, $this->type);
+    $log = new LogInterface($this->unit, $this->type);
     if($log->send($this) == QUERY_SUCCESS){
-      $Q = "INSERT INTO $this->table (notification, subj, dest, type) VALUE ('$this->message', '$this->subj', '$this->dest', '$this->type')";
-      if($this->mysql->query($Q)){
+      $Q = "INSERT INTO $this->table (notification, subj, dest, type, unit) VALUE ('$this->message', '$this->subj', '$this->dest', '$this->type', '$this->unit')";
+      if($this->mysqli->query($Q)){
         return QUERY_SUCCESS;
       } else return QUERY_FAILED;
     }

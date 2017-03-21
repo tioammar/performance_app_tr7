@@ -30,7 +30,8 @@ class View {
     $i = 1;
     while($i <= $this->count){
       $cls = $i == $t ? "selected" : "";
-      echo "<option value='$i' $cls>$name $i</option>";
+      $disp = $this->count < 12 ? $name." ".$i : $this->month($i);
+      echo "<option value='$i' $cls>$disp</option>";
       $i++;
     }
   }
@@ -210,19 +211,63 @@ class View {
               <td class='center-align'>Tahun</td>
               <td class='center-align'>Satuan</td>";
     $i = 1;
-    while($i <= 4){
+    while($i <= $this->count){
       if($this->useBobot){
-        echo "<td class='hides center-align $i'>Bobot TW $i</td>";
+        echo "<td class='hides center-align $i'>Bobot</td>";
       }
       echo "
-              <td class='hides center-align $i'>Target TW $i</td>
-              <td class='hides center-align $i'>Realisasi TW $i</td>
-              <td class='hides center-align $i'>Ach. TW $i</td>
+              <td class='hides center-align $i'>Target</td>
+              <td class='hides center-align $i'>Realisasi</td>
+              <td class='hides center-align $i'>Ach.</td>
               <td class='hides center-align $i'> </td>";
       $i++;
     }
     echo " </tr>
           </thead>";
+  }
+
+  function month($month){
+    switch($month){
+      case 1;
+        $div = "Januari";
+        break;
+      case 2:
+        $div = "Februari";
+        break;
+      case 3:
+        $div = "Maret";
+        break;
+      case 4:
+        $div = "April";
+        break;
+      case 5:
+        $div = "Mei";
+        break;
+      case 6:
+        $div = "Juni";
+        break;
+      case 7:
+        $div = "Juli";
+        break;
+      case 8:
+        $div = "Agustus";
+        break;
+      case 9:
+        $div = "September";
+        break;
+      case 10:
+        $div = "Oktober";
+        break;
+      case 11:
+        $div = "November";
+        break;
+      case 12:
+        $div = "Desember";
+        break;
+      default:
+        // do nothing
+    }
+    return $div;
   }
 }
 ?>

@@ -12,6 +12,11 @@ if(isset($_GET['id']) && isset($_GET['t'])){
 
 if($type == "statuskm"){
   session_start();
+  if(!isset($_SESSION['level'])){
+    header("Location: ./?page=main");
+  } else {
+    if($_SESSION['level'] == USER) header("Location: ./?page=main");
+  }
   $page = $_SESSION['level'] == ADMIN_ALL ? "adminall" : "admin";
   $process = new Process($id, $t, "km", $_SESSION['unit']);
   $status = $_GET['stt'];
@@ -22,9 +27,50 @@ if($type == "statuskm"){
 
 else if($type == "updatekm"){
   session_start();
+  if(!isset($_SESSION['level'])){
+    header("Location: ./?page=main");
+  } else {
+    if($_SESSION['level'] == USER) header("Location: ./?page=main");
+  }
   $process = new Process($id, $t, "km", $_SESSION['unit']);
   $real = $_POST['real'];
   $upload = new Upload("evidence/km/", $process);
+  $file = $_FILES['evid'];
+  $status = $upload->upload($file);
+  if($status == UPLOAD_OK){
+    if($result = $process->updateReal($real) == QUERY_SUCCESS){
+      header("Location: ./?page=admin");
+    } else echo "Update Failed";
+  }
+} 
+
+
+
+if($type == "statusquad"){
+  session_start();
+  if(!isset($_SESSION['level'])){
+    header("Location: ./?page=main");
+  } else {
+    if($_SESSION['level'] == USER) header("Location: ./?page=main");
+  }
+  $page = $_SESSION['level'] == ADMIN_ALL ? "adminallquad" : "adminquad";
+  $process = new Process($id, $t, "quadrics", $_SESSION['unit']);
+  $status = $_GET['stt'];
+  if($process->updateStatus($status) == QUERY_SUCCESS){
+    header("Location: ./?page=$page");
+  } else echo "Update Status Failed";
+} 
+
+else if($type == "updatequad"){
+  session_start();
+  if(!isset($_SESSION['level'])){
+    header("Location: ./?page=main");
+  } else {
+    if($_SESSION['level'] == USER) header("Location: ./?page=main");
+  }
+  $process = new Process($id, $t, "quadrics", $_SESSION['unit']);
+  $real = $_POST['real'];
+  $upload = new Upload("evidence/quadrics/", $process);
   $file = $_FILES['evid'];
   $status = $upload->upload($file);
   if($status == UPLOAD_OK){

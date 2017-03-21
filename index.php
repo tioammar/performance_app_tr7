@@ -37,7 +37,7 @@
 </head>
 <header>
   <?php
-  if($page != "main" && $page != "admin" && $page != "login"){
+  if($page == "adminall" || $page == "adminallquad"){
     echo "<nav class='nav-extended'>";
   } else {
     echo "<nav>";
@@ -58,7 +58,7 @@
         <!--li><img src="img/logo.png" alt="" class="profile"></li-->
       </ul>
       <?php
-      if($page != "main" && $page != "admin" && $page != "login"){
+      if($page == "adminall" || $page == "adminallquad"){
         include "include/tabs/".$page.".php";
       }
       ?>
@@ -80,27 +80,37 @@
         <a href='#!email'><span class='white-text email'>".$session['nik']."</span></a>
       </div>
     </li>
-    <li><a href='?page=main'>Beranda</a></li>";
+    <li><a href='?page=main'>Beranda</a></li>
+    <li><a href='?page=quadrics'>Quadrics</a></li>
+    <li><div class='divider'></div></li>";
     if($session['level'] != USER){
       switch($session['level']){
         case ADMIN_SM:
-          $link = "?page=admin";
+          $linkkm = "?page=admin";
+          $linkquad = "?page=adminquad";
           break;
         case ADMIN_UNIT:
-          $link = "?page=admin";
+          $linkkm = "?page=admin";
+          $linkquad = "?page=adminquad";
           break;          
         case ADMIN_ALL:
-          $link = "?page=adminall";
+          $linkkm = "?page=adminall";
+          $linkquad = "?page=adminallquad";
           break;
         default:
-          $link = "#";
+          $linkkm = "#";
+          $linkquad = "#";
       }
       echo "
-    <li><a href='$link'>Admin</a></li>
-    <li><a href='?page=notifikasi'>Notifikasi</a></li>
-    <li><div class='divider'></div></li>";
+    <li><a class='subheader'>Admin</a></li>
+    <li><a href='$linkkm'>KM Regional</a></li>";
+      if(in_array($session['unit'], $unitsQuad) || $session['level'] == ADMIN_ALL){
+        echo "
+    <li><a href='$linkquad'>Quadrics</a></li>";
+      }
     }
     echo "
+    <li><div class='divider'></div></li>
     <li><a href='process.php?type=logout'>Keluar</a></li>
   </ul>";
   }
@@ -111,6 +121,8 @@
     <?php
       if(file_exists("include/".$page.".php")){
         include "include/".$page.".php";
+      } else {
+        header("Location: ./?page=main");
       }
     ?>
   </div> <!-- main ends here -->
