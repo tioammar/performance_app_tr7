@@ -37,7 +37,7 @@
 </head>
 <header>
   <?php
-  if($page == "adminall" || $page == "adminallquad"){
+  if($page == "adminall" || $page == "adminallquad" || $page == "adminallqw" || $page == "quickwin"){
     echo "<nav class='nav-extended'>";
   } else {
     echo "<nav>";
@@ -58,7 +58,7 @@
         <!--li><img src="img/logo.png" alt="" class="profile"></li-->
       </ul>
       <?php
-      if($page == "adminall" || $page == "adminallquad"){
+      if($page == "adminall" || $page == "adminallquad" || $page == "adminallqw" || $page == "quickwin"){
         include "include/tabs/".$page.".php";
       }
       ?>
@@ -75,35 +75,42 @@
         <div class='background'>
           <img src='img/office.jpg'>
         </div>
-        <a href='#!user'><img class='circle' src='http://pwb-esshr.aon.telkom.co.id/index.php?r=pwbPhoto/profilePhoto&nik=920153&t=1457059388'></a>
+        <a href='#!user'><img class='circle' src='http://pwb-esshr.aon.telkom.co.id/index.php?r=pwbPhoto/profilePhoto&nik=".$session['nik']."&t=1457059388'></a>
         <a href='#!name'><span class='white-text name'>".$session['name']."</span></a>
         <a href='#!email'><span class='white-text email'>".$session['nik']."</span></a>
       </div>
     </li>
     <li><a href='?page=main'>Beranda</a></li>
     <li><a href='?page=quadrics'>Quadrics</a></li>
-    <li><div class='divider'></div></li>";
+    <li><a href='?page=quickwin'>Quick Win</a></li>";
     if($session['level'] != USER){
+      echo "
+    <li><div class='divider'></div></li>";
       switch($session['level']){
         case ADMIN_SM:
           $linkkm = "?page=admin";
           $linkquad = "?page=adminquad";
+          $linkqw = "?page=adminqw";
           break;
         case ADMIN_UNIT:
           $linkkm = "?page=admin";
           $linkquad = "?page=adminquad";
+          $linkqw = "?page=adminqw";
           break;          
         case ADMIN_ALL:
           $linkkm = "?page=adminall";
           $linkquad = "?page=adminallquad";
+          $linkqw = "?page=adminallqw";
           break;
         default:
           $linkkm = "#";
           $linkquad = "#";
+          $linkqw = "#";
       }
       echo "
-    <li><a class='subheader'>Admin</a></li>
-    <li><a href='$linkkm'>KM Regional</a></li>";
+    <li><a class='subheader'>PIC</a></li>
+    <li><a href='$linkkm'>KM Regional</a></li>
+    <li><a href='$linkqw'>Quick Win</a></li>";
       if(in_array($session['unit'], $unitsQuad) || $session['level'] == ADMIN_ALL){
         echo "
     <li><a href='$linkquad'>Quadrics</a></li>";
@@ -120,9 +127,9 @@
     <!-- container start here -->
     <?php
       if(file_exists("include/".$page.".php")){
-        include "include/".$page.".php";
+        include "include/$page.php";
       } else {
-        header("Location: ./?page=main");
+        include "include/main.php";
       }
     ?>
   </div> <!-- main ends here -->

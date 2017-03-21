@@ -78,6 +78,38 @@ else if($type == "updatequad"){
       header("Location: ./?page=admin");
     } else echo "Update Failed";
   }
+} if($type == "statusqw"){
+  session_start();
+  if(!isset($_SESSION['level'])){
+    header("Location: ./?page=main");
+  } else {
+    if($_SESSION['level'] == USER) header("Location: ./?page=main");
+  }
+  $page = $_SESSION['level'] == ADMIN_ALL ? "adminallqw" : "adminqw";
+  $process = new Process($id, $t, "quickwin", $_SESSION['unit']);
+  $status = $_GET['stt'];
+  if($process->updateStatus($status) == QUERY_SUCCESS){
+    header("Location: ./?page=$page");
+  } else echo "Update Status Failed";
+} 
+
+else if($type == "updateqw"){
+  session_start();
+  if(!isset($_SESSION['level'])){
+    header("Location: ./?page=main");
+  } else {
+    if($_SESSION['level'] == USER) header("Location: ./?page=main");
+  }
+  $process = new Process($id, $t, "quickwin", $_SESSION['unit']);
+  $real = $_POST['real'];
+  $upload = new Upload("evidence/quickwin/", $process);
+  $file = $_FILES['evid'];
+  $status = $upload->upload($file);
+  if($status == UPLOAD_OK){
+    if($result = $process->updateReal($real) == QUERY_SUCCESS){
+      header("Location: ./?page=admin");
+    } else echo "Update Failed";
+  }
 } 
 
 else if($type == "login"){

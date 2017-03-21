@@ -5,6 +5,6 @@ class ViewQuadrics extends View {
 
   protected $statusType = "statusquad";
   protected $updateType = "updatequad";
-  protected $useBobot = true;
+  protected $useBobot = false;
   public $count = 12;
 }

@@ -1,11 +1,11 @@
 <?php
 require_once("Base.php");
 
-class KMWitel extends Base {
+class QuickWin extends Base {
 
   function __construct(){
-    $this->table = "km_witel";
-    $this->count = 4;
+    $this->table = "quickwin";
+    $this->count = 6;
   }
 
   public static function load($indikator, $level){

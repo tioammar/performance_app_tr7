@@ -25,7 +25,7 @@ class Notification extends Event {
         break;
       case STATUS_NOT_RELEASED:
         $this->subj = ADMIN_ALL;
-        $dthis->est = ADMIN_UNIT;
+        $dthis->dest = ADMIN_UNIT;
         break;
     }
   }
