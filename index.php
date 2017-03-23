@@ -147,4 +147,5 @@ $(document).ready(function(){
   $('select').material_select();
 });
 </script>
+<script type="text/javascript" src="js/script.js"></script>
 </html>

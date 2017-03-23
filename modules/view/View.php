@@ -103,6 +103,33 @@ class View {
     echo $editor;
   }
 
+  public function adminallupload(){
+    echo "
+      <div class='fixed-action-btn' style='bottom: 45px; right: 45px;'>
+        <a href='#upload-modal' class='upload btn-floating btn-large green'>
+          <i class='large material-icons'>file_upload</i>
+        </a>
+      </div>
+      <div id='upload-modal' class='modal'>
+        <form action='process.php?$this->uploadType' method='post' enctype='multipart/form-data'>
+          <div class='modal-content'>
+            <div class='file-field input-field'>
+              <div class='btn-flat'>
+                <span>Pilih File</span>
+                <input type='file' name='data'>
+              </div>
+            <div class='file-path-wrapper'>
+              <input class='file-path validate' type='text'>
+            </div>
+          </div>
+        </div>
+      <div class='modal-footer'>
+        <button class='btn waves-effect waves-light right grey darken-3' type='submit' name='action'>Upload</button>
+      </div>
+        </form>
+      </div>";
+  }
+
   public function row($model, $ach_all, $level){
     switch($level){
       case 1:

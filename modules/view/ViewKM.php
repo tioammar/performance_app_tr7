@@ -5,6 +5,7 @@ class ViewKM extends View {
 
   protected $statusType = "statuskm";
   protected $updateType = "updatekm";
+  protected $uploadType = "uploadkm";
   protected $useBobot = true;
   public $count = 4;
 }

@@ -47,27 +47,4 @@ $unit = null;
       </table>
     </div>
   </div>
-<script>
-$('#tw').on("change", function() {
-    hideAll();
-    showSelected($(this).val());
-});
-
-function hideAll() {
-	$('tr td.hides').each(function(){
-    	$(this).hide();
-    });
-}
-
-function showSelected(selected) {
-  var classes = parseInt(selected);
-	$('tr td.'+classes).each(function(){
-    $(this).show();
-  });
-}
-
-$(document).ready(function(){
-    $('#tw').change();
-})
-</script>
 </div>
