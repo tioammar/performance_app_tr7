@@ -27,6 +27,7 @@ foreach($units as $unit_name){
         <table class='bordered'>"; 
   $view->setUnit($unit_name);
   $view->setHeader();
+  $table = $view->setTable();
   echo "
           <tbody>";
   $Q = "SELECT DISTINCT l_1 FROM quickwin WHERE `unit` = '$unit_name'";
@@ -37,9 +38,9 @@ foreach($units as $unit_name){
     $qw = QuickWin::load($row['l_1'], 1);
     $level = 1;
     $ach_all = $hitung->hitung($qw, 1, $unit_name);
-    $view->row($qw, $ach_all, $level);
+    $table->row($qw, $ach_all, $level);
     if($level < $qw->len){
-      $view->sub($qw, $level);
+      $table->sub($qw, $level);
     }
   }
   echo "

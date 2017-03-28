@@ -32,14 +32,15 @@ $unit = null;
 
   $view->setUser(USER); 
   $view->setUnit(null);
+  $table = $view->setTable();
 
   while($row = $rows->fetch_array()){
     $km = KM::load($row['l_1'], 1);
     $level = 1;
     $ach_all = $hitung->hitung($km, 1, null);
-    $view->row($km, $ach_all, $level);
+    $table->row($km, $ach_all, $level);
     if($level < $km->len){
-      $view->sub($km, $level);
+      $table->sub($km, $level);
     }
   }
 ?>

@@ -27,6 +27,7 @@ foreach($units as $unit_name){
         <table class='bordered'>"; 
   $view->setUnit($unit_name);
   $view->setHeader();
+  $table = $view->setTable();
   echo "
           <tbody>";
   $Q = "SELECT DISTINCT l_1 FROM km WHERE `unit` = '$unit_name'";
@@ -37,9 +38,9 @@ foreach($units as $unit_name){
     $km = KM::load($row['l_1'], 1);
     $level = 1;
     $ach_all = $hitung->hitung($km, 1, $unit_name);
-    $view->row($km, $ach_all, $level);
+    $table->row($km, $ach_all, $level);
     if($level < $km->len){
-      $view->sub($km, $level);
+      $table->sub($km, $level);
     }
   }
   echo "

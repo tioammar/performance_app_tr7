@@ -3,9 +3,9 @@ require_once("View.php");
 
 class ViewQuickWin extends View {
 
-  protected $statusType = "statusqw";
-  protected $updateType = "updateqw";
-  protected $uploadType = "uploadqw";
-  protected $useBobot = false;
+  public $statusType = "statusqw";
+  public $updateType = "updateqw";
+  public $uploadType = "uploadqw";
+  public $useBobot = false;
   public $count = 6;
 }

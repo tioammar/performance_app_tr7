@@ -26,6 +26,7 @@ $unit = $session['unit'];
       <span class='card-title'>KM $unit 2017</span>
         <table class='bordered'>";
   $view->setHeader();
+  $table = $view->setTable();
   echo "
           <tbody>";
   $Q = "SELECT DISTINCT l_1 FROM km WHERE `unit` = '$unit'";
@@ -36,9 +37,9 @@ $unit = $session['unit'];
     $km = KM::load($row['l_1'], 1);
     $level = 1;
     $ach_all = $hitung->hitung($km, 1, $unit);
-    $view->row($km, $ach_all, $level);
+    $table->row($km, $ach_all, $level);
     if($level < $km->len){
-      $view->sub($km, $level);
+      $table->sub($km, $level);
     }
   }
 ?>

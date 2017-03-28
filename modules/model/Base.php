@@ -45,7 +45,7 @@ class Base {
         $this->target[$i] = $r['tar_'.$i];
         $this->realisasi[$i] = $r['real_'.$i];
         $this->status[$i] = $r['stt_'.$i];
-        $this->evid[$i] = $r['evid_'.$i];
+        // $this->evid[$i] = $r['evid_'.$i];
         $i++;
       }
       $this->level = $level;

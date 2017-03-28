@@ -3,9 +3,9 @@ require_once("View.php");
 
 class ViewQuadrics extends View {
 
-  protected $statusType = "statusquad";
-  protected $updateType = "updatequad";
-  protected $uploadType = "uploadquad";
-  protected $useBobot = false;
+  public $statusType = "statusquad";
+  public $updateType = "updatequad";
+  public $uploadType = "uploadquad";
+  public $useBobot = false;
   public $count = 12;
 }

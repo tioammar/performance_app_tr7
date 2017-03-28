@@ -27,6 +27,7 @@ foreach($unitsQuad as $unit_name){
         <table class='bordered'>"; 
   $view->setUnit($unit_name);
   $view->setHeader();
+  $table = $view->setTable();
   echo "
           <tbody>";
   $Q = "SELECT DISTINCT l_1 FROM quadrics WHERE `unit` = '$unit_name'";
@@ -37,9 +38,9 @@ foreach($unitsQuad as $unit_name){
     $quad = Quadrics::load($row['l_1'], 1);
     $level = 1;
     $ach_all = $hitung->hitung($quad, 1, $unit_name);
-    $view->row($quad, $ach_all, $level);
+    $table->row($quad, $ach_all, $level);
     if($level < $quad->len){
-      $view->sub($quad, $level);
+      $table->sub($quad, $level);
     }
   }
   echo "

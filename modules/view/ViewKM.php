@@ -3,9 +3,9 @@ require_once("View.php");
 
 class ViewKM extends View {
 
-  protected $statusType = "statuskm";
-  protected $updateType = "updatekm";
-  protected $uploadType = "uploadkm";
-  protected $useBobot = true;
+  public $statusType = "statuskm";
+  public $updateType = "updatekm";
+  public $uploadType = "uploadkm";
+  public $useBobot = true;
   public $count = 4;
 }

@@ -23,7 +23,7 @@ $unit = $session['unit'];
   echo "
   <div id='tr7' class='card white z-depth-2 contain'>
       <div class='card-content black-text'>
-      <span class='card-title'>QuickWin $unit 2017</span>
+      <span class='card-title'>Quick Win $unit 2017</span>
         <table class='bordered'>";
   $view->setHeader();
   echo "
