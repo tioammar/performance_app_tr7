@@ -1,5 +1,6 @@
 <?php
 require_once("View.php");
+require_once("TableQuickWin.php");
 
 class ViewQuickWin extends View {
 
@@ -8,4 +9,8 @@ class ViewQuickWin extends View {
   public $uploadType = "uploadqw";
   public $useBobot = false;
   public $count = 6;
+
+  public function setTable(){
+    return new TableQuickWin($this);
+  }
 }

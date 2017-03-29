@@ -1,6 +1,5 @@
 <?php
 require_once(__DIR__."/../config.php");
-require_once("TableView.php");
 // to use this class , extends and add editor method 
 class View {
 
@@ -43,10 +42,6 @@ class View {
 
   function setUser($user){
     $this->user = $user;
-  }
-
-  public function setTable(){
-    return new TableView($this);
   }
 
   public function setHeader(){

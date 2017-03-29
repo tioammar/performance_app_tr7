@@ -81,8 +81,8 @@
       </div>
     </li>
     <li><a href='?page=main'>Beranda</a></li>
-    <li><a href='?page=quadrics'>Quadrics</a></li>
-    <li><a href='?page=quickwin'>Quick Win</a></li>";
+    <!--li><a href='?page=quadrics'>Quadrics</a></li-->
+    <!--li><a href='?page=quickwin'>Quick Win</a></li-->";
     if($session['level'] != USER){
       echo "
     <li><div class='divider'></div></li>";
@@ -110,10 +110,10 @@
       echo "
     <li><a class='subheader'>PIC</a></li>
     <li><a href='$linkkm'>KM Regional</a></li>
-    <li><a href='$linkqw'>Quick Win</a></li>";
+    <!--li><a href='$linkqw'>Quick Win</a></li-->";
       if(in_array($session['unit'], $unitsQuad) || $session['level'] == ADMIN_ALL){
         echo "
-    <li><a href='$linkquad'>Quadrics</a></li>";
+    <!--li><a href='$linkquad'>Quadrics</a></li-->";
       }
     }
     echo "

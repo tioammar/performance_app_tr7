@@ -1,9 +1,8 @@
-<?
-require_once(__DIR__."/../config.php");
-
+<?php
 class TableView {
 
-  private $view;
+  protected $view;
+  protected $useEvid;
 
   function __construct($view){
     $this->view = $view;
@@ -61,8 +60,7 @@ class TableView {
       }
     }
     // if($model->evid[$t] != ""){
-    $x = 1;
-    if($x == 1){
+    if($this->useEvid){
       $editor .= " <a class='btn-floating btn-small blue' href='process.php?type=evid&id=$model->id&count=$t'>
                     <i class='small material-icons'>library_books</i>
                   </a>";
@@ -100,16 +98,16 @@ class TableView {
   public function row($model, $ach_all, $level){
     switch($level){
       case 1:
-        $class = "red accent-4 white-text";
+        $class = $this->level1;
         break;
       case 2:
-        $class = "red white-text";
+        $class = $this->level2;
         break;
       case 3:
-        $class = "light-blue lighten-5";
+        $class = $this->level3;
         break;
       case 4:
-        $class = "white";
+        $class = $this->level4;
         break;
       default:
         // do nothing
@@ -180,21 +178,6 @@ class TableView {
         $this->sub($model_sub, $level);
       }
     }
-  }
-
-  public function editor($id, $t){
-    echo "
-    <div class='modal-editor-$id-$t modal small-modal' id='modal-$id-$t'>
-      <div class='modal-content'>
-        <form action='process.php?&type=$this->view->updateType&id=$id&t=$t' method='post' enctype='multipart/form-data'>
-          <input type='text' Placeholder='Realisasi TW $t' name='real'/>
-          <input type='file' Placeholder='Evidence TW $t' name='evid'/>
-      </div>
-      <div class='modal-footer'>
-          <button type='submit' class='btn blue'>Kirim</button>
-        </form>
-      </div>
-    </div>";
   }
 }
 ?>
