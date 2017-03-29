@@ -5,7 +5,7 @@
 ?>
 <div class='card login'>
   <div class='center-align'><img src='img/woow-2.png' class='login-logo center-align'></div>
-  <form action='process.php?type=login' method='post'>
+  <form action='process.php?login' method='post'>
     <input id='nik' type='text' name='nik'  placeholder='NIK'>
     <input id='password' type='password' name='password'  placeholder='Password' autocomplete='new-password'>
   <?php

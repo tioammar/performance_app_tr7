@@ -17,19 +17,20 @@ class Process {
 
   function updateReal($value){
     if($this->update($this->id, $this->t, $value, "real") == QUERY_SUCCESS){
-      return $this->updateStatus(STATUS_EDITED);
-    }
+      return $this->updateStatus(STATUS_EDITED, "");
+    } else return QUERY_FAILED;
   }
 
-  public function updateStatus($value){
+  public function updateStatus($value, $message){
     if($this->update($this->id, $this->t, $value, "stt") == QUERY_SUCCESS){
       if($value != STATUS_RELEASED){
         $notif = new Notification($this->unit, $this->table);
-        $notif->setMessage($value, $this->id, $this->t);
-         return $notif->send();
+        $notif->setMessage($value, $this->id, $this->t, $message);
+        return $notif->send($message);
+      } else {
+        return QUERY_SUCCESS;
       }
-    }
-    return $this->update($this->id, $this->t, $value, "stt");
+    } return QUERY_FAILED;
   }
 
   public function updateEvidence($value){

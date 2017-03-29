@@ -15,6 +15,12 @@ $('.modal-trigger').on('click', function() {
   $('#modal-'+id+'-'+tw).modal('open');
 });
 
+$('.modal-trigger-reject').on('click', function() {
+  var id = $(this).attr('data-id');
+  var tw = $(this).attr('data-count');
+  $('#modal-reject-'+id+'-'+tw).modal('open');
+});
+
 function showSelected(selected) {
   var classes = parseInt(selected);
 	$('tr td.'+classes).each(function(){

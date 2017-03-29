@@ -30,10 +30,10 @@ class Notification extends Event {
     }
   }
 
-  public function send(){
+  public function send($message){
     $log = new LogInterface($this->unit, $this->type);
     if($log->send($this) == QUERY_SUCCESS){
-      $Q = "INSERT INTO $this->table (notification, subj, dest, type, unit) VALUE ('$this->message', '$this->subj', '$this->dest', '$this->type', '$this->unit')";
+      $Q = "INSERT INTO $this->table (notification, subj, dest, type, unit, message) VALUE ('$this->message', '$this->subj', '$this->dest', '$this->type', '$this->unit', '$message')";
       if($this->mysqli->query($Q)){
         return QUERY_SUCCESS;
       } else return QUERY_FAILED;

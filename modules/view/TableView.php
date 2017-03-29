@@ -1,4 +1,6 @@
 <?php
+require_once(__DIR__."/../config.php");
+
 class TableView {
 
   protected $view;
@@ -42,18 +44,21 @@ class TableView {
                     </a>";
           break;
         case ADMIN_SM:
-          $editor = "<a class='$approved_stt btn-floating btn-small green ' href='process.php?type=".$this->view->statusType."&stt=".STATUS_APPROVED."&id=$model->id&t=$t'>
+          $editor = "<a class='$approved_stt btn-floating btn-small green ' href='process.php?".$this->view->statusType."&stt=".STATUS_APPROVED."&id=$model->id&t=$t'>
                       <i class='small material-icons'>done</i>
                     </a> 
-                    <a class='$rejected_stt btn-floating btn-small red darken-3' href='process.php?type=".$this->view->statusType."&stt=".STATUS_REJECTED."&id=$model->id&t=$t'>
+                    <!--a class='$rejected_stt btn-floating btn-small red darken-3' href='process.php?".$this->view->statusType."&stt=".STATUS_REJECTED."&id=$model->id&t=$t'>
+                      <i class='small material-icons'>close</i>
+                    </a-->
+                    <a class='$rejected_stt modal-trigger-reject btn-floating btn-small red darken-3' data-id='$model->id' data-count='$t'>
                       <i class='small material-icons'>close</i>
                     </a>";    
           break;    
         case ADMIN_ALL:
-          $editor = "<a class='$released_stt btn-floating btn-small green ' href='process.php?type=".$this->view->statusType."&stt=".STATUS_RELEASED."&id=$model->id&t=$t'>
+          $editor = "<a class='$released_stt btn-floating btn-small green ' href='process.php?".$this->view->statusType."&stt=".STATUS_RELEASED."&id=$model->id&t=$t'>
                       <i class='small material-icons'>done</i>
                     </a> 
-                    <a class='$notreleased_stt btn-floating btn-small red darken-3' href='process.php?type=".$this->view->statusType."&stt=".STATUS_NOT_RELEASED."&id=$model->id&t=$t'>
+                    <a class='$notreleased_stt btn-floating btn-small red darken-3' href='process.php?".$this->view->statusType."&stt=".STATUS_NOT_RELEASED."&id=$model->id&t=$t'>
                       <i class='small material-icons'>close</i>
                     </a>";
           break;
@@ -61,7 +66,7 @@ class TableView {
     }
     // if($model->evid[$t] != ""){
     if($this->useEvid){
-      $editor .= " <a class='btn-floating btn-small blue' href='process.php?type=evid&id=$model->id&count=$t'>
+      $editor .= " <a class='btn-floating btn-small blue' href='process.php?type=evid&id=$model->id&t=$t'>
                     <i class='small material-icons'>library_books</i>
                   </a>";
     }
@@ -153,6 +158,7 @@ class TableView {
           echo "
             <td class='hides center-align $t'>";
           $this->showEditor($model, $t, $model->status[$t]);
+          $this->rejEditor($model->id, $t);
           echo "
             </td>";
         } else {

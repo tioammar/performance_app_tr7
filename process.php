@@ -4,116 +4,49 @@ require_once("modules/config.php");
 require_once("modules/Upload.php");
 require_once("modules/Login.php");
 
-$type = $_GET['type'];
+session_start();
+
 if(isset($_GET['id']) && isset($_GET['t'])){
   $id = $_GET['id'];
   $t = $_GET['t'];
+
+  if(isset($_GET['statuskm'])){
+    if(!isset($_SESSION['level'])){
+      header("Location: ./?page=main");
+    } else {
+      if($_SESSION['level'] == USER) header("Location: ./?page=main");
+    }
+    $page = $_SESSION['level'] == ADMIN_ALL ? "adminall" : "admin";
+    $process = new Process($id, $t, "km", $_SESSION['unit']);
+    $status = $_GET['stt'];
+    $message = $status != STATUS_REJECTED ? "" : $_POST['message'];
+    if($process->updateStatus($status, $message) == QUERY_SUCCESS){
+      header("Location: ./?page=$page");
+    } else echo "Update Status Failed";
+  } 
+
+  if(isset($_GET['updatekm'])){
+    echo "baaa";
+    if(!isset($_SESSION['level'])){
+      header("Location: ./?page=main");
+    } else {
+      if($_SESSION['level'] == USER) header("Location: ./?page=main");
+    }
+    $process = new Process($id, $t, "km", $_SESSION['unit']);
+    $real = $_POST['real'];
+    $upload = new Upload("evidence/km/", $process);
+    $file = $_FILES['evid'];
+    // $status = $upload->upload($file);
+    $status = UPLOAD_OK;
+    if($status == UPLOAD_OK){
+      if($result = $process->updateReal($real) == QUERY_SUCCESS){
+        // header("Location: ./?page=admin");
+      } else echo "Update Failed";
+    }
+  }
 }
 
-if($type == "statuskm"){
-  session_start();
-  if(!isset($_SESSION['level'])){
-    header("Location: ./?page=main");
-  } else {
-    if($_SESSION['level'] == USER) header("Location: ./?page=main");
-  }
-  $page = $_SESSION['level'] == ADMIN_ALL ? "adminall" : "admin";
-  $process = new Process($id, $t, "km", $_SESSION['unit']);
-  $status = $_GET['stt'];
-  if($process->updateStatus($status) == QUERY_SUCCESS){
-    header("Location: ./?page=$page");
-  } else echo "Update Status Failed";
-} 
-
-else if($type == "updatekm"){
-  session_start();
-  if(!isset($_SESSION['level'])){
-    header("Location: ./?page=main");
-  } else {
-    if($_SESSION['level'] == USER) header("Location: ./?page=main");
-  }
-  $process = new Process($id, $t, "km", $_SESSION['unit']);
-  $real = $_POST['real'];
-  $upload = new Upload("evidence/km/", $process);
-  $file = $_FILES['evid'];
-  $status = $upload->upload($file);
-  if($status == UPLOAD_OK){
-    if($result = $process->updateReal($real) == QUERY_SUCCESS){
-      header("Location: ./?page=admin");
-    } else echo "Update Failed";
-  }
-} 
-
-
-
-if($type == "statusquad"){
-  session_start();
-  if(!isset($_SESSION['level'])){
-    header("Location: ./?page=main");
-  } else {
-    if($_SESSION['level'] == USER) header("Location: ./?page=main");
-  }
-  $page = $_SESSION['level'] == ADMIN_ALL ? "adminallquad" : "adminquad";
-  $process = new Process($id, $t, "quadrics", $_SESSION['unit']);
-  $status = $_GET['stt'];
-  if($process->updateStatus($status) == QUERY_SUCCESS){
-    header("Location: ./?page=$page");
-  } else echo "Update Status Failed";
-} 
-
-else if($type == "updatequad"){
-  session_start();
-  if(!isset($_SESSION['level'])){
-    header("Location: ./?page=main");
-  } else {
-    if($_SESSION['level'] == USER) header("Location: ./?page=main");
-  }
-  $process = new Process($id, $t, "quadrics", $_SESSION['unit']);
-  $real = $_POST['real'];
-  $upload = new Upload("evidence/quadrics/", $process);
-  $file = $_FILES['evid'];
-  $status = $upload->upload($file);
-  if($status == UPLOAD_OK){
-    if($result = $process->updateReal($real) == QUERY_SUCCESS){
-      header("Location: ./?page=admin");
-    } else echo "Update Failed";
-  }
-} if($type == "statusqw"){
-  session_start();
-  if(!isset($_SESSION['level'])){
-    header("Location: ./?page=main");
-  } else {
-    if($_SESSION['level'] == USER) header("Location: ./?page=main");
-  }
-  $page = $_SESSION['level'] == ADMIN_ALL ? "adminallqw" : "adminqw";
-  $process = new Process($id, $t, "quickwin", $_SESSION['unit']);
-  $status = $_GET['stt'];
-  if($process->updateStatus($status) == QUERY_SUCCESS){
-    header("Location: ./?page=$page");
-  } else echo "Update Status Failed";
-} 
-
-else if($type == "updateqw"){
-  session_start();
-  if(!isset($_SESSION['level'])){
-    header("Location: ./?page=main");
-  } else {
-    if($_SESSION['level'] == USER) header("Location: ./?page=main");
-  }
-  $process = new Process($id, $t, "quickwin", $_SESSION['unit']);
-  $real = $_POST['real'];
-  $upload = new Upload("evidence/quickwin/", $process);
-  $file = $_FILES['evid'];
-  $status = $upload->upload($file);
-  if($status == UPLOAD_OK){
-    if($result = $process->updateReal($real) == QUERY_SUCCESS){
-      header("Location: ./?page=admin");
-    } else echo "Update Failed";
-  }
-} 
-
-else if($type == "login"){
-  session_start();
+if(isset($_GET["login"])){
   $nik = $_POST['nik'];
   $pass = $_POST['password'];
   $login = new Login($nik, $pass);
@@ -137,16 +70,11 @@ else if($type == "login"){
   }
 } 
 
-else if ($type == "logout"){
-  session_start();
+if(isset($_GET["logout"])){
   unset($_SESSION['nik']);
   unset($_SESSION['name']);
   unset($_SESSION['level']);
   session_destroy();
   header("Location: ./");
-}
-
-else {
-  echo "not found";
 }
 ?>
