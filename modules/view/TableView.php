@@ -44,10 +44,10 @@ class TableView {
                     </a>";
           break;
         case ADMIN_SM:
-          $editor = "<a class='$approved_stt btn-floating btn-small green ' href='process.php?".$this->view->statusType."&stt=".STATUS_APPROVED."&id=$model->id&t=$t'>
+          $editor = "<a class='$approved_stt btn-floating btn-small green ' href='data.php?".$this->view->statusType."&stt=".STATUS_APPROVED."&id=$model->id&t=$t'>
                       <i class='small material-icons'>done</i>
                     </a> 
-                    <!--a class='$rejected_stt btn-floating btn-small red darken-3' href='process.php?".$this->view->statusType."&stt=".STATUS_REJECTED."&id=$model->id&t=$t'>
+                    <!--a class='$rejected_stt btn-floating btn-small red darken-3' href='data.php?".$this->view->statusType."&stt=".STATUS_REJECTED."&id=$model->id&t=$t'>
                       <i class='small material-icons'>close</i>
                     </a-->
                     <a class='$rejected_stt modal-trigger-reject btn-floating btn-small red darken-3' data-id='$model->id' data-count='$t'>
@@ -55,10 +55,10 @@ class TableView {
                     </a>";    
           break;    
         case ADMIN_ALL:
-          $editor = "<a class='$released_stt btn-floating btn-small green ' href='process.php?".$this->view->statusType."&stt=".STATUS_RELEASED."&id=$model->id&t=$t'>
+          $editor = "<a class='$released_stt btn-floating btn-small green ' href='data.php?".$this->view->statusType."&stt=".STATUS_RELEASED."&id=$model->id&t=$t'>
                       <i class='small material-icons'>done</i>
                     </a> 
-                    <a class='$notreleased_stt btn-floating btn-small red darken-3' href='process.php?".$this->view->statusType."&stt=".STATUS_NOT_RELEASED."&id=$model->id&t=$t'>
+                    <a class='$notreleased_stt btn-floating btn-small red darken-3' href='data.php?".$this->view->statusType."&stt=".STATUS_NOT_RELEASED."&id=$model->id&t=$t'>
                       <i class='small material-icons'>close</i>
                     </a>";
           break;
@@ -66,7 +66,7 @@ class TableView {
     }
     // if($model->evid[$t] != ""){
     if($this->useEvid){
-      $editor .= " <a class='btn-floating btn-small blue' href='process.php?type=evid&id=$model->id&t=$t'>
+      $editor .= " <a class='btn-floating btn-small blue' href='data.php?type=evid&id=$model->id&t=$t'>
                     <i class='small material-icons'>library_books</i>
                   </a>";
     }
@@ -81,7 +81,7 @@ class TableView {
         </a>
       </div>
       <div id='upload-modal' class='modal'>
-        <form action='process.php?$this->view->uploadType' method='post' enctype='multipart/form-data'>
+        <form action='data.php?$this->view->uploadType' method='post' enctype='multipart/form-data'>
           <div class='modal-content'>
             <div class='file-field input-field'>
               <div class='btn-flat'>

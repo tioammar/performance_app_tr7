@@ -118,7 +118,7 @@
     }
     echo "
     <li><div class='divider'></div></li>
-    <li><a href='process.php?type=logout'>Keluar</a></li>
+    <li><a href='data.php?logout'>Keluar</a></li>
   </ul>";
   }
   ?>

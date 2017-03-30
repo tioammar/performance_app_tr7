@@ -26,7 +26,6 @@ if(isset($_GET['id']) && isset($_GET['t'])){
   } 
 
   if(isset($_GET['updatekm'])){
-    echo "baaa";
     if(!isset($_SESSION['level'])){
       header("Location: ./?page=main");
     } else {
@@ -36,11 +35,11 @@ if(isset($_GET['id']) && isset($_GET['t'])){
     $real = $_POST['real'];
     $upload = new Upload("evidence/km/", $process);
     $file = $_FILES['evid'];
-    // $status = $upload->upload($file);
+    $status = $upload->upload($file);
     $status = UPLOAD_OK;
     if($status == UPLOAD_OK){
       if($result = $process->updateReal($real) == QUERY_SUCCESS){
-        // header("Location: ./?page=admin");
+        header("Location: ./?page=admin");
       } else echo "Update Failed";
     }
   }
