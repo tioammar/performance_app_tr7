@@ -10,6 +10,7 @@ class View {
   public $count;
   public $statusType;
   public $updateType;
+  public $uploadType;
   public $useBobot;
   public $admin;
 
@@ -109,6 +110,33 @@ class View {
         // do nothing
     }
     return $div;
+  }
+
+  public function adminallupload(){
+    echo "
+      <div class='fixed-action-btn' style='bottom: 45px; right: 45px;'>
+        <a href='#upload-modal' class='upload btn-floating btn-large green'>
+          <i class='large material-icons'>file_upload</i>
+        </a>
+      </div>
+      <div id='upload-modal' class='modal'>
+        <form action='data.php?$this->uploadType' method='post' enctype='multipart/form-data'>
+          <div class='modal-content'>
+            <div class='file-field input-field'>
+              <div class='btn-flat'>
+                <span>Pilih File</span>
+                <input type='file' name='excel'>
+              </div>
+            <div class='file-path-wrapper'>
+              <input class='file-path validate' type='text'>
+            </div>
+          </div>
+        </div>
+      <div class='modal-footer'>
+        <button class='btn waves-effect waves-light right grey darken-3' type='submit' name='action'>Upload</button>
+      </div>
+        </form>
+      </div>";
   }
 }
 ?>

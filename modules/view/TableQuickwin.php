@@ -14,7 +14,7 @@ class TableQuickWin extends TableView {
     echo "
     <div class='modal-editor-$id-$t modal small-modal' id='modal-$id-$t'>
       <div class='modal-content'>
-        <form action='process.php?&type=".$this->view->updateType."&id=$id&t=$t' method='post' enctype='multipart/form-data'>
+        <form action='data.php?&type=".$this->view->updateType."&id=$id&t=$t' method='post' enctype='multipart/form-data'>
           <input type='text' Placeholder='Realisasi TW $t' name='real'/>
           <input type='file' Placeholder='Evidence TW $t' name='evid'/>
       </div>
@@ -29,7 +29,7 @@ class TableQuickWin extends TableView {
     echo "
     <div class='modal-reject-$id-$t modal small-modal' id='modal-$id-$t'>
       <div class='modal-content'>
-        <form action='process.php?type=".$this->view->statusType."&stt=".STATUS_REJECTED."&id=$id&t=$t' method='post' enctype='multipart/form-data'>
+        <form action='data.php?type=".$this->view->statusType."&stt=".STATUS_REJECTED."&id=$id&t=$t' method='post' enctype='multipart/form-data'>
           <input type='text' Placeholder='Catatan' name='message'/>
       </div>
       <div class='modal-footer'>

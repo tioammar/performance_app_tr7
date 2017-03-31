@@ -3,6 +3,7 @@ require_once("modules/Process.php");
 require_once("modules/config.php");
 require_once("modules/Upload.php");
 require_once("modules/Login.php");
+require_once("modules/ExcelKM.php");
 
 session_start();
 
@@ -35,15 +36,27 @@ if(isset($_GET['id']) && isset($_GET['t'])){
     $real = $_POST['real'];
     $upload = new Upload("evidence/km/", $process);
     $file = $_FILES['evid'];
-    $status = $upload->upload($file);
+    // $status = $upload->upload($file);
     $status = UPLOAD_OK;
     if($status == UPLOAD_OK){
-      if($result = $process->updateReal($real) == QUERY_SUCCESS){
+      if($process->updateReal($real) == QUERY_SUCCESS){
         header("Location: ./?page=admin");
       } else echo "Update Failed";
     }
   }
 }
+
+  if(isset($_GET['uploadkm'])){
+    if(!isset($_SESSION['level'])){
+      header("Location: ./?page=main");
+    } else {
+      if($_SESSION['level'] != ADMIN_ALL) header("Location: ./?page=main");
+    }
+    $excel = new ExcelKM($_FILES['excel']);
+    if($excel->read() == UPLOAD_OK){
+      header("Location: ./?page=adminall");
+    } else echo "Upload Failed";
+  }
 
 if(isset($_GET["login"])){
   $nik = $_POST['nik'];

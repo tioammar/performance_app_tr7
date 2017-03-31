@@ -25,6 +25,9 @@ class Event {
       $this->event = $r['event'];
       $this->unit = $r['unit'];
       $this->subject = $r['subject'];
+      if($this->table == "notification"){
+        $this->message = $r['message'];
+      }
     }
     return $this;
   }

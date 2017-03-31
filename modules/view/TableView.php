@@ -63,41 +63,8 @@ class TableView {
                     </a>";
           break;
       }
+      echo $editor;
     }
-    // if($model->evid[$t] != ""){
-    if($this->useEvid){
-      $editor .= " <a class='btn-floating btn-small blue' href='data.php?type=evid&id=$model->id&t=$t'>
-                    <i class='small material-icons'>library_books</i>
-                  </a>";
-    }
-    echo $editor;
-  }
-
-  public function adminallupload(){
-    echo "
-      <div class='fixed-action-btn' style='bottom: 45px; right: 45px;'>
-        <a href='#upload-modal' class='upload btn-floating btn-large green'>
-          <i class='large material-icons'>file_upload</i>
-        </a>
-      </div>
-      <div id='upload-modal' class='modal'>
-        <form action='data.php?$this->view->uploadType' method='post' enctype='multipart/form-data'>
-          <div class='modal-content'>
-            <div class='file-field input-field'>
-              <div class='btn-flat'>
-                <span>Pilih File</span>
-                <input type='file' name='data'>
-              </div>
-            <div class='file-path-wrapper'>
-              <input class='file-path validate' type='text'>
-            </div>
-          </div>
-        </div>
-      <div class='modal-footer'>
-        <button class='btn waves-effect waves-light right grey darken-3' type='submit' name='action'>Upload</button>
-      </div>
-        </form>
-      </div>";
   }
 
   public function row($model, $ach_all, $level){
@@ -145,11 +112,18 @@ class TableView {
             <td class='hides center-align $t'>-</td>";
         } else {
           echo "
-            <td class='hides center-align $t'>".$model->target[$t]."</td>
-            <td class='hides center-align $t'>".$model->realisasi[$t]."</td>";
+            <td class='hides center-align $t'>".$model->target[$t]."</td>";
+            if($this->useEvid){
+              echo "<td class='hides center-align $t'><a href=data.php?evid&id=$model->id&type=$model->table>".$model->realisasi[$t]."</a></td>";
+            } else {
+              echo "<td class='hides center-align $t'>".$model->realisasi[$t]."</a></td>";
+            }
             if($this->view->user == ADMIN_UNIT){
               $this->editor($model->id, $t);
               // TODO test with ADMIN_UNIT level
+            }
+            if($this->view->user == ADMIN_ALL || $this->view->user == ADMIN_SM){
+              $this->rejEditor($model->id, $t);
             }
         }
         echo "
@@ -158,12 +132,11 @@ class TableView {
           echo "
             <td class='hides center-align $t'>";
           $this->showEditor($model, $t, $model->status[$t]);
-          $this->rejEditor($model->id, $t);
           echo "
             </td>";
         } else {
            echo "
-            <td class='hides center-align $t'> - </td>";
+            <td class='hides center-align $t'> </td>";
         }
       }
       echo "       
