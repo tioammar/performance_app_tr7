@@ -4,7 +4,7 @@ require_once(__DIR__."/../config.php");
 
 class TableKM extends TableView {
 
-  protected $level1 = "red accent-4 white-text";
+  protected $level1 = "red accent-4 white-text bold";
   protected $level2 = "red white-text";
   protected $level3 = "light-blue lighten-5";
   protected $level4 = "white";

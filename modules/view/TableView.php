@@ -39,26 +39,26 @@ class TableView {
     if($this->view->user != USER){
       switch($this->view->user){
         case ADMIN_UNIT:
-          $editor = "<a class='$editor_stt modal-trigger btn-floating btn-small blue darken-3' data-id='$model->id' data-count='$t'>
+          $editor = "<a class='$editor_stt modal-trigger blue darken-3' data-id='$model->id' data-count='$t'>
                       <i class='small material-icons'>edit</i>
                     </a>";
           break;
         case ADMIN_SM:
-          $editor = "<a class='$approved_stt btn-floating btn-small green ' href='data.php?".$this->view->statusType."&stt=".STATUS_APPROVED."&id=$model->id&t=$t'>
+          $editor = "<a class='$approved_stt green-text' href='data.php?".$this->view->statusType."&stt=".STATUS_APPROVED."&id=$model->id&t=$t'>
                       <i class='small material-icons'>done</i>
                     </a> 
-                    <!--a class='$rejected_stt btn-floating btn-small red darken-3' href='data.php?".$this->view->statusType."&stt=".STATUS_REJECTED."&id=$model->id&t=$t'>
+                    <!--a class='$rejected_stt red-text text-darken-3' href='data.php?".$this->view->statusType."&stt=".STATUS_REJECTED."&id=$model->id&t=$t'>
                       <i class='small material-icons'>close</i>
                     </a-->
-                    <a class='$rejected_stt modal-trigger-reject btn-floating btn-small red darken-3' data-id='$model->id' data-count='$t'>
+                    <a class='$rejected_stt modal-trigger-reject red-text text-darken-3' data-id='$model->id' data-count='$t'>
                       <i class='small material-icons'>close</i>
                     </a>";    
           break;    
         case ADMIN_ALL:
-          $editor = "<a class='$released_stt btn-floating btn-small green ' href='data.php?".$this->view->statusType."&stt=".STATUS_RELEASED."&id=$model->id&t=$t'>
+          $editor = "<a class='$released_stt green-text' href='data.php?".$this->view->statusType."&stt=".STATUS_RELEASED."&id=$model->id&t=$t'>
                       <i class='small material-icons'>done</i>
                     </a> 
-                    <a class='$notreleased_stt btn-floating btn-small red darken-3' href='data.php?".$this->view->statusType."&stt=".STATUS_NOT_RELEASED."&id=$model->id&t=$t'>
+                    <a class='$notreleased_stt red-text text-darken-3' href='data.php?".$this->view->statusType."&stt=".STATUS_NOT_RELEASED."&id=$model->id&t=$t'>
                       <i class='small material-icons'>close</i>
                     </a>";
           break;
@@ -112,12 +112,9 @@ class TableView {
             <td class='hides center-align $t'>-</td>";
         } else {
           echo "
-            <td class='hides center-align $t'>".$model->target[$t]."</td>";
-            if($this->useEvid){
-              echo "<td class='hides center-align $t'><a href=data.php?evid&id=$model->id&type=$model->table>".$model->realisasi[$t]."</a></td>";
-            } else {
-              echo "<td class='hides center-align $t'>".$model->realisasi[$t]."</a></td>";
-            }
+            <td class='hides center-align $t'>".$model->target[$t]."</td>
+            <td class='hides center-align $t'>".$model->realisasi[$t]."</td>";
+
             if($this->view->user == ADMIN_UNIT){
               $this->editor($model->id, $t);
               // TODO test with ADMIN_UNIT level
@@ -132,10 +129,16 @@ class TableView {
           echo "
             <td class='hides center-align $t'>";
           $this->showEditor($model, $t, $model->status[$t]);
-          echo "
+          if($this->useEvid){
+            echo "
+              <a class='$class' href='data.php?evid&id=$model->id&type=$model->table'>
+                <i class='small material-icons'>description</i>
+              </a>";
+          }
+          echo " 
             </td>";
         } else {
-           echo "
+          echo "
             <td class='hides center-align $t'> </td>";
         }
       }
