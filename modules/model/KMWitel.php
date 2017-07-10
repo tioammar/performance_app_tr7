@@ -1,10 +1,10 @@
 <?php
 require_once("Base.php");
 
-class KMUnit extends Base {
+class KMWitel extends Base {
 
   function __construct(){
-    $this->table = "km_unit";
+    $this->table = "km_witel";
     $this->count = 12;
   }
 

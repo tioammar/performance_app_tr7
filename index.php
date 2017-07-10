@@ -1,5 +1,8 @@
 <!doctype html>
 <?php
+  require_once("modules/config.php");
+  require_once("modules/model/Notification.php");
+  
   session_start();
   $session = $_SESSION;
 
@@ -15,7 +18,7 @@
   // $json = json_encode($_SESSION);
   // echo $json;
   $units = array("CCM", "RWS", "EGBIS", "EnD", "RNO", "ROC", "MSO", "BPP", "PCF", "GA", "HC");
-  $unitsQuad = array("EnD", "RNO", "ROC", "MSO");
+  $witel = array("Makasar", "Sulselbar", "Sulteng", "Gorontalo", "Suma", "Sultra", "Maluku", "Pabar", "Papua");
   // $revenue = array("Consumer", "Wholesale", "EGBIS");
   // $assurance = array("SLG", "GAUL", "Q GGN");
   // $cat = array("Makasar", "Sulselbar", "Sulteng", "Gorontalo", "Sulut & Malut", "Sultra", "Maluku", "Papua Barat", "Papua");
@@ -37,7 +40,7 @@
 </head>
 <header>
   <?php
-  if($page == "adminall" || $page == "adminallquad" || $page == "adminallqw" || $page == "quickwin"){
+  if($page == "adminall" || $page == "adminwitel" || $page == "adminallqw" || $page == "quickwin" || $page == "adminallwitel"){
     echo "<nav class='nav-extended'>";
   } else {
     echo "<nav>";
@@ -51,14 +54,14 @@
         <li><a href='#' data-activates='slide-out' class='side-nav-trig black-text'><i class='material-icons left'>menu</i></a></li>";
         }
       ?>
-        <li><a class="logo" href="?page=main">KM Online TREG 7</a></li>
+        <li><a class="logo" href="?page=main">Dashboard Kinerja TREG 7</a></li>
       </ul>
       <ul class="right">
         <li><img src="img/woow.png" alt="" class="profile"></li>
         <!--li><img src="img/logo.png" alt="" class="profile"></li-->
       </ul>
       <?php
-      if($page == "adminall" || $page == "adminallquad" || $page == "adminallqw" || $page == "quickwin"){
+      if($page == "adminall" || $page == "adminallwitel" || $page == "adminwitel" || $page == "adminallqw" || $page == "quickwin"){
         include "include/tabs/".$page.".php";
       }
       ?>
@@ -89,32 +92,38 @@
       switch($session['level']){
         case ADMIN_SM:
           $linkkm = "?page=admin";
-          $linkquad = "?page=adminquad";
           $linkqw = "?page=adminqw";
+          $linkwit = "?page=adminwitel";
           break;
         case ADMIN_UNIT:
           $linkkm = "?page=admin";
-          $linkquad = "?page=adminquad";
           $linkqw = "?page=adminqw";
+          $linkwit = "?page=adminwitel";
           break;          
         case ADMIN_ALL:
           $linkkm = "?page=adminall";
-          $linkquad = "?page=adminallquad";
           $linkqw = "?page=adminallqw";
+          $linkwit = "?page=adminallwitel";
+          break;          
+        case ADMIN_WITEL:
+          $linkkm = "";
+          $linkqw = "";
+          $linkwit = "?page=adminwitel";
           break;
         default:
           $linkkm = "#";
-          $linkquad = "#";
           $linkqw = "#";
       }
       echo "
     <li><a class='subheader'>PIC</a></li>
     <li><a href='$linkkm'>KM Regional</a></li>
-    <!--li><a href='$linkqw'>Quick Win</a></li-->";
-      if(in_array($session['unit'], $unitsQuad) || $session['level'] == ADMIN_ALL){
-        echo "
-    <!--li><a href='$linkquad'>Quadrics</a></li-->";
-      }
+    <li><a href='$linkwit'>Witel</a></li>
+    <li><a href='$linkqw'>Quick Win</a></li>";
+      $notifikasi = new Notification($session['unit'], "program");
+      $ids = $notifikasi->getAll($session['level']);
+      $count = count($ids);
+      echo "
+    <li><a href='?page=notifications'><span class='new badge' data-badge-caption=''>$count</span>Notifikasi</a></li>";
     }
     echo "
     <li><div class='divider'></div></li>

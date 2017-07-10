@@ -63,7 +63,7 @@ class ExcelBase {
         $i = 0;
         $rowData = $sheet->rangeToArray('A' . $row . ':' . $columns . $row, NULL, TRUE, FALSE);
         $array = $rowData[0];
-        $Q = "INSERT INTO $this->table (l_1,l_2,l_3,l_4,$insertQuery unit,satuan,tahun,type) VALUES (
+        $Q = "INSERT INTO $this->table (l_1,l_2,l_3,l_4,$insertQuery unit,satuan,tahun,type, witel) VALUES (
                 '".$array[$i]."','".$array[$i+1]."', '".$array[$i+2]."','".$array[$i+3]."',";
         $b = 1;
         $bv = $i + 3;
@@ -102,7 +102,7 @@ class ExcelBase {
         }
 
         $Q1 = $vbobot.$vtarget.$vreal.$vstt;
-        $Q2 = $Q.$Q1."'".$array[$vs+1]."','".$array[$vs+2]."','".$array[$vs+3]."','".$array[$vs+4]."')";
+        $Q2 = $Q.$Q1."'".$array[$vs+1]."','".$array[$vs+2]."','".$array[$vs+3]."','".$array[$vs+4]."','".$array[$vs+5]."')";
         echo $Q2;
         $this->mysqli->query($Q2);
       }

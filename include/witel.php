@@ -1,10 +1,7 @@
 <?php  
-if($session['level'] != ADMIN_ALL){
-  header("Location:./?page=main");
-}
-require_once("modules/model/KM.php");
+require_once("modules/model/KMWitel.php");
 require_once("modules/Hitung.php");
-require_once("modules/view/ViewQuickWin.php");
+require_once("modules/view/ViewKMWitel.php");
 ?>
 <div class='km'>
   <div class='row'>
@@ -12,14 +9,14 @@ require_once("modules/view/ViewQuickWin.php");
       <select id='tw'>
         <option value='' disabled>Pilih Bulan</option>
         <?php
-        $view = new ViewQuickWin(ADMIN_ALL, null);
+        $view = new ViewKMWitel(ADMIN_ALL, null);
         $view->setFilter("Bulan");
         ?>
       </select>
     </div>
   </div>
 <?php
-foreach($units as $unit_name){
+foreach($witel as $unit_name){
   echo "
   <div id='$unit_name' class='card white z-depth-2 contain'>
       <div class='card-content black-text'>
@@ -27,15 +24,16 @@ foreach($units as $unit_name){
         <table class='bordered'>"; 
   $view->setUnit($unit_name);
   $view->setHeader();
+  $view->setUser(USER);
   $table = $view->setTable();
   echo "
           <tbody>";
-  $Q = "SELECT DISTINCT l_1 FROM quickwin WHERE `unit` = '$unit_name'";
+  $Q = "SELECT DISTINCT l_1 FROM km_witel WHERE `witel` = '$unit_name'";
   $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
   $rows = $mysqli->query($Q);
   $hitung = new Hitung($view->count);
   while($row = $rows->fetch_array()){
-    $qw = QuickWin::load($row['l_1'], 1);
+    $qw = KMWitel::load($row['l_1'], 1);
     $level = 1;
     $ach_all = $hitung->hitung($qw, 1, $unit_name);
     $table->row($qw, $ach_all, $level);
@@ -49,6 +47,5 @@ foreach($units as $unit_name){
     </div>
   </div>";
 }
-$view->adminallupload();
 ?>
 </div>

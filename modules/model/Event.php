@@ -4,7 +4,7 @@ require_once(__DIR__."/../config.php");
 class Event {
 
   public $message;
-  public $subject; // editor
+  public $subj; // editor
   public $dest;
   public $unit;
   public $level; // current user level

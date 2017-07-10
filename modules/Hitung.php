@@ -21,10 +21,14 @@ class Hitung {
         if($target == 0){
           $ach_1 = 0;
         } else {
-          if($model->type == TYPE_NORMAL){
-            $ach_1 = $real/$target;
+          if($model->status[$i] == STATUS_RELEASED){
+            if($model->type == TYPE_NORMAL){
+              $ach_1 = $real/$target;
+            } else {
+              $ach_1 = $target/$real;
+            }
           } else {
-            $ach_1 = $target/$real;
+            $ach_1 = 0;
           }
         }
         $ach_2 = $ach_1 * $bobot;

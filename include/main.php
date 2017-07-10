@@ -19,7 +19,7 @@ require_once("modules/view/ViewKM.php");
 $unit = null;
   echo "
   <div id='tr7' class='card white z-depth-2 contain'>
-      <div class='card-content black-text'>
+      <div class='card-content black-text scrolled'>
       <span class='card-title'>KM Telkom Regional VII</span>
         <table class='bordered'>";
   $view->setHeader();      

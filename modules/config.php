@@ -13,15 +13,19 @@ define("QUERY_FAILED", 0);
 define("ADMIN_UNIT", "adminunit");
 define("ADMIN_SM", "adminsm");
 define("ADMIN_ALL", "adminall");
+define("ADMIN_WITEL", "adminwitel");
 define("USER", "user");
 
 define("ALL_UNIT", "all");
 
+define("STATUS_ADDED", "added");
 define("STATUS_EDITED", "edited");
 define("STATUS_APPROVED", "approved");
 define("STATUS_RELEASED", "released");
-define("STATUS_REJECTED", "rejected");
 define("STATUS_NOT_RELEASED", "notreleased");
+define("STATUS_REJECTED", "rejected");
+define("STATUS_APPROVED_WITEL", "approvedwitel");
+define("STATUS_REJECTED_WITEL", "rejectedwitel");
 
 define("UPLOAD_OK", 1);
 define("UPLOAD_NOK", 0);

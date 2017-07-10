@@ -8,9 +8,9 @@ class ViewQuickWin extends View {
   public $updateType = "updateqw";
   public $uploadType = "uploadqw";
   public $useBobot = false;
-  public $count = 6;
+  public $count = 12;
 
   public function setTable(){
-    return new TableQuickWin($this);
+    return new TableQuickWin($this, "quickwin");
   }
 }

@@ -1,10 +1,10 @@
 <?php  
-if($session['level'] != ADMIN_ALL){
+if($session['level'] == ADMIN_ALL || $session['level'] == USER){
   header("Location:./?page=main");
 }
-require_once("modules/model/KM.php");
+require_once("modules/model/KMWitel.php");
 require_once("modules/Hitung.php");
-require_once("modules/view/ViewQuickWin.php");
+require_once("modules/view/ViewKMWitel.php");
 ?>
 <div class='km'>
   <div class='row'>
@@ -12,30 +12,37 @@ require_once("modules/view/ViewQuickWin.php");
       <select id='tw'>
         <option value='' disabled>Pilih Bulan</option>
         <?php
-        $view = new ViewQuickWin(ADMIN_ALL, null);
+        $view = new ViewKMwitel($_SESSION['level'], null);
         $view->setFilter("Bulan");
         ?>
       </select>
     </div>
   </div>
 <?php
-foreach($units as $unit_name){
+if($session['level'] == "adminwitel"){
+  $witel = array($session['unit']);   
+}
+foreach($witel as $unit_name){
   echo "
   <div id='$unit_name' class='card white z-depth-2 contain'>
       <div class='card-content black-text'>
-      <span class='card-title'>Quick Win $unit_name 2017</span>
-        <table class='bordered'>"; 
-  $view->setUnit($unit_name);
+      <span class='card-title'>Witel $unit_name 2017</span>
+        <table class='bordered'>";
+  $unit = $_SESSION['unit']; 
   $view->setHeader();
   $table = $view->setTable();
   echo "
           <tbody>";
-  $Q = "SELECT DISTINCT l_1 FROM quickwin WHERE `unit` = '$unit_name'";
+  if($session['level'] == "adminwitel"){
+    $Q = "SELECT DISTINCT l_1 FROM km_witel WHERE `witel` = '$unit'";    
+  } else {
+    $Q = "SELECT DISTINCT l_1 FROM km_witel WHERE `witel` = '$unit_name' AND `unit` = '$unit'";
+  }
   $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
   $rows = $mysqli->query($Q);
   $hitung = new Hitung($view->count);
   while($row = $rows->fetch_array()){
-    $qw = QuickWin::load($row['l_1'], 1);
+    $qw = KMWitel::load($row['l_1'], 1);
     $level = 1;
     $ach_all = $hitung->hitung($qw, 1, $unit_name);
     $table->row($qw, $ach_all, $level);

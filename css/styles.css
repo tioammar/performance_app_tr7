@@ -108,6 +108,11 @@ p.revenue-main {
   text-indent: 25px;
 }
 
+.scrolled {
+  overflow-y: scroll;
+  height: 380px;
+}
+
 .big-text {
   font-size: 45px;
   font-weight: bold;

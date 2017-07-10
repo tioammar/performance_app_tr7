@@ -11,6 +11,6 @@ class ViewKM extends View {
   public $count = 4;
 
   public function setTable(){
-    return new TableKM($this);
+    return new TableKM($this, "km");
   }
 }

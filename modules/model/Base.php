@@ -4,6 +4,8 @@ class Base {
   public $id;
   public $indikator = array();
   public $satuan;
+  public $witel;
+  public $unit;
   public $tahun;
   public $bobot = array();
   public $realisasi = array();
@@ -37,10 +39,15 @@ class Base {
     if($r = $row->fetch_array()){
       $this->id = $r['id'];
       $i = 1;
+      $this->indikator['l_1'] = $r['l_1'];
+      $this->indikator['l_2'] = $r['l_2'];
+      $this->indikator['l_3'] = $r['l_3'];
+      $this->indikator['l_4'] = $r['l_4'];
       $this->tahun = $r['tahun'];
       $this->satuan = $r['satuan'];
+      $this->witel = $r['witel'];
+      $this->unit = $r['unit'];
       while($i <= $this->count){
-        $this->indikator['l_'.$i] = $r['l_'.$i];
         $this->bobot[$i] = $r['bobot_'.$i];
         $this->target[$i] = $r['tar_'.$i];
         $this->realisasi[$i] = $r['real_'.$i];

@@ -10,10 +10,10 @@ require_once("modules/view/ViewQuickWin.php");
   <div class='row'>
     <div class='input-field col s3 offset-s9'>
       <select id='tw'>
-        <option value='' disabled>Pilih Minggu</option>
+        <option value='' disabled>Pilih Bulan</option>
         <?php
         $view = new ViewQuickWin($session['level'], $session['unit']);
-        $view->setFilter("Minggu");
+        $view->setFilter("Bulan");
         ?>
       </select>
     </div>
