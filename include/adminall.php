@@ -1,5 +1,5 @@
 <?php  
-if($session['level'] != ADMIN_ALL){
+if($session['level'] != ADMIN_ALL && $session['level'] != ADMIN_SM){
   header("Location:./?page=main");
 }
 require_once("modules/model/KM.php");
@@ -10,15 +10,18 @@ require_once("modules/view/ViewKM.php");
   <div class='row'>
     <div class='input-field col s3 offset-s9'>
       <select id='tw'>
-        <option value='' disabled>Pilih TW</option>
+        <option value='' disabled>Pilih Bulan</option>
         <?php
-        $view = new ViewKM(ADMIN_ALL, null);
-        $view->setFilter("Triwulan");
+        $view = new ViewKM($session['level'], null);
+        $view->setFilter("Bulan");
         ?>
       </select>
     </div>
   </div>
 <?php
+if($session['level'] == ADMIN_SM){
+  $view->setSMUnit($session['unit']);
+}
 foreach($units as $unit_name){
   echo "
   <div id='$unit_name' class='card white z-depth-2 contain'>
@@ -35,12 +38,12 @@ foreach($units as $unit_name){
   $rows = $mysqli->query($Q);
   $hitung = new Hitung($view->count);
   while($row = $rows->fetch_array()){
-    $km = KM::load($row['l_1'], 1);
+    $qw = KM::load($row['l_1'], 1);
     $level = 1;
-    $ach_all = $hitung->hitung($km, 1, $unit_name);
-    $table->row($km, $ach_all, $level);
-    if($level < $km->len){
-      $table->sub($km, $level);
+    $ach_all = $hitung->hitung($qw, 1, $unit_name);
+    $table->row($qw, $ach_all, $level);
+    if($level < $qw->len){
+      $table->sub($qw, $level);
     }
   }
   echo "
@@ -49,6 +52,8 @@ foreach($units as $unit_name){
     </div>
   </div>";
 }
-$view->adminallupload();
+if($session['level'] == ADMIN_ALL){
+  $view->adminallupload();
+}
 ?>
 </div>

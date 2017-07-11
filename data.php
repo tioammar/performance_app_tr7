@@ -83,6 +83,25 @@ if(isset($_GET['id']) && isset($_GET['t'])){
     }
   }
 
+  if(isset($_GET['addsupportwitel'])){
+    if(!isset($_SESSION['level'])){
+      header("Location: ./?page=main");
+    } else {
+      if($_SESSION['level'] == USER) header("Location: ./?page=main");
+    }
+    $process = new Process($id, $t, "support", $_SESSION['unit']); // id as item_id
+    $dest = $_POST['unit'];
+    $value = $_POST['item'];
+    $type = $_POST['type'];
+    $item_type = $_GET['type'];
+    if($process->addSupportWitel($value, $dest, $type, $item_type) == QUERY_SUCCESS){
+      // echo "?page=detail&id=$id&type=$item_type";
+      header("Location: ./?page=detail&id=$id&type=$item_type");
+    } else {
+      echo "Add Support Failed";
+    }
+  }
+
   if(isset($_GET['addsupport'])){
     if(!isset($_SESSION['level'])){
       header("Location: ./?page=main");
@@ -90,12 +109,13 @@ if(isset($_GET['id']) && isset($_GET['t'])){
       if($_SESSION['level'] == USER) header("Location: ./?page=main");
     }
     $process = new Process($id, $t, "support", $_SESSION['unit']); // id as item_id
-    $witel = $_POST['witel'];
+    $dest = $_POST['unit'];
     $value = $_POST['item'];
     $type = $_POST['type'];
     $item_type = $_GET['type'];
-    if($process->addSupport($value, $witel, $type, $item_type) == QUERY_SUCCESS){
-      header("Location: ./");
+    if($process->addSupport($value, $dest, $type, $item_type) == QUERY_SUCCESS){
+      // echo "?page=detail&id=$id&type=$item_type";
+      header("Location: ./?page=detail&id=$id&type=$item_type");
     } else {
       echo "Add Support Failed";
     }
@@ -110,8 +130,8 @@ if(isset($_GET['id']) && isset($_GET['t'])){
     $process = new Process($id, $t, "actionplan", $_SESSION['unit']); // id as item_id
     $value = $_POST['item'];
     $type = $_GET['type'];
-    if($process->addAction($value, type) == QUERY_SUCCESS){
-      // header("Location: ./");
+    if($process->addAction($value, $type) == QUERY_SUCCESS){
+      header("Location: ./?page=detail&id=$id&type=$type");
     } else {
       echo "Add Action Failed";
     }
@@ -127,7 +147,7 @@ if(isset($_GET['id']) && isset($_GET['t'])){
     $value = $_POST['item'];
     $type = $_GET['type'];
     if($process->addAction($value, $type) == QUERY_SUCCESS){
-      // header("Location: ./");
+      header("Location: ./?page=detail&id=$id&type=$type");
     } else {
       echo "Add Lesson Failed";
     }
@@ -140,8 +160,9 @@ if(isset($_GET['id']) && isset($_GET['t'])){
       if($_SESSION['level'] == USER) header("Location: ./?page=main");
     }
     $process = new Process($id, $t, "support", $_SESSION['unit']);
+    $type = $_GET['type'];
     if($process->deleteSupport() == QUERY_SUCCESS){
-      header("Location: ./");
+      header("Location: ./?page=detail&id=$id&type=$type");
     } else echo "Update Status Failed";
   }
 
@@ -152,8 +173,9 @@ if(isset($_GET['id']) && isset($_GET['t'])){
       if($_SESSION['level'] == USER) header("Location: ./?page=main");
     }
     $process = new Process($id, $t, "lesson", $_SESSION['unit']);
+    $type = $_GET['type'];
     if($process->deleteLesson() == QUERY_SUCCESS){
-      header("Location: ./");
+      header("Location: ./?page=detail&id=$id&type=$type");
     } else echo "Delete Failed";
   }
 
@@ -164,8 +186,9 @@ if(isset($_GET['id']) && isset($_GET['t'])){
       if($_SESSION['level'] == USER) header("Location: ./?page=main");
     }
     $process = new Process($id, $t, "actionplan", $_SESSION['unit']);
+    $type = $_GET['type'];
     if($process->deleteAction() == QUERY_SUCCESS){
-      header("Location: ./");
+      header("Location: ./?page=detail&id=$id&type=$type");
     } else echo "Delete Failed";
   }
 
@@ -177,9 +200,24 @@ if(isset($_GET['id']) && isset($_GET['t'])){
     }
     $process = new Process($id, $t, "support", $_SESSION['unit']);
     $status = $_GET['stt'];
-    $witel = $_GET['witel'];
+    $unit2 = $_GET['unit'];
     $message = $status != STATUS_REJECTED_WITEL ? "" : $_POST['message'];
-    if($process->updateStatusSupport($status, $message, $witel) == QUERY_SUCCESS){
+    if($process->updateStatusSupport($status, $message, $unit2) == QUERY_SUCCESS){
+      header("Location: ./");
+    } else echo "Update Status Failed";
+  } 
+
+  if(isset($_GET['statussupportwitel'])){
+    if(!isset($_SESSION['level'])){
+      header("Location: ./?page=main");
+    } else {
+      if($_SESSION['level'] == USER) header("Location: ./?page=main");
+    }
+    $process = new Process($id, $t, "support", $_SESSION['unit']);
+    $status = $_GET['stt'];
+    $witel = $_GET['unit'];
+    $message = $status != STATUS_REJECTED ? "" : $_POST['message'];
+    if($process->updateStatusSupportWitel($status, $message, $witel) == QUERY_SUCCESS){
       header("Location: ./");
     } else echo "Update Status Failed";
   } 

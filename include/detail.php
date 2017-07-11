@@ -6,7 +6,13 @@ require_once("modules/view/DetailTableView.php");
 require_once("modules/model/Support.php");
 require_once("modules/model/ActionPlan.php");
 require_once("modules/model/Lesson.php");
+require_once("modules/model/KM.php");
+require_once("modules/model/QuickWin.php");
+require_once("modules/model/KMWitel.php");
 
+if(!isset($_GET['type']) || $_GET['type'] == ""){
+  header("Location: ./");
+}
 $id = $_GET['id'];
 $type = $_GET['type'];
 if($type == "km"){
@@ -25,6 +31,22 @@ if($type == "km"){
   $view = new DetailViewKMWitel($id);
   $table = $view->setTable();
 }
+
+// User Filter
+if($_SESSION['level'] == ADMIN_WITEL){
+  if($model->witel != $_SESSION['unit']){
+    header("Location: ./");
+  }
+} else if($_SESSION['level'] == ADMIN_UNIT){
+  if($model->unit != $_SESSION['unit']){
+    header("Location: ./");
+  }
+  if($type == "km_witel"){
+    header("Location: ./");
+  }  
+}
+
+$view->setUnit($_SESSION['unit']);
 $view->setUser($_SESSION['level']);
 ?>
 
@@ -51,7 +73,7 @@ $view->setUser($_SESSION['level']);
       <table class='striped' id='support'>
         <thead>
           <th>Support Needed</th>
-          <th>Witel</th>
+          <th>Unit</th>
           <th>Type</th>
           <th></th>
         </thead>
@@ -76,38 +98,76 @@ $view->setUser($_SESSION['level']);
       </table>
     </div>";
 
-    if($_SESSION['level'] == ADMIN_UNIT){
-      echo "
-      <a class='modal-trigger-support waves-effect waves-light btn' data-count='$i'>+ Support Needed</a>
-      <div class='modal-add-support-$i modal small-modal' id='modal-add-support-$i'>
-        <div class='modal-content'>
-          <form action='data.php?addsupport&id=$id&t=$i&type=$type' method='post' enctype='multipart/form-data'>
-            <input type='text' Placeholder='Support Needed Periode $i' name='item'/>
-            <div class='row'>
-              <div class='col s4'>
-                <select name='witel'>
-                  <option value='' disabled selected>Pilih Witel</option>
-                  <option value='MAKASAR'>Witel Makasar</option>
-                  <option value='SULSELBAR'>Witel Sulselbar</option>
-                  <option value='SUMA'>Witel Suma</option>
-                </select>
+    if($type == "km_witel"){
+      if($_SESSION['level'] == ADMIN_WITEL && $model->witel == $_SESSION['unit']){
+        echo "
+        <a class='modal-trigger-support waves-effect waves-light btn' data-count='$i'>+ Support Needed</a>
+        <div class='modal-add-support-$i modal small-modal' id='modal-add-support-$i'>
+          <div class='modal-content'>
+            <form action='data.php?addsupportwitel&id=$id&t=$i&type=$type' method='post' enctype='multipart/form-data'>
+              <input type='text' Placeholder='Support Needed Periode $i' name='item'/>
+              <div class='row'>
+                <div class='col s4'>
+                  <select name='unit'>
+                    <option value='' disabled selected>Pilih Unit</option>";
+                    foreach($units as $unit){
+                    echo "<option value='unit'>$unit</option>";
+                    }
+                  echo "
+                  </select>
+                </div>
+                <div class='col s4'>
+                  <select name='type'>
+                    <option value='' disabled selected>Pilih Tipe</option>
+                    <option value='Process'>Process</option>
+                    <option value='People'>People</option>
+                    <option value='Tools'>Tools</option>
+                  </select>
+                </div>
+                <div class='col s4'>
+                </div>
               </div>
-              <div class='col s4'>
-                <select name='type'>
-                  <option value='' disabled selected>Pilih Tipe</option>
-                  <option value='Process'>Process</option>
-                  <option value='People'>People</option>
-                  <option value='Tools'>Tools</option>
-                </select>
-              </div>
-              <div class='col s4'>
-              </div>
-            </div>
-            <button type='submit' class='btn blue'>Kirim</button>
-          </form>
+              <button type='submit' class='btn blue'>Kirim</button>
+            </form>
+          </div>
         </div>
-      </div>
-      <div class='row'></div>";
+        <div class='row'></div>";
+      }
+    } else {
+      if($_SESSION['level'] == ADMIN_UNIT && $model->unit == $_SESSION['unit']){
+        echo "
+        <a class='modal-trigger-support waves-effect waves-light btn' data-count='$i'>+ Support Needed</a>
+        <div class='modal-add-support-$i modal small-modal' id='modal-add-support-$i'>
+          <div class='modal-content'>
+            <form action='data.php?addsupport&id=$id&t=$i&type=$type' method='post' enctype='multipart/form-data'>
+              <input type='text' Placeholder='Support Needed Periode $i' name='item'/>
+              <div class='row'>
+                <div class='col s4'>
+                  <select name='unit'>
+                    <option value='' disabled selected>Pilih Unit</option>";
+                    foreach($units as $unit){
+                    echo "<option value='$unit'>$unit</option>";
+                    }
+                  echo "
+                  </select>
+                </div>
+                <div class='col s4'>
+                  <select name='type'>
+                    <option value='' disabled selected>Pilih Tipe</option>
+                    <option value='Process'>Process</option>
+                    <option value='People'>People</option>
+                    <option value='Tools'>Tools</option>
+                  </select>
+                </div>
+                <div class='col s4'>
+                </div>
+              </div>
+              <button type='submit' class='btn blue'>Kirim</button>
+            </form>
+          </div>
+        </div>
+        <div class='row'></div>";
+      }     
     }
     
     echo "
@@ -136,19 +196,17 @@ $view->setUser($_SESSION['level']);
       </table>
     </div>";
 
-    if($_SESSION['level'] == ADMIN_UNIT){
-    echo "
-      <a class='modal-trigger-lesson waves-effect waves-light btn' data-count='$i'>+ Lesson Learned</a>
-      <div class='modal-add-lesson-$i modal small-modal' id='modal-add-lesson-$i'>
-        <div class='modal-content'>
-          <form action='data.php?addlesson&id=$id&t=$i&type=$type' method='post' enctype='multipart/form-data'>
-            <input type='text' Placeholder='Lesson Learned Periode $i' name='item'/>
-            <button type='submit' class='btn blue'>Kirim</button>
-          </form>
+      echo "
+        <a class='modal-trigger-lesson waves-effect waves-light btn' data-count='$i'>+ Lesson Learned</a>
+        <div class='modal-add-lesson-$i modal small-modal' id='modal-add-lesson-$i'>
+          <div class='modal-content'>
+            <form action='data.php?addlesson&id=$id&t=$i&type=$type' method='post' enctype='multipart/form-data'>
+              <input type='text' Placeholder='Lesson Learned Periode $i' name='item'/>
+              <button type='submit' class='btn blue'>Kirim</button>
+            </form>
+          </div>
         </div>
-      </div>
-      <div class='row'></div>";
-    }
+        <div class='row'></div>";
 
     echo "
       <div class='row'>
@@ -176,18 +234,16 @@ $view->setUser($_SESSION['level']);
       </table>
     </div>";
 
-    if($_SESSION['level'] == ADMIN_UNIT){
-      echo "
-      <a class='modal-trigger-action waves-effect waves-light btn' data-count='$i'>+ Action Plan</a>
-      <div class='modal-add-action-$i modal small-modal' id='modal-add-action-$i'>
-        <div class='modal-content'>
-          <form action='data.php?addaction&id=$id&t=$i&type=$type' method='post' enctype='multipart/form-data'>
-            <input type='text' Placeholder='Action Plan Periode $i' name='item'/>
-            <button type='submit' class='btn blue'>Kirim</button>
-          </form>
-        </div>
-      </div>";
-    }
+        echo "
+        <a class='modal-trigger-action waves-effect waves-light btn' data-count='$i'>+ Action Plan</a>
+        <div class='modal-add-action-$i modal small-modal' id='modal-add-action-$i'>
+          <div class='modal-content'>
+            <form action='data.php?addaction&id=$id&t=$i&type=$type' method='post' enctype='multipart/form-data'>
+              <input type='text' Placeholder='Action Plan Periode $i' name='item'/>
+              <button type='submit' class='btn blue'>Kirim</button>
+            </form>
+          </div>
+        </div>";
     echo "
   </div>";
   }

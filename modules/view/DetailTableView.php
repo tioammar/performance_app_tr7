@@ -19,10 +19,10 @@ class DetailTableView {
     if($stt == STATUS_ADDED){
       $approved = ""; // enable all button
       $rejected = "";
-    } else if($stt == STATUS_APPROVED_WITEL){
+    } else if($stt == STATUS_APPROVED){
       $rejected = "";
       $editor_stt = "disabled";
-    } else if($stt == STATUS_REJECTED_WITEL){
+    } else if($stt == STATUS_REJECTED){
       $approved = "";
     }
 
@@ -30,12 +30,12 @@ class DetailTableView {
     if($this->view->user != USER){
       switch($this->view->user){
         case ADMIN_UNIT:
-          $editor = "<a class='$editor_stt btn-floating btn-small red darken-3' href='data.php?delete$type&&id=$model->id&t=$model->periode'>
+          $editor = "<a class='$editor_stt btn-floating btn-small red darken-3' href='data.php?delete$type&id=$model->id&t=$model->periode&type=$this->type&item=$model->item_id'>
                       <i class='small material-icons'>close</i>
                     </a>";
           break;
         case ADMIN_SM:
-          $editor = "<a class='$approved btn-floating btn-small green' href='data.php?statussupport&stt=".STATUS_APPROVED."&id=$model->id&witel=$model->witel&t=$model->periode'>
+          $editor = "<a class='$approved btn-floating btn-small green' href='data.php?statussupportwitel&stt=".STATUS_APPROVED."&id=$model->id&unit=$model->unit&t=$model->periode'>
                       <i class='small material-icons'>done</i>
                     </a> 
                     <a class='$rejected btn-floating modal-trigger-rejwit btn-small red darken-3' data-id='$model->id' data-count='$model->periode'>
@@ -53,21 +53,25 @@ class DetailTableView {
             <td class=''>".$model->item."</td>";
       if($type == "support"){
         echo "
-            <td class=''>".$model->witel."</td>
+            <td class=''>".$model->dest."</td>
             <td class=''>".$model->type."</td>";
-            if($this->view->user == ADMIN_SM){
-              $this->view->editor($model);
-            }
+        if($this->view->user == ADMIN_SM){
+          $this->view->editor($model);
+        }
       }
       echo "
             <td class=''>";
-      if($this->view->user == ADMIN_UNIT || $this->view->user == ADMIN_WITEL){
         if($type == "support"){
-          $this->showEditor($model, $model->stt, $type);
+          if($this->view->user == ADMIN_SM){
+            if($this->view->unit == $model->dest){
+              $this->showEditor($model, $model->stt, $type);
+            }
+          } else {
+            $this->showEditor($model, $model->stt, $type);
+          }
         } else {
           $this->showEditor($model, null, $type);
         }
-      }
       echo "
             </td>";
       echo "       

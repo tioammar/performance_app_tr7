@@ -1,5 +1,5 @@
 <?php  
-if($session['level'] != ADMIN_ALL){
+if($session['level'] != ADMIN_ALL && $session['level'] != ADMIN_SM){
   header("Location:./?page=main");
 }
 require_once("modules/model/KMWitel.php");
@@ -12,19 +12,23 @@ require_once("modules/view/ViewKMWitel.php");
       <select id='tw'>
         <option value='' disabled>Pilih Bulan</option>
         <?php
-        $view = new ViewKMwitel(ADMIN_ALL, null);
+        $view = new ViewKMwitel($session['level'], null);
         $view->setFilter("Bulan");
         ?>
       </select>
     </div>
   </div>
 <?php
+if($session['level'] == ADMIN_SM){
+  $view->setSMUnit($session['unit']);
+}
+echo $view->unit;
 foreach($witel as $unit_name){
   echo "
   <div id='$unit_name' class='card white z-depth-2 contain'>
       <div class='card-content black-text'>
       <span class='card-title'>Witel $unit_name 2017</span>
-        <table class='bordered'>"; 
+        <table class='bordered'>";
   $view->setUnit($unit_name);
   $view->setHeader();
   $table = $view->setTable();
@@ -49,6 +53,8 @@ foreach($witel as $unit_name){
     </div>
   </div>";
 }
-$view->adminallupload();
+if($session['level'] == ADMIN_ALL){
+  $view->adminallupload();
+}
 ?>
 </div>

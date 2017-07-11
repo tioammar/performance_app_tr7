@@ -31,5 +31,49 @@ class DetailView {
       $i++;
     }
   }
+
+  function month($month){
+    switch($month){
+      case 1;
+        $div = "Januari";
+        break;
+      case 2:
+        $div = "Februari";
+        break;
+      case 3:
+        $div = "Maret";
+        break;
+      case 4:
+        $div = "April";
+        break;
+      case 5:
+        $div = "Mei";
+        break;
+      case 6:
+        $div = "Juni";
+        break;
+      case 7:
+        $div = "Juli";
+        break;
+      case 8:
+        $div = "Agustus";
+        break;
+      case 9:
+        $div = "September";
+        break;
+      case 10:
+        $div = "Oktober";
+        break;
+      case 11:
+        $div = "November";
+        break;
+      case 12:
+        $div = "Desember";
+        break;
+      default:
+        // do nothing
+    }
+    return $div;
+  }
 }
 ?>

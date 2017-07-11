@@ -4,6 +4,7 @@ class Support {
   public $id;
   public $item;
   public $unit;
+  public $dest;
   public $type;
   public $periode;
   public $stt;
@@ -21,6 +22,7 @@ class Support {
     $row = $mysqli->query($Q);
     if($r = $row->fetch_array()){
       $this->id = $r['id'];
+      $this->dest = $r['dest'];
       $this->item = $r['item'];
       $this->unit = $r['unit'];
       $this->type = $r['type'];

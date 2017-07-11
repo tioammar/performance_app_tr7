@@ -5,6 +5,7 @@ class View {
 
   public $user;
   public $unit;
+  public $smunit;
   public $mysqli;
   public $uri;
   public $count;
@@ -43,6 +44,10 @@ class View {
 
   function setUser($user){
     $this->user = $user;
+  }
+
+  function setSMUnit($unit){
+    $this->smunit = $unit;
   }
 
   public function setHeader(){

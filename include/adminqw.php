@@ -1,8 +1,8 @@
 <?php
-if($session['level'] == ADMIN_ALL || $session['level'] == USER){
+if($session['level'] == ADMIN_ALL || $session['level'] == USER || $session['level'] == ADMIN_SM){
   header("Location:./?page=main");
 }
-require_once("modules/model/KM.php");
+require_once("modules/model/QuickWin.php");
 require_once("modules/Hitung.php");
 require_once("modules/view/ViewQuickWin.php");
 ?>
@@ -32,11 +32,12 @@ $unit = $session['unit'];
   $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
   $rows = $mysqli->query($Q);
   $hitung = new Hitung($view->count);
+  $table = $view->setTable();
   while($row = $rows->fetch_array()){
     $qw = QuickWin::load($row['l_1'], 1);
     $level = 1;
     $ach_all = $hitung->hitung($qw, 1, $unit);
-    $view->row($qw, $ach_all, $level);
+    $table->row($qw, $ach_all, $level);
     if($level < $qw->len){
       $view->sub($qw, $level);
     }

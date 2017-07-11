@@ -1,5 +1,5 @@
 <?php  
-require_once("modules/model/KM.php");
+require_once("modules/model/QuickWin.php");
 require_once("modules/Hitung.php");
 require_once("modules/view/ViewQuickWin.php");
 ?>

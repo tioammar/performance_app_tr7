@@ -18,7 +18,7 @@ class DetailViewKMWitel extends DetailView {
     echo "
     <div class='modal-rejwit-$model->id-$model->periode modal small-modal' id='modal-rejwit-$model->id-$model->periode'>
       <div class='modal-content'>
-        <form action='data.php?statussupport&stt=".STATUS_REJECTED."&id=$model->id&unit=$model->unit&t=$model->periode' method='post' enctype='multipart/form-data'>
+        <form action='data.php?statussupportwitel&stt=".STATUS_REJECTED."&id=$model->id&unit=$model->unit&t=$model->periode' method='post' enctype='multipart/form-data'>
           <input type='text' Placeholder='Catatan' name='message'/>
           <button type='submit' class='btn blue'>Kirim</button>
         </form>

@@ -27,16 +27,51 @@ class Process {
     } else return QUERY_FAILED;
   }
 
-  function addSupport($value, $witel, $type, $item_type){
-    $Q = "INSERT INTO $this->table (item, witel, periode, item_id, type, unit, item_type, stt) VALUES ('$value', '$witel', '$this->t', '$this->id', '$type', '$this->unit', '$item_type', 'added')";
-    // echo "$Q";
+  function addSupportWitel($value, $dest, $type, $item_type){
+    $Q = "INSERT INTO $this->table (item, periode, dest, item_id, type, unit, item_type, stt) VALUES ('$value', '$this->t', '$dest', '$this->id', '$type', '$this->unit', '$item_type', 'added')";
+    $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+    if($mysqli->query($Q)){
+      $notif = new Notification($dest, $this->table); // dest fills unit column
+      $notif->setMessageSupportWitel("added", $mysqli->insert_id, $this->t, $this->unit); // unit as witel column
+      return $notif->send($message);
+    } else {
+      return QUERY_FAILED;
+    }
+  }  
+  
+  function addSupport($value, $dest, $type, $item_type){
+    $Q = "INSERT INTO $this->table (item, periode, dest, item_id, type, unit, item_type, stt) VALUES ('$value', '$this->t', '$dest', '$this->id', '$type', '$this->unit', '$item_type', 'added')";
     $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
     if($mysqli->query($Q)){
       $notif = new Notification($this->unit, $this->table);
-      $notif->setMessageSupport("added", $mysqli->insert_id, $this->t, $witel);
-      return $notif->sendSupport($message);
+      $notif->setMessageSupport("added", $mysqli->insert_id, $this->t, $dest);
+      return $notif->send("");
     } else {
       return QUERY_FAILED;
+    }
+  }
+
+  public function updateStatusSupport($value, $message, $dest){
+    $Q = "UPDATE $this->table SET `stt` = '$value' WHERE `id` = $this->id";
+    $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+    if($mysqli->query($Q)){
+      $notif = new Notification($this->unit, $this->table);
+      $notif->setMessageSupport($value, $this->id, $this->t, $dest);
+      return $notif->send($message);
+    } else {
+        return QUERY_FAILED;
+    }
+  }
+
+  public function updateStatusSupportWitel($value, $message, $witel){
+    $Q = "UPDATE $this->table SET `stt` = '$value' WHERE `id` = $this->id";
+    $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+    if($mysqli->query($Q)){
+      $notif = new Notification($this->unit, $this->table);
+      $notif->setMessageSupportWitel($value, $this->id, $this->t, $witel);
+      return $notif->send($message);
+    } else {
+        return QUERY_FAILED;
     }
   }
 
@@ -79,18 +114,6 @@ class Process {
       return $notif->send($message);
     } else {
       return QUERY_FAILED;
-    }
-  }
-
-  public function updateStatusSupport($value, $message, $witel){
-    $Q = "UPDATE $this->table SET `stt` = '$value' WHERE `id` = $this->id";
-    $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-    if($mysqli->query($Q)){
-      $notif = new Notification($this->unit, $this->table);
-      $notif->setMessageSupport($value, $this->id, $this->t, $witel);
-      return $notif->sendSupport($message);
-    } else {
-        return QUERY_FAILED;
     }
   }
 

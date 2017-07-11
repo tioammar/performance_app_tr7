@@ -4,7 +4,7 @@ require_once("DetailTableView.php");
 
 class DetailViewQuickWin extends DetailView {
 
-  public $count = 4;
+  public $count = 12;
 
   public function __construct($id){
     $this->itemId = $id;

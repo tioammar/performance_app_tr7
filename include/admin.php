@@ -1,5 +1,5 @@
 <?php
-if($session['level'] == ADMIN_ALL || $session['level'] == USER){
+if($session['level'] == ADMIN_ALL || $session['level'] == USER || $session['level'] == ADMIN_SM){
   header("Location:./?page=main");
 }
 require_once("modules/model/KM.php");

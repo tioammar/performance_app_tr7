@@ -56,6 +56,5 @@ foreach($witel as $unit_name){
     </div>
   </div>";
 }
-$view->adminallupload();
 ?>
 </div>

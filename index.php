@@ -5,7 +5,6 @@
   
   session_start();
   $session = $_SESSION;
-
   if(isset($session['nik'])){
     if(isset($_GET['page'])){
       $page = $_GET['page'];
@@ -40,7 +39,7 @@
 </head>
 <header>
   <?php
-  if($page == "adminall" || $page == "adminwitel" || $page == "adminallqw" || $page == "quickwin" || $page == "adminallwitel"){
+  if($page == "adminall" || $page == "adminwitel" || $page == "adminallqw" || $page == "quickwin" || $page == "adminallwitel" || $page == "witel"){
     echo "<nav class='nav-extended'>";
   } else {
     echo "<nav>";
@@ -61,7 +60,7 @@
         <!--li><img src="img/logo.png" alt="" class="profile"></li-->
       </ul>
       <?php
-      if($page == "adminall" || $page == "adminallwitel" || $page == "adminwitel" || $page == "adminallqw" || $page == "quickwin"){
+      if($page == "adminall" || $page == "adminallwitel" || $page == "adminwitel" || $page == "adminallqw" || $page == "quickwin" || $page == "witel"){
         include "include/tabs/".$page.".php";
       }
       ?>
@@ -84,16 +83,16 @@
       </div>
     </li>
     <li><a href='?page=main'>Beranda</a></li>
-    <!--li><a href='?page=quadrics'>Quadrics</a></li-->
-    <!--li><a href='?page=quickwin'>Quick Win</a></li-->";
+    <li><a href='?page=witel'>Flagging Witel</a></li>
+    <li><a href='?page=quickwin'>Quick Win</a></li>";
     if($session['level'] != USER){
       echo "
     <li><div class='divider'></div></li>";
       switch($session['level']){
         case ADMIN_SM:
-          $linkkm = "?page=admin";
-          $linkqw = "?page=adminqw";
-          $linkwit = "?page=adminwitel";
+          $linkkm = "?page=adminall";
+          $linkqw = "?page=adminallqw";
+          $linkwit = "?page=adminallwitel";
           break;
         case ADMIN_UNIT:
           $linkkm = "?page=admin";
@@ -117,7 +116,7 @@
       echo "
     <li><a class='subheader'>PIC</a></li>
     <li><a href='$linkkm'>KM Regional</a></li>
-    <li><a href='$linkwit'>Witel</a></li>
+    <li><a href='$linkwit'>Flagging Witel</a></li>
     <li><a href='$linkqw'>Quick Win</a></li>";
       $notifikasi = new Notification($session['unit'], "program");
       $ids = $notifikasi->getAll($session['level']);

@@ -1,8 +1,8 @@
 <?php  
-if($session['level'] != ADMIN_ALL){
+if($session['level'] != ADMIN_ALL && $session['level'] != ADMIN_SM){
   header("Location:./?page=main");
 }
-require_once("modules/model/KM.php");
+require_once("modules/model/QuickWin.php");
 require_once("modules/Hitung.php");
 require_once("modules/view/ViewQuickWin.php");
 ?>
@@ -12,13 +12,16 @@ require_once("modules/view/ViewQuickWin.php");
       <select id='tw'>
         <option value='' disabled>Pilih Bulan</option>
         <?php
-        $view = new ViewQuickWin(ADMIN_ALL, null);
+        $view = new ViewQuickWin($session['level'], null);
         $view->setFilter("Bulan");
         ?>
       </select>
     </div>
   </div>
 <?php
+if($session['level'] == ADMIN_SM){
+  $view->setSMUnit($session['unit']);
+}
 foreach($units as $unit_name){
   echo "
   <div id='$unit_name' class='card white z-depth-2 contain'>
@@ -49,6 +52,8 @@ foreach($units as $unit_name){
     </div>
   </div>";
 }
-$view->adminallupload();
+if($session['level'] == ADMIN_ALL){
+  $view->adminallupload();
+}
 ?>
 </div>

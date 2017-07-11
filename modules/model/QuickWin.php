@@ -5,7 +5,7 @@ class QuickWin extends Base {
 
   function __construct(){
     $this->table = "quickwin";
-    $this->count = 6;
+    $this->count = 12;
   }
 
   public static function load($indikator, $level){

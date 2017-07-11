@@ -237,10 +237,23 @@ class TableView {
         if($level == $model->len){
           echo "
             <td class='hides center-align $t'>";
+
           if($this->type == "km_witel"){
-            $this->showEditorWitel($model, $t, $model->status[$t], $model->witel);
+            if($this->view->user == ADMIN_SM){
+              if($model->unit == $this->view->smunit){
+                $this->showEditorWitel($model, $t, $model->status[$t], $model->witel);
+              }
+            } else {
+                $this->showEditorWitel($model, $t, $model->status[$t], $model->witel);
+            }
           } else {
-            $this->showEditor($model, $t, $model->status[$t]);
+            if($this->view->user == ADMIN_SM){
+              if($model->unit == $this->view->smunit){
+                $this->showEditor($model, $t, $model->status[$t]);
+              }
+            } else {
+                $this->showEditor($model, $t, $model->status[$t]);
+            }
           }
           echo " 
             </td>";

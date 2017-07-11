@@ -9,9 +9,10 @@ require_once("Support.php");
 class Notification extends Event {
 
   protected $table = "notification";
-  protected $witel;
+  protected $unit2;
   
   public function setMessage($value, $id, $tw){
+    $this->unit2 = $this->unit;
     $this->event = $this->build($value, $id, $tw);
     switch($value){
       case STATUS_APPROVED:
@@ -38,7 +39,7 @@ class Notification extends Event {
   }
 
   public function setMessageWitel($value, $id, $tw, $witel){
-    $this->witel = $witel;
+    $this->unit2 = $witel;
     $this->event = $this->buildWitel($value, $id, $tw);
     switch($value){
       case STATUS_APPROVED:
@@ -72,20 +73,38 @@ class Notification extends Event {
     }
   }
 
-  public function setMessageSupport($value, $id, $tw, $witel){
-    $this->witel = $witel;
+  public function setMessageSupport($value, $id, $tw, $unit2){
+    $this->unit2 = $unit2;
     $this->event = $this->buildSupport($value, $id, $tw);
-    
     switch($value){
       case STATUS_ADDED:
         $this->subj = ADMIN_UNIT;
-        $this->dest = ADMIN_WITEL;
+        $this->dest = ADMIN_SM;
         break;
-      case STATUS_REJECTED_WITEL:
-        $this->subj = ADMIN_WITEL;
+      case STATUS_REJECTED:
+        $this->subj = ADMIN_SM;
         $this->dest = ADMIN_UNIT;
         break;
-      case STATUS_APPROVED_WITEL:
+      case STATUS_APPROVED:
+        $this->subj = ADMIN_SM;
+        $this->dest = ADMIN_ALL;
+        break;
+    }
+  }  
+  
+  public function setMessageSupportWitel($value, $id, $tw, $witel){
+    $this->unit2 = $witel;
+    $this->event = $this->buildSupport($value, $id, $tw);
+    switch($value){
+      case STATUS_ADDED:
+        $this->subj = ADMIN_WITEL;
+        $this->dest = ADMIN_SM;
+        break;
+      case STATUS_REJECTED:
+        $this->subj = ADMIN_SM;
+        $this->dest = ADMIN_WITEL;
+        break;
+      case STATUS_APPROVED:
         $this->subj = ADMIN_WITEL;
         $this->dest = ADMIN_ALL;
         break;
@@ -95,23 +114,23 @@ class Notification extends Event {
   public function send($message){
     $log = new LogInterface($this->unit, $this->type);
     if($log->send($this) == QUERY_SUCCESS){
-      $Q = "INSERT INTO $this->table (event, subj, dest, type, unit, message, witel) VALUE ('$this->event', '$this->subj', '$this->dest', '$this->type', '$this->unit', '$message', '$this->witel')";
+      $Q = "INSERT INTO $this->table (event, subj, dest, type, unit, message, unit2) VALUE ('$this->event', '$this->subj', '$this->dest', '$this->type', '$this->unit', '$message', '$this->unit2')";
       if($this->mysqli->query($Q)){
         return QUERY_SUCCESS;
       } else return QUERY_FAILED;
     }
   }
 
-  public function sendSupport($message){
-    $log = new LogInterface($this->unit, $this->type);
-    if($log->send($this) == QUERY_SUCCESS){
-      $Q = "INSERT INTO $this->table (event, subj, dest, type, unit, message, witel) VALUE ('$this->event', '$this->subj', '$this->dest', '$this->type', '$this->unit', '$message', '$this->witel')";
-      // echo $Q;
-      if($this->mysqli->query($Q)){
-        return QUERY_SUCCESS;
-      } else return QUERY_FAILED;
-    }
-  }
+  // public function sendSupport($message){
+  //   $log = new LogInterface($this->unit, $this->type);
+  //   if($log->send($this) == QUERY_SUCCESS){
+  //     $Q = "INSERT INTO $this->table (event, subj, dest, type, unit, message, witel) VALUE ('$this->event', '$this->subj', '$this->dest', '$this->type', '$this->unit', '$message', '$this->witel')";
+  //     // echo $Q;
+  //     if($this->mysqli->query($Q)){
+  //       return QUERY_SUCCESS;
+  //     } else return QUERY_FAILED;
+  //   }
+  // }
 
   private function build($value, $id, $tw){
     $message = "";
@@ -188,7 +207,6 @@ class Notification extends Event {
         $message = "Support Needed: $indikator Bulan $sn->periode Telah Ditambahkan";
         break;
     }
-    echo $message;
     return $message;
   }
 }

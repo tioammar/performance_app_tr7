@@ -1,6 +1,9 @@
 <ul class='tabs tabs-transparent'>
 <?php
-$i = 0; 
+$i = 0;
+if($_SESSION['level'] == "adminwitel"){
+  $witel = $_SESSION['unit']; 
+}
 foreach($witel as $unit_name){
   if($i == 0){
     echo "<li class='tab col s3'><a class='active' href='#$unit_name'>$unit_name</a></li>";
