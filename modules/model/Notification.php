@@ -3,6 +3,7 @@ require_once(__DIR__."/../config.php");
 require_once("Event.php");
 require_once("KM.php");
 require_once("KMWitel.php");
+require_once("QuickWin.php");
 require_once("LogInterface.php");
 require_once("Support.php");
 
@@ -11,8 +12,10 @@ class Notification extends Event {
   protected $table = "notification";
   protected $unit2;
   
-  public function setMessage($value, $id, $tw){
-    $this->unit2 = $this->unit;
+  public function setMessage($value, $id, $tw, $unit2){
+    if($this->unit == $unit2){
+      $this->unit2 = "";
+    } else $this->unit2 = $unit2;
     $this->event = $this->build($value, $id, $tw);
     switch($value){
       case STATUS_APPROVED:
@@ -29,11 +32,11 @@ class Notification extends Event {
         break;
       case STATUS_NOT_RELEASED:
         $this->subj = ADMIN_ALL;
-        $dthis->dest = ADMIN_UNIT;
+        $this->dest = ADMIN_UNIT;
         break;
       case STATUS_RELEASED:
         $this->subj = ADMIN_ALL;
-        $this->dest = ADMIN_UNIT;
+        $this->dest = "";
         break;
     }
   }
@@ -56,7 +59,7 @@ class Notification extends Event {
         break;
       case STATUS_NOT_RELEASED:
         $this->subj = ADMIN_ALL;
-        $dthis->dest = ADMIN_UNIT;
+        $this->dest = ADMIN_UNIT;
         break;
       case STATUS_RELEASED:
         $this->subj = ADMIN_ALL;
@@ -64,11 +67,11 @@ class Notification extends Event {
         break;
       case STATUS_APPROVED_WITEL:
         $this->subj = ADMIN_WITEL;
-        $this->dest = ADMIN_UNIT;
+        $this->dest = "";
         break;
       case STATUS_REJECTED_WITEL:
         $this->subj = ADMIN_WITEL;
-        $this->dest = ADMIN_ALL;
+        $this->dest = ADMIN_UNIT;
         break;
     }
   }
@@ -182,7 +185,7 @@ class Notification extends Event {
       case STATUS_RELEASED:
         $message = "Realisasi $indikator Witel $witel Periode $tw Tidak Direlease";
         break;
-      case STATUS_REJECTETD_WITEL:
+      case STATUS_REJECTED_WITEL:
         $message = "Realisasi $indikator Witel $witel Periode $tw Telah Ditolak";
         break;
       case STATUS_APPROVED_WITEL:

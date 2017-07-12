@@ -27,9 +27,9 @@ class TableKMWitel extends TableView {
 
   public function rejEditor($id, $t, $witel){
     echo "
-    <div class='modal-reject-$id-$t modal small-modal' id='modal-$id-$t'>
+    <div class='modal-reject-$id-$t modal small-modal' id='modal-reject-$id-$t'>
       <div class='modal-content'>
-        <form action='data.php?type=".$this->view->statusType."&stt=".STATUS_REJECTED."&id=$id&t=$t&witel=$witel' method='post' enctype='multipart/form-data'>
+        <form action='data.php?".$this->view->statusType."&stt=".STATUS_REJECTED."&id=$id&t=$t&witel=$witel' method='post' enctype='multipart/form-data'>
           <input type='text' Placeholder='Catatan' name='message'/>
       </div>
       <div class='modal-footer'>
@@ -39,11 +39,11 @@ class TableKMWitel extends TableView {
     </div>";
   }
 
-  public function nrEditor($id, $t, $witel){ 
+  public function nrEditor($id, $t, $witel, $unit){ 
     echo "
     <div class='modal-nr-$id-$t modal small-modal' id='modal-nr-$id-$t'>
       <div class='modal-content'>
-        <form action='data.php?".$this->view->statusType."&stt=".STATUS_NOT_RELEASED."&id=$id&t=$t&witel=$witel' method='post' enctype='multipart/form-data'>
+        <form action='data.php?".$this->view->statusType."&stt=".STATUS_NOT_RELEASED."&id=$id&t=$t&witel=$witel&dest=$unit' method='post' enctype='multipart/form-data'>
           <input type='text' Placeholder='Catatan' name='message'/>
           <button type='submit' class='btn blue'>Kirim</button>
         </form>
@@ -51,11 +51,11 @@ class TableKMWitel extends TableView {
     </div>";
   }
 
-  public function witelEditor($id, $t, $witel){ 
+  public function witelEditor($id, $t, $witel, $unit){ 
     echo "
-    <div class='modal-wit-$id-$t modal small-modal' id='modal-nr-$id-$t'>
+    <div class='modal-rejwit-$id-$t modal small-modal' id='modal-rejwit-$id-$t'>
       <div class='modal-content'>
-        <form action='data.php?".$this->view->statusType."&stt=".STATUS_REJECTED_WITEL."&id=$id&t=$t&witel=$witel' method='post' enctype='multipart/form-data'>
+        <form action='data.php?".$this->view->statusType."&stt=".STATUS_REJECTED_WITEL."&id=$id&t=$t&witel=$witel&dest=$unit' method='post' enctype='multipart/form-data'>
           <input type='text' Placeholder='Catatan' name='message'/>
           <button type='submit' class='btn blue'>Kirim</button>
         </form>

@@ -75,5 +75,32 @@ class Hitung {
     }
     return $this->subAch($ach_sub_all);
   }
+
+  public function hitungBulan($models, $unit){
+    $ach_all = array();
+    for($i = 1; $i <= $this->count; $i++){
+      $ach_all[$i]['ach_sum'] = 0;
+      $ach_all[$i]['bobot'] = 0;
+      // $i = 0;
+      // $ach_all_bulan = array();
+      // $bobot_all_bulan = array();
+      foreach($models as $model){
+        $ach = $this->hitung($model, 1, $unit);
+        // echo "ach_sum:";
+        // echo $ach[$i]['ach_sum'];
+        // echo "bobot:";
+        // echo $ach[$i]['bobot'];
+        $ach_all[$i]['ach_sum'] = $ach_all[$i]['ach_sum'] + $ach[$i]['ach_sum'];
+        $ach_all[$i]['bobot'] = $ach_all[$i]['bobot'] + $ach[$i]['bobot']; 
+      }
+      if($ach_all[$i]['bobot'] == 0){
+        $ach_all[$i]['ach_show'] = 0;
+      } else {
+        $ach_all[$i]['ach_show'] = ($ach_all[$i]['ach_sum'] / $ach_all[$i]['bobot']) * 100;
+      }
+      // echo "Pencapaian $unit TW $i = ".$ach_all[$i]['ach_show']." % ";
+    }
+    return $ach_all;  
+  }
 }
 ?>

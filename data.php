@@ -19,11 +19,12 @@ if(isset($_GET['id']) && isset($_GET['t'])){
     } else {
       if($_SESSION['level'] == USER) header("Location: ./?page=main");
     }
-    $page = $_SESSION['level'] == ADMIN_ALL ? "adminall" : "admin";
+    $page = $_SESSION['level'] == ADMIN_UNIT ? "admin" : "adminall";
     $process = new Process($id, $t, "km", $_SESSION['unit']);
     $status = $_GET['stt'];
+    $unit2 = $_SESSION['level'] == ADMIN_ALL ? $_GET['dest'] : $_SESSION['unit'];
     $message = $status != STATUS_REJECTED ? "" : $_POST['message'];
-    if($process->updateStatus($status, $message) == QUERY_SUCCESS){
+    if($process->updateStatus($status, $message, $unit2) == QUERY_SUCCESS){
       header("Location: ./?page=$page");
     } else echo "Update Status Failed";
   } 
@@ -37,11 +38,12 @@ if(isset($_GET['id']) && isset($_GET['t'])){
     $process = new Process($id, $t, "km", $_SESSION['unit']);
     $real = $_POST['real'];
     $upload = new Upload("evidence/km/", $process);
+    $unit2 = $_SESSION['level'] == ADMIN_ALL ? $_GET['dest'] : $_SESSION['unit'];
     // $file = $_FILES['evid'];
     // $status = $upload->upload($file);
     $status = UPLOAD_OK;
     if($status == UPLOAD_OK){
-      if($process->updateReal($real) == QUERY_SUCCESS){
+      if($process->updateReal($real, $unit2) == QUERY_SUCCESS){
         header("Location: ./?page=admin");
       } else echo "Update Failed";
     }
@@ -53,11 +55,24 @@ if(isset($_GET['id']) && isset($_GET['t'])){
     } else {
       if($_SESSION['level'] == USER) header("Location: ./?page=main");
     }
-    $page = $_SESSION['level'] == ADMIN_ALL ? "adminallwitel" : "adminwitel";
-    $process = new Process($id, $t, "km_witel", $_SESSION['unit']);
+    $unit2 = $_SESSION['unit'];
+    if($_SESSION['level'] == ADMIN_WITEL || $_SESSION['level'] == ADMIN_UNIT){
+      $page = "adminwitel";
+    } else $page = "adminallwitel";
+    
+    if($_SESSION['level'] == ADMIN_WITEL || $_SESSION['level'] == ADMIN_ALL){
+      $unit2 = $_GET['dest'];
+    }
+    // $unit2 = $_SESSION['level'] == ADMIN_WITEL ? $_GET['dest'] : $_SESSION['unit'];
+    // $unit2 = $_SESSION['level'] == ADMIN_ALL ? $_GET['dest'] : $_SESSION['unit'];
+    $process = new Process($id, $t, "km_witel", $unit2);
     $status = $_GET['stt'];
     $witel = $_GET['witel'];
-    $message = $status != STATUS_REJECTED ? "" : $_POST['message'];
+    if($_SESSION['level'] != ADMIN_ALL){
+      $message = $status != STATUS_REJECTED ? "" : $_POST['message'];
+    } else {
+      $message = $status != STATUS_NOT_RELEASED ? "" : $_POST['message'];
+    }
     if($process->updateStatusWitel($status, $message, $witel) == QUERY_SUCCESS){
       header("Location: ./?page=$page");
     } else echo "Update Status Failed";
@@ -228,11 +243,16 @@ if(isset($_GET['id']) && isset($_GET['t'])){
     } else {
       if($_SESSION['level'] == USER) header("Location: ./?page=main");
     }
-    $page = $_SESSION['level'] == ADMIN_ALL ? "adminallqw" : "adminqw";
+    $page = $_SESSION['level'] == ADMIN_UNIT ? "adminqw" : "adminallqw";
     $process = new Process($id, $t, "quickwin", $_SESSION['unit']);
     $status = $_GET['stt'];
-    $message = $status != STATUS_REJECTED ? "" : $_POST['message'];
-    if($process->updateStatus($status, $message) == QUERY_SUCCESS){
+    if($_SESSION['level'] != ADMIN_ALL){
+      $message = $status != STATUS_REJECTED ? "" : $_POST['message'];
+    } else {
+      $message = $status != STATUS_NOT_RELEASED ? "" : $_POST['message'];
+    }
+    $unit2 = $_SESSION['level'] == ADMIN_ALL ? $_GET['dest'] : $_SESSION['unit'];
+    if($process->updateStatus($status, $message, $unit2) == QUERY_SUCCESS){
       header("Location: ./?page=$page");
     } else echo "Update Status Failed";
   }
@@ -243,15 +263,17 @@ if(isset($_GET['id']) && isset($_GET['t'])){
     } else {
       if($_SESSION['level'] == USER) header("Location: ./?page=main");
     }
+    $page = $_SESSION['level'] == ADMIN_UNIT ? "adminqw" : "adminallqw";
     $process = new Process($id, $t, "quickwin", $_SESSION['unit']);
     $real = $_POST['real'];
     $upload = new Upload("evidence/quickwin/", $process);
-    $file = $_FILES['evid'];
+    $unit2 = $_SESSION['level'] == ADMIN_ALL ? $_GET['dest'] : $_SESSION['unit'];
+    // $file = $_FILES['evid'];
     // $status = $upload->upload($file);
     $status = UPLOAD_OK;
     if($status == UPLOAD_OK){
-      if($process->updateReal($real) == QUERY_SUCCESS){
-        header("Location: ./?page=admin");
+      if($process->updateReal($real, $unit2) == QUERY_SUCCESS){
+        header("Location: ./?page=$page");
       } else echo "Update Failed";
     }
   }

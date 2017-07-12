@@ -124,7 +124,7 @@ class TableView {
                     </a>";    
           break;    
         case ADMIN_ALL:
-          $editor = "<a class='$released_stt btn-floating btn-small green' href='data.php?".$this->view->statusType."&stt=".STATUS_RELEASED."&id=$model->id&t=$t&witel=$witel'>
+          $editor = "<a class='$released_stt btn-floating btn-small green' href='data.php?".$this->view->statusType."&stt=".STATUS_RELEASED."&id=$model->id&t=$t&witel=$witel&dest=$model->unit'>
                       <i class='small material-icons'>done</i>
                     </a> 
                     <a class='$notreleased_stt btn-floating modal-trigger-nr btn-small red darken-3' data-id='$model->id' data-count='$t'>
@@ -135,7 +135,7 @@ class TableView {
           $editor = "<a class='$approved_witel btn-floating btn-small green' href='data.php?".$this->view->statusType."&stt=".STATUS_APPROVED_WITEL."&id=$model->id&t=$t&witel=$witel'>
                       <i class='small material-icons'>done</i>
                     </a> 
-                    <a class='$rejected_witel btn-floating modal-trigger-wit btn-small red darken-3' data-id='$model->id' data-count='$t'>
+                    <a class='$rejected_witel btn-floating modal-trigger-rejwit btn-small red darken-3' data-id='$model->id' data-count='$t'>
                       <i class='small material-icons'>close</i>
                     </a>";
           break;         
@@ -206,7 +206,7 @@ class TableView {
             </td>";
             if($this->type == "km_witel"){
               if($this->view->user == ADMIN_WITEL){
-                $this->witelEditor($model->id, $t, $model->witel);
+                $this->witelEditor($model->id, $t, $model->witel, $model->unit);
               }
               if($this->view->user == ADMIN_UNIT){
                 $this->editor($model->id, $t, $model->witel);
@@ -216,7 +216,7 @@ class TableView {
                 $this->rejEditor($model->id, $t, $model->witel);
               }
               if($this->view->user == ADMIN_ALL){
-                $this->nrEditor($model->id, $t, $model->witel);
+                $this->nrEditor($model->id, $t, $model->witel, $model->unit);
               }
             } else {
               if($this->view->user == ADMIN_UNIT){
@@ -227,7 +227,8 @@ class TableView {
                 $this->rejEditor($model->id, $t);
               }
               if($this->view->user == ADMIN_ALL){
-                $this->nrEditor($model->id, $t);
+                // echo $model->unit;
+                $this->nrEditor($model->id, $t, $model->unit);
               }
 
             }

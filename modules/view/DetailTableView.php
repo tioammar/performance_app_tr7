@@ -34,6 +34,11 @@ class DetailTableView {
                       <i class='small material-icons'>close</i>
                     </a>";
           break;
+        case ADMIN_WITEL:
+          $editor = "<a class='$editor_stt btn-floating btn-small red darken-3' href='data.php?delete$type&id=$model->id&t=$model->periode&type=$this->type&item=$model->item_id'>
+                      <i class='small material-icons'>close</i>
+                    </a>";
+          break;
         case ADMIN_SM:
           $editor = "<a class='$approved btn-floating btn-small green' href='data.php?statussupportwitel&stt=".STATUS_APPROVED."&id=$model->id&unit=$model->unit&t=$model->periode'>
                       <i class='small material-icons'>done</i>

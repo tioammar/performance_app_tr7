@@ -111,7 +111,7 @@ $view->setUser($_SESSION['level']);
                   <select name='unit'>
                     <option value='' disabled selected>Pilih Unit</option>";
                     foreach($units as $unit){
-                    echo "<option value='unit'>$unit</option>";
+                    echo "<option value='$unit'>$unit</option>";
                     }
                   echo "
                   </select>
@@ -196,6 +196,7 @@ $view->setUser($_SESSION['level']);
       </table>
     </div>";
 
+    if($_SESSION['level'] == ADMIN_UNIT || $_SESSION['level'] == ADMIN_WITEL){
       echo "
         <a class='modal-trigger-lesson waves-effect waves-light btn' data-count='$i'>+ Lesson Learned</a>
         <div class='modal-add-lesson-$i modal small-modal' id='modal-add-lesson-$i'>
@@ -207,6 +208,7 @@ $view->setUser($_SESSION['level']);
           </div>
         </div>
         <div class='row'></div>";
+    }
 
     echo "
       <div class='row'>
@@ -234,6 +236,7 @@ $view->setUser($_SESSION['level']);
       </table>
     </div>";
 
+    if($_SESSION['level'] == ADMIN_UNIT || $_SESSION['level'] == ADMIN_WITEL){
         echo "
         <a class='modal-trigger-action waves-effect waves-light btn' data-count='$i'>+ Action Plan</a>
         <div class='modal-add-action-$i modal small-modal' id='modal-add-action-$i'>
@@ -244,6 +247,7 @@ $view->setUser($_SESSION['level']);
             </form>
           </div>
         </div>";
+    }
     echo "
   </div>";
   }

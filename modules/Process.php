@@ -15,9 +15,9 @@ class Process {
      $this->unit = $unit;
   }
 
-  function updateReal($value){
+  function updateReal($value, $unit2){
     if($this->update($this->id, $this->t, $value, "real") == QUERY_SUCCESS){
-      return $this->updateStatus(STATUS_EDITED, "");
+      return $this->updateStatus(STATUS_EDITED, "", $unit2);
     } else return QUERY_FAILED;
   }
 
@@ -97,10 +97,10 @@ class Process {
     }
   }
 
-  public function updateStatus($value, $message){
+  public function updateStatus($value, $message, $unit2){
     if($this->update($this->id, $this->t, $value, "stt") == QUERY_SUCCESS){
       $notif = new Notification($this->unit, $this->table);
-      $notif->setMessage($value, $this->id, $this->t);
+      $notif->setMessage($value, $this->id, $this->t, $unit2);
       return $notif->send($message);
     } else {
       return QUERY_FAILED;
