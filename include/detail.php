@@ -52,7 +52,11 @@ $view->setUser($_SESSION['level']);
 
 <div class='km'>
   <div class='row'>
-    <div class='graphic'>
+    <h3><?php echo $indikator; ?></h3>
+  </div>
+  <div class='row'>
+    <div class='col s12'>
+      <div class='chart'></div>
     </div>
   </div>
   <div class='row'>
@@ -251,5 +255,29 @@ $view->setUser($_SESSION['level']);
     echo "
   </div>";
   }
+
+  echo "
+  <script>
+  new Chartist.Line('.chart', {
+    labels: [],
+    series: [[";
+  $month = date('m', time());
+  $start = 0;
+  if($month > 4 ) $start = $month - 4;
+  for($i = $start; $i <= $month; $i++){
+    if($model->target != 0){
+      $ach = round(($model->realisasi[$i] / $model->target[$i]) * 100, 2);
+    } else $ach = 0;
+    echo $ach.",";
+  }  
+  echo " ]]
+  }, {
+    fullWidth: true,
+    chartPadding: {
+      right: 40
+    }
+  })
+
+  </script>"
 ?>
   </div>

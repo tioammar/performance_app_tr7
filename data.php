@@ -15,9 +15,9 @@ if(isset($_GET['id']) && isset($_GET['t'])){
 
   if(isset($_GET['statuskm'])){
     if(!isset($_SESSION['level'])){
-      header("Location: ./?page=main");
+      header("Location: ./?page=dashboard");
     } else {
-      if($_SESSION['level'] == USER) header("Location: ./?page=main");
+      if($_SESSION['level'] == USER) header("Location: ./?page=dashboard");
     }
     $page = $_SESSION['level'] == ADMIN_UNIT ? "admin" : "adminall";
     $process = new Process($id, $t, "km", $_SESSION['unit']);
@@ -31,9 +31,9 @@ if(isset($_GET['id']) && isset($_GET['t'])){
 
   if(isset($_GET['updatekm'])){
     if(!isset($_SESSION['level'])){
-      header("Location: ./?page=main");
+      header("Location: ./?page=dashboard");
     } else {
-      if($_SESSION['level'] == USER) header("Location: ./?page=main");
+      if($_SESSION['level'] == USER) header("Location: ./?page=dashboard");
     }
     $process = new Process($id, $t, "km", $_SESSION['unit']);
     $real = $_POST['real'];
@@ -51,9 +51,9 @@ if(isset($_GET['id']) && isset($_GET['t'])){
 
   if(isset($_GET['statuswit'])){
     if(!isset($_SESSION['level'])){
-      header("Location: ./?page=main");
+      header("Location: ./?page=dashboard");
     } else {
-      if($_SESSION['level'] == USER) header("Location: ./?page=main");
+      if($_SESSION['level'] == USER) header("Location: ./?page=dashboard");
     }
     $unit2 = $_SESSION['unit'];
     if($_SESSION['level'] == ADMIN_WITEL || $_SESSION['level'] == ADMIN_UNIT){
@@ -80,9 +80,9 @@ if(isset($_GET['id']) && isset($_GET['t'])){
 
   if(isset($_GET['updatewit'])){
     if(!isset($_SESSION['level'])){
-      header("Location: ./?page=main");
+      header("Location: ./?page=dashboard");
     } else {
-      if($_SESSION['level'] == USER) header("Location: ./?page=main");
+      if($_SESSION['level'] == USER) header("Location: ./?page=dashboard");
     }
     $process = new Process($id, $t, "km_witel", $_SESSION['unit']);
     $real = $_POST['real'];
@@ -100,9 +100,9 @@ if(isset($_GET['id']) && isset($_GET['t'])){
 
   if(isset($_GET['addsupportwitel'])){
     if(!isset($_SESSION['level'])){
-      header("Location: ./?page=main");
+      header("Location: ./?page=dashboard");
     } else {
-      if($_SESSION['level'] == USER) header("Location: ./?page=main");
+      if($_SESSION['level'] == USER) header("Location: ./?page=dashboard");
     }
     $process = new Process($id, $t, "support", $_SESSION['unit']); // id as item_id
     $dest = $_POST['unit'];
@@ -119,9 +119,9 @@ if(isset($_GET['id']) && isset($_GET['t'])){
 
   if(isset($_GET['addsupport'])){
     if(!isset($_SESSION['level'])){
-      header("Location: ./?page=main");
+      header("Location: ./?page=dashboard");
     } else {
-      if($_SESSION['level'] == USER) header("Location: ./?page=main");
+      if($_SESSION['level'] == USER) header("Location: ./?page=dashboard");
     }
     $process = new Process($id, $t, "support", $_SESSION['unit']); // id as item_id
     $dest = $_POST['unit'];
@@ -138,9 +138,9 @@ if(isset($_GET['id']) && isset($_GET['t'])){
 
    if(isset($_GET['addaction'])){
     if(!isset($_SESSION['level'])){
-      header("Location: ./?page=main");
+      header("Location: ./?page=dashboard");
     } else {
-      if($_SESSION['level'] == USER) header("Location: ./?page=main");
+      if($_SESSION['level'] == USER) header("Location: ./?page=dashboard");
     }
     $process = new Process($id, $t, "actionplan", $_SESSION['unit']); // id as item_id
     $value = $_POST['item'];
@@ -154,9 +154,9 @@ if(isset($_GET['id']) && isset($_GET['t'])){
 
    if(isset($_GET['addlesson'])){
     if(!isset($_SESSION['level'])){
-      header("Location: ./?page=main");
+      header("Location: ./?page=dashboard");
     } else {
-      if($_SESSION['level'] == USER) header("Location: ./?page=main");
+      if($_SESSION['level'] == USER) header("Location: ./?page=dashboard");
     }
     $process = new Process($id, $t, "lesson", $_SESSION['unit']); // id as item_id
     $value = $_POST['item'];
@@ -170,9 +170,9 @@ if(isset($_GET['id']) && isset($_GET['t'])){
 
   if(isset($_GET['deletesupport'])){
     if(!isset($_SESSION['level'])){
-      header("Location: ./?page=main");
+      header("Location: ./?page=dashboard");
     } else {
-      if($_SESSION['level'] == USER) header("Location: ./?page=main");
+      if($_SESSION['level'] == USER) header("Location: ./?page=dashboard");
     }
     $process = new Process($id, $t, "support", $_SESSION['unit']);
     $type = $_GET['type'];
@@ -183,9 +183,9 @@ if(isset($_GET['id']) && isset($_GET['t'])){
 
   if(isset($_GET['deletelesson'])){
     if(!isset($_SESSION['level'])){
-      header("Location: ./?page=main");
+      header("Location: ./?page=dashboard");
     } else {
-      if($_SESSION['level'] == USER) header("Location: ./?page=main");
+      if($_SESSION['level'] == USER) header("Location: ./?page=dashboard");
     }
     $process = new Process($id, $t, "lesson", $_SESSION['unit']);
     $type = $_GET['type'];
@@ -196,9 +196,9 @@ if(isset($_GET['id']) && isset($_GET['t'])){
 
   if(isset($_GET['deleteaction'])){
     if(!isset($_SESSION['level'])){
-      header("Location: ./?page=main");
+      header("Location: ./?page=dashboard");
     } else {
-      if($_SESSION['level'] == USER) header("Location: ./?page=main");
+      if($_SESSION['level'] == USER) header("Location: ./?page=dashboard");
     }
     $process = new Process($id, $t, "actionplan", $_SESSION['unit']);
     $type = $_GET['type'];
@@ -209,9 +209,9 @@ if(isset($_GET['id']) && isset($_GET['t'])){
 
   if(isset($_GET['statussupport'])){
     if(!isset($_SESSION['level'])){
-      header("Location: ./?page=main");
+      header("Location: ./?page=dashboard");
     } else {
-      if($_SESSION['level'] == USER) header("Location: ./?page=main");
+      if($_SESSION['level'] == USER) header("Location: ./?page=dashboard");
     }
     $process = new Process($id, $t, "support", $_SESSION['unit']);
     $status = $_GET['stt'];
@@ -224,9 +224,9 @@ if(isset($_GET['id']) && isset($_GET['t'])){
 
   if(isset($_GET['statussupportwitel'])){
     if(!isset($_SESSION['level'])){
-      header("Location: ./?page=main");
+      header("Location: ./?page=dashboard");
     } else {
-      if($_SESSION['level'] == USER) header("Location: ./?page=main");
+      if($_SESSION['level'] == USER) header("Location: ./?page=dashboard");
     }
     $process = new Process($id, $t, "support", $_SESSION['unit']);
     $status = $_GET['stt'];
@@ -239,9 +239,9 @@ if(isset($_GET['id']) && isset($_GET['t'])){
 
   if(isset($_GET['statusqw'])){
     if(!isset($_SESSION['level'])){
-      header("Location: ./?page=main");
+      header("Location: ./?page=dashboard");
     } else {
-      if($_SESSION['level'] == USER) header("Location: ./?page=main");
+      if($_SESSION['level'] == USER) header("Location: ./?page=dashboard");
     }
     $page = $_SESSION['level'] == ADMIN_UNIT ? "adminqw" : "adminallqw";
     $process = new Process($id, $t, "quickwin", $_SESSION['unit']);
@@ -259,9 +259,9 @@ if(isset($_GET['id']) && isset($_GET['t'])){
 
   if(isset($_GET['updateqw'])){
     if(!isset($_SESSION['level'])){
-      header("Location: ./?page=main");
+      header("Location: ./?page=dashboard");
     } else {
-      if($_SESSION['level'] == USER) header("Location: ./?page=main");
+      if($_SESSION['level'] == USER) header("Location: ./?page=dashboard");
     }
     $page = $_SESSION['level'] == ADMIN_UNIT ? "adminqw" : "adminallqw";
     $process = new Process($id, $t, "quickwin", $_SESSION['unit']);
@@ -281,9 +281,9 @@ if(isset($_GET['id']) && isset($_GET['t'])){
 
   if(isset($_GET['uploadkm'])){
     if(!isset($_SESSION['level'])){
-      header("Location: ./?page=main");
+      header("Location: ./?page=dashboard");
     } else {
-      if($_SESSION['level'] != ADMIN_ALL) header("Location: ./?page=main");
+      if($_SESSION['level'] != ADMIN_ALL) header("Location: ./?page=dashboard");
     }
     $excel = new ExcelKM($_FILES['excel']);
     if($excel->read() == UPLOAD_OK){
@@ -293,9 +293,9 @@ if(isset($_GET['id']) && isset($_GET['t'])){
   
   if(isset($_GET['uploadqw'])){
     if(!isset($_SESSION['level'])){
-      header("Location: ./?page=main");
+      header("Location: ./?page=dashboard");
     } else {
-      if($_SESSION['level'] != ADMIN_ALL) header("Location: ./?page=main");
+      if($_SESSION['level'] != ADMIN_ALL) header("Location: ./?page=dashboard");
     }
     $excel = new ExcelQW($_FILES['excel']);
     if($excel->read() == UPLOAD_OK){
@@ -305,13 +305,13 @@ if(isset($_GET['id']) && isset($_GET['t'])){
   
   if(isset($_GET['uploadwit'])){
     if(!isset($_SESSION['level'])){
-      header("Location: ./?page=main");
+      header("Location: ./?page=dashboard");
     } else {
-      if($_SESSION['level'] != ADMIN_ALL) header("Location: ./?page=main");
+      if($_SESSION['level'] != ADMIN_ALL) header("Location: ./?page=dashboard");
     }
     $excel = new ExcelKMWitel($_FILES['excel']);
     if($excel->read() == UPLOAD_OK){
-      header("Location: ./?page=adminallwit");
+      header("Location: ./?page=adminallwitel");
     } else echo "Upload Failed";
   }
 
@@ -335,7 +335,7 @@ if(isset($_GET["login"])){
     if($user->unit != null){
       $_SESSION['unit'] = $user->unit;
     }
-    header("Location:./?page=main");
+    header("Location:./?page=dashboard");
   }
 } 
 

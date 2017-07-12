@@ -8,7 +8,7 @@ require_once("modules/view/ViewKM.php");
 ?>
 <div class='km'>
   <div class='row'>
-    <div class='input-field col s3 offset-s9'>
+    <div class='input-field col s3'>
       <select id='tw'>
         <option value='' disabled>Pilih TW</option>
         <?php
@@ -39,9 +39,22 @@ require_once("modules/view/ViewKM.php");
   // echo json_encode($ach_bulan);
 
   echo "
-  <div id='tr7' class='card white z-depth-2 contain'>
+  <div id='$unit'>
+    <div class='row'>
+      <div class='col s9'>
+        <h4 class='italic'>KM Unit $unit 2017<h4>
+      </div>";
+  for($month = 1; $month <= $view->count; $month++){
+    echo "
+      <div class='col s3 grey lighten-3 center-align periode-hides $month'>
+        <small>Ach. %</small>
+        <h3>".round($ach_bulan[$month]['ach_show'],2)." %</h3>
+      </div>";
+  }
+  echo "
+    </div>
+    <div id='tr7' class='card white z-depth-2 contain'>
       <div class='card-content black-text'>
-      <span class='card-title'>KM $unit 2017</span>
         <table class='bordered'>";
   $view->setHeader();
   $table = $view->setTable();

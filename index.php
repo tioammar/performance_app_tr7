@@ -9,7 +9,7 @@
     if(isset($_GET['page'])){
       $page = $_GET['page'];
     } else {
-      $page = "main";
+      $page = "dashboard";
     }
   } else {
     $page = 'login';
@@ -35,11 +35,13 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
   <link rel="stylesheet" href="css/styles.css"/>
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+  <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
   <title>KM Online TREG 7</title>
 </head>
 <header>
   <?php
-  if($page == "adminall" || $page == "adminwitel" || $page == "adminallqw" || $page == "quickwin" || $page == "adminallwitel" || $page == "witel"){
+  if($page == "adminall" || $page == "adminwitel" || $page == "adminallqw" || $page == "quickwin" || $page == "adminallwitel" || $page == "witel" || $page == "dashboard"){
     echo "<nav class='nav-extended'>";
   } else {
     echo "<nav>";
@@ -53,14 +55,14 @@
         <li><a href='#' data-activates='slide-out' class='side-nav-trig black-text'><i class='material-icons left'>menu</i></a></li>";
         }
       ?>
-        <li><a class="logo" href="?page=main">Dashboard Kinerja TREG 7</a></li>
+        <li><a class="logo" href="?page=dashboard">Dashboard Kinerja TREG 7</a></li>
       </ul>
       <ul class="right">
         <li><img src="img/woow.png" alt="" class="profile"></li>
         <!--li><img src="img/logo.png" alt="" class="profile"></li-->
       </ul>
       <?php
-      if($page == "adminall" || $page == "adminallwitel" || $page == "adminwitel" || $page == "adminallqw" || $page == "quickwin" || $page == "witel"){
+      if($page == "adminall" || $page == "adminallwitel" || $page == "adminwitel" || $page == "adminallqw" || $page == "quickwin" || $page == "witel" || $page == "dashboard"){
         include "include/tabs/".$page.".php";
       }
       ?>
@@ -82,7 +84,7 @@
         <a href='#!email'><span class='white-text email'>".$session['nik']."</span></a>
       </div>
     </li>
-    <li><a href='?page=main'>Beranda</a></li>
+    <li><a href='?page=dashboard'>Beranda</a></li>
     <li><a href='?page=witel'>Flagging Witel</a></li>
     <li><a href='?page=quickwin'>Quick Win</a></li>";
     if($session['level'] != USER){
@@ -159,6 +161,8 @@ $(document).ready(function(){
 $('#tw').on("change", function() {
     hideAll();
     showSelected($(this).val());
+    hideAllDetail();
+    showSelectedDetail($(this).val());
 });
 
 function hideAll() {

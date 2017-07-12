@@ -5,14 +5,15 @@ if($session['level'] != ADMIN_ALL && $session['level'] != ADMIN_SM){
 require_once("modules/model/QuickWin.php");
 require_once("modules/Hitung.php");
 require_once("modules/view/ViewQuickWin.php");
+
+$view = new ViewQuickWin($session['level'], null);
 ?>
 <div class='km'>
   <div class='row'>
-    <div class='input-field col s3 offset-s9'>
+    <div class='input-field col s3'>
       <select id='tw'>
         <option value='' disabled>Pilih Bulan</option>
         <?php
-        $view = new ViewQuickWin($session['level'], null);
         $view->setFilter("Bulan");
         ?>
       </select>
@@ -39,11 +40,24 @@ foreach($units as $unit_name){
   }
   $ach_bulan = $hitung1->hitungBulan($models, $unit_name);
   // echo json_encode($ach_bulan);
-
+  // ach here
   echo "
-  <div id='$unit_name' class='card white z-depth-2 contain'>
+  <div id='$unit_name'>
+    <div class='row'>
+      <div class='col s9'>
+        <h4 class='italic'>Quick Win $unit_name 2017<h4>
+      </div>";
+  for($month = 1; $month <= $view->count; $month++){
+    echo "
+      <div class='col s3 grey lighten-3 center-align periode-hides $month'>
+        <small>Ach. %</small>
+        <h3>".round($ach_bulan[$month]['ach_show'],2)." %</h3>
+      </div>";
+  }
+  echo "
+    </div>
+    <div class='card white z-depth-2 contain'>
       <div class='card-content black-text'>
-      <span class='card-title'>Quick Win $unit_name 2017</span>
         <table class='bordered'>"; 
   $view->setHeader();
   $table = $view->setTable();
@@ -63,8 +77,9 @@ foreach($units as $unit_name){
     }
   }
   echo "
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>";
 }

@@ -17,7 +17,7 @@ class Base {
   public $type;
   public $len;
   public $table;
-  protected $count;
+  public $count;
 
   public function make($indikator, $level){
     $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);

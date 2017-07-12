@@ -8,7 +8,7 @@ require_once("modules/view/ViewKMWitel.php");
 ?>
 <div class='km'>
   <div class='row'>
-    <div class='input-field col s3 offset-s9'>
+    <div class='input-field col s3'>
       <select id='tw'>
         <option value='' disabled>Pilih Bulan</option>
         <?php
@@ -41,9 +41,22 @@ foreach($witel as $unit_name){
   // echo json_encode($ach_bulan);
 
   echo "
-  <div id='$unit_name' class='card white z-depth-2 contain'>
+  <div id='$unit_name'>
+    <div class='row'>
+      <div class='col s9'>
+        <h4 class='italic'>Witel $unit_name<h4>
+      </div>";
+  for($month = 1; $month <= $view->count; $month++){
+    echo "
+      <div class='col s3 grey lighten-3 center-align periode-hides $month'>
+        <small>Ach. %</small>
+        <h3>".round($ach_bulan[$month]['ach_show'],2)." %</h3>
+      </div>";
+  }
+  echo "
+    </div>
+    <div class='card white z-depth-2 contain'>
       <div class='card-content black-text'>
-      <span class='card-title'>Witel $unit_name 2017</span>
         <table class='bordered'>";
   $unit = $_SESSION['unit']; 
   $view->setHeader();
@@ -68,8 +81,9 @@ foreach($witel as $unit_name){
     }
   }
   echo "
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>";
 }

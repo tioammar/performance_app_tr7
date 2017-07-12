@@ -22,7 +22,7 @@ class View {
   }
 
   function setFilter($name){
-    $month = date('m', time());
+    $month = date('m', time()) - 1;
     $quarter = ceil($month/3) - 1;
     if($this->count < 12){
       $t = $quarter == 0 ? 1 : $quarter;
