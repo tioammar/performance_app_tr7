@@ -216,7 +216,7 @@ if(isset($_GET['id']) && isset($_GET['t'])){
     $process = new Process($id, $t, "support", $_SESSION['unit']);
     $status = $_GET['stt'];
     $unit2 = $_GET['unit'];
-    $message = $status != STATUS_REJECTED_WITEL ? "" : $_POST['message'];
+    $message = $status != STATUS_REJECTED? "" : $_POST['message'];
     if($process->updateStatusSupport($status, $message, $unit2) == QUERY_SUCCESS){
       header("Location: ./");
     } else echo "Update Status Failed";
@@ -313,6 +313,14 @@ if(isset($_GET['id']) && isset($_GET['t'])){
     if($excel->read() == UPLOAD_OK){
       header("Location: ./?page=adminallwitel");
     } else echo "Upload Failed";
+  }
+
+  if(isset($_GET['deletenotif'])){
+    $id = $_GET['id'];
+    $notification = new Notification(null, null);
+    if($notification->delete($id)){
+      header("Location: ./?page=notifications");
+    } else echo "Delete Failed";
   }
 
 if(isset($_GET["login"])){

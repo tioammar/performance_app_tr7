@@ -124,6 +124,16 @@ class Notification extends Event {
     }
   }
 
+  public function delete($id){
+    $log = new LogInterface($this->unit, $this->type);
+    if($log->send($this) == QUERY_SUCCESS){
+      $Q = "DELETE FROM $this->table WHERE `id` = $id";
+      if($this->mysqli->query($Q)){
+        return QUERY_SUCCESS;
+      } else return QUERY_FAILED;
+    }
+  }
+
   // public function sendSupport($message){
   //   $log = new LogInterface($this->unit, $this->type);
   //   if($log->send($this) == QUERY_SUCCESS){
@@ -140,25 +150,27 @@ class Notification extends Event {
     if($this->type == "km"){
       $km = KM::loadById($id);
       $indikator = $km->indikator['l_'.$km->len];
+      $unit = $km->unit;
     } else if($this->type == "quickwin"){
       $qw = QuickWin::loadById($id);
       $indikator = $qw->indikator['l_'.$qw->len];
+      $unit = $km->unit;
     }
     switch($value){
       case STATUS_APPROVED:
-        $message = "Realisasi $indikator Periode $tw Telah Disetujui";
+        $message = "Realisasi $indikator unit $unit periode $tw telah disetujui";
         break;
       case STATUS_REJECTED:
-        $message = "Realisasi $indikator Periode $tw Telah Ditolak";
+        $message = "Realisasi $indikator unit $unit periode $tw telah ditolak";
         break;
       case STATUS_EDITED:
-        $message = "Realisasi $indikator Periode $tw Telah Diubah";
+        $message = "Realisasi $indikator unit $unit periode $tw telah diubah";
         break;
       case STATUS_NOT_RELEASED:
-        $message = "Realisasi $indikator Periode $tw Tidak Ditolak";
+        $message = "Realisasi $indikator unit $unit periode $tw Tidak ditolak";
         break;
       case STATUS_RELEASED:
-        $message = "Realisasi $indikator Periode $tw Telah Direlease";
+        $message = "Realisasi $indikator unit $unit periode $tw telah dirilis";
         break;
     }
     return $message;
@@ -171,25 +183,25 @@ class Notification extends Event {
       $witel = $qw->witel;
     switch($value){
       case STATUS_APPROVED:
-        $message = "Realisasi $indikator Witel $witel Periode $tw Telah Disetujui";
+        $message = "Realisasi $indikator witel $witel periode $tw telah disetujui";
         break;
       case STATUS_REJECTED:
-        $message = "Realisasi $indikator Witel $witel Periode $tw Telah Ditolak";
+        $message = "Realisasi $indikator witel $witel periode $tw telah ditolak";
         break;
       case STATUS_EDITED:
-        $message = "Realisasi $indikator Witel $witel Periode $tw Telah Diubah";
+        $message = "Realisasi $indikator witel $witel periode $tw telah diubah";
         break;
       case STATUS_NOT_RELEASED:
-        $message = "Realisasi $indikator Witel $witel Periode $tw Tidak Ditolak";
+        $message = "Realisasi $indikator witel $witel periode $tw Tidak ditolak";
         break;      
       case STATUS_RELEASED:
-        $message = "Realisasi $indikator Witel $witel Periode $tw Tidak Direlease";
+        $message = "Realisasi $indikator witel $witel periode $tw Tidak dirilis";
         break;
       case STATUS_REJECTED_WITEL:
-        $message = "Realisasi $indikator Witel $witel Periode $tw Telah Ditolak";
+        $message = "Realisasi $indikator witel $witel periode $tw telah ditolak";
         break;
       case STATUS_APPROVED_WITEL:
-        $message = "Realisasi $indikator Witel $witel Periode $tw Telah Disetujui";
+        $message = "Realisasi $indikator witel $witel periode $tw telah disetujui";
         break;
     }
     return $message;
@@ -199,15 +211,32 @@ class Notification extends Event {
     $message = "";
     $sn = Support::loadById($id);
     $indikator = $sn->item;
+    switch($sn->item_type){
+      case "quickwin":
+        $i = QuickWin::loadById($sn->item_id);
+        $m = $i->indikator['l_'.$i->len];
+        $unit = "unit ".$i->unit;
+        break;
+      case "km":
+        $i = KM::loadById($sn->item_id);
+        $m = $i->indikator['l_'.$i->len];
+        $unit = "unit ".$i->unit;
+        break;
+      case "km_witel":
+        $i = KMWitel::loadById($sn->item_id);
+        $m = $i->indikator['l_'.$i->len];
+        $unit = "witel ".$i->unit;
+        break;
+    }
     switch($value){
       case STATUS_APPROVED:
-        $message = "Support Needed: $indikator Bulan $sn->periode Telah Disetujui";
+        $message = "Support Needed: $indikator untuk indikator $m $unit bulan $sn->periode telah disetujui";
         break;
       case STATUS_REJECTED:
-        $message = "Support Needed: $indikator Bulan $sn->periode Telah Ditolak";
+        $message = "Support Needed: $indikator untuk indikator $m $unit bulan $sn->periode telah ditolak";
         break;
       case STATUS_ADDED:
-        $message = "Support Needed: $indikator Bulan $sn->periode Telah Ditambahkan";
+        $message = "Support Needed: $indikator untuk indikator $m $unit bulan $sn->periode telah ditambahkan";
         break;
     }
     return $message;

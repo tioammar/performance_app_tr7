@@ -120,9 +120,10 @@
     <li><a href='$linkkm'>KM Regional</a></li>
     <li><a href='$linkwit'>Flagging Witel</a></li>
     <li><a href='$linkqw'>Quick Win</a></li>";
-      $notifikasi = new Notification($session['unit'], "program");
-      $ids = $notifikasi->getAll($session['level']);
-      $count = count($ids);
+      $notifikasi = new Notification($session['unit'], null);
+      $ids = $notifikasi->getAllNotif($session['level']);
+      $ids2 = $notifikasi->getAllDest($session['level']);
+      $count = count($ids) + count($ids2);
       echo "
     <li><a href='?page=notifications'><span class='new badge' data-badge-caption=''>$count</span>Notifikasi</a></li>";
     }
